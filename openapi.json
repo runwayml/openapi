@@ -8,9 +8,7 @@
   "paths": {
     "/v1/tasks/{id}": {
       "get": {
-        "tags": [
-          "Task management"
-        ],
+        "tags": ["Task management"],
         "summary": "Get task detail",
         "description": "Return details about a task. Consumers of this API should not expect updates more frequent than once every five seconds for a given task.",
         "x-codeSamples": [
@@ -37,9 +35,7 @@
             },
             "description": "The ID of a previously-submitted task that has not been canceled or deleted."
           },
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
+          { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
         "responses": {
           "200": {
@@ -64,16 +60,9 @@
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
                         },
-                        "status": {
-                          "type": "string",
-                          "const": "PENDING"
-                        }
+                        "status": { "type": "string", "const": "PENDING" }
                       },
-                      "required": [
-                        "id",
-                        "createdAt",
-                        "status"
-                      ],
+                      "required": ["id", "createdAt", "status"],
                       "additionalProperties": false
                     },
                     {
@@ -92,16 +81,9 @@
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
                         },
-                        "status": {
-                          "type": "string",
-                          "const": "THROTTLED"
-                        }
+                        "status": { "type": "string", "const": "THROTTLED" }
                       },
-                      "required": [
-                        "id",
-                        "createdAt",
-                        "status"
-                      ],
+                      "required": ["id", "createdAt", "status"],
                       "additionalProperties": false
                     },
                     {
@@ -120,16 +102,9 @@
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
                         },
-                        "status": {
-                          "type": "string",
-                          "const": "CANCELLED"
-                        }
+                        "status": { "type": "string", "const": "CANCELLED" }
                       },
-                      "required": [
-                        "id",
-                        "createdAt",
-                        "status"
-                      ],
+                      "required": ["id", "createdAt", "status"],
                       "additionalProperties": false
                     },
                     {
@@ -148,22 +123,14 @@
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
                         },
-                        "status": {
-                          "type": "string",
-                          "const": "RUNNING"
-                        },
+                        "status": { "type": "string", "const": "RUNNING" },
                         "progress": {
                           "type": "number",
                           "minimum": 0,
                           "maximum": 1
                         }
                       },
-                      "required": [
-                        "id",
-                        "createdAt",
-                        "status",
-                        "progress"
-                      ],
+                      "required": ["id", "createdAt", "status", "progress"],
                       "additionalProperties": false
                     },
                     {
@@ -182,10 +149,7 @@
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
                         },
-                        "status": {
-                          "type": "string",
-                          "const": "FAILED"
-                        },
+                        "status": { "type": "string", "const": "FAILED" },
                         "failure": {
                           "description": "A human-friendly reason for the failure. We do not recommend returning this to users directly without adding context.",
                           "type": "string"
@@ -195,12 +159,7 @@
                           "type": "string"
                         }
                       },
-                      "required": [
-                        "id",
-                        "createdAt",
-                        "status",
-                        "failure"
-                      ],
+                      "required": ["id", "createdAt", "status", "failure"],
                       "additionalProperties": false
                     },
                     {
@@ -219,31 +178,18 @@
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
                         },
-                        "status": {
-                          "type": "string",
-                          "const": "SUCCEEDED"
-                        },
+                        "status": { "type": "string", "const": "SUCCEEDED" },
                         "output": {
                           "description": "An array of URLs that return the output of the task. These URLs will expire within 24-48 hours; fetch the task again to get fresh URLs. It is expected that you download the assets at these URLs and store them in your own storage system.",
                           "type": "array",
-                          "items": {
-                            "type": "string",
-                            "format": "uri"
-                          }
+                          "items": { "type": "string", "format": "uri" }
                         }
                       },
-                      "required": [
-                        "id",
-                        "createdAt",
-                        "status",
-                        "output"
-                      ],
+                      "required": ["id", "createdAt", "status", "output"],
                       "additionalProperties": false
                     }
                   ],
-                  "discriminator": {
-                    "propertyName": "status"
-                  }
+                  "discriminator": { "propertyName": "status" }
                 },
                 "examples": {
                   "pending": {
@@ -308,14 +254,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -324,9 +264,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Task management"
-        ],
+        "tags": ["Task management"],
         "summary": "Cancel or delete a task",
         "description": "Tasks that are running, pending, or throttled can be canceled by invoking this method. Invoking this method for other tasks will delete them.\n\nThe output data associated with a deleted task will be deleted from persistent storage in accordance with our data retention policy. Aborted and deleted tasks will not be able to be fetched again in the future.",
         "x-codeSamples": [
@@ -353,9 +291,7 @@
             },
             "description": "The ID of a previously-submitted task that has not been canceled or deleted."
           },
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
+          { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
         "responses": {
           "204": {
@@ -366,9 +302,7 @@
     },
     "/v1/image_to_video": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Image to video",
         "description": "This endpoint will start a new task to generate a video from an image.",
         "x-codeSamples": [
@@ -383,11 +317,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.image_to_video.create(\n  model='gen4_turbo',\n  prompt_image='https://example.com/bunny.jpg',\n  prompt_text='A cute bunny hopping in a meadow',\n  duration=10,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -483,10 +413,7 @@
                                   "const": "first"
                                 }
                               },
-                              "required": [
-                                "uri",
-                                "position"
-                              ]
+                              "required": ["uri", "position"]
                             }
                           }
                         ]
@@ -522,23 +449,13 @@
                           "publicFigureThreshold": {
                             "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
                             "type": "string",
-                            "enum": [
-                              "auto",
-                              "low"
-                            ]
+                            "enum": ["auto", "low"]
                           }
                         }
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "gen4_turbo"
-                      }
+                      "model": { "type": "string", "const": "gen4_turbo" }
                     },
-                    "required": [
-                      "promptImage",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptImage", "ratio", "model"]
                   },
                   {
                     "title": "veo3.1",
@@ -637,16 +554,10 @@
                                 "position": {
                                   "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video, \"last\" will use the image as the last frame of the video.",
                                   "type": "string",
-                                  "enum": [
-                                    "first",
-                                    "last"
-                                  ]
+                                  "enum": ["first", "last"]
                                 }
                               },
-                              "required": [
-                                "uri",
-                                "position"
-                              ]
+                              "required": ["uri", "position"]
                             }
                           }
                         ]
@@ -669,22 +580,11 @@
                       "duration": {
                         "description": "The number of seconds of duration for the output video.",
                         "type": "number",
-                        "enum": [
-                          4,
-                          6,
-                          8
-                        ]
+                        "enum": [4, 6, 8]
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "veo3.1"
-                      }
+                      "model": { "type": "string", "const": "veo3.1" }
                     },
-                    "required": [
-                      "promptImage",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptImage", "ratio", "model"]
                   },
                   {
                     "title": "gen3a_turbo",
@@ -783,16 +683,10 @@
                                 "position": {
                                   "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video, \"last\" will use the image as the last frame of the video.",
                                   "type": "string",
-                                  "enum": [
-                                    "first",
-                                    "last"
-                                  ]
+                                  "enum": ["first", "last"]
                                 }
                               },
-                              "required": [
-                                "uri",
-                                "position"
-                              ]
+                              "required": ["uri", "position"]
                             }
                           }
                         ]
@@ -808,47 +702,29 @@
                         "example": 5,
                         "default": 10,
                         "type": "number",
-                        "enum": [
-                          5,
-                          10
-                        ]
+                        "enum": [5, 10]
                       },
                       "ratio": {
                         "description": "The resolution of the output video.",
                         "example": "1280:768",
                         "type": "string",
-                        "enum": [
-                          "768:1280",
-                          "1280:768"
-                        ]
+                        "enum": ["768:1280", "1280:768"]
                       },
                       "contentModeration": {
                         "description": "Settings that affect the behavior of the content moderation system.",
-                        "example": {
-                          "publicFigureThreshold": "auto"
-                        },
+                        "example": { "publicFigureThreshold": "auto" },
                         "type": "object",
                         "properties": {
                           "publicFigureThreshold": {
                             "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
                             "type": "string",
-                            "enum": [
-                              "auto",
-                              "low"
-                            ]
+                            "enum": ["auto", "low"]
                           }
                         }
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "gen3a_turbo"
-                      }
+                      "model": { "type": "string", "const": "gen3a_turbo" }
                     },
-                    "required": [
-                      "promptText",
-                      "promptImage",
-                      "model"
-                    ]
+                    "required": ["promptText", "promptImage", "model"]
                   },
                   {
                     "title": "veo3.1_fast",
@@ -947,16 +823,10 @@
                                 "position": {
                                   "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video, \"last\" will use the image as the last frame of the video.",
                                   "type": "string",
-                                  "enum": [
-                                    "first",
-                                    "last"
-                                  ]
+                                  "enum": ["first", "last"]
                                 }
                               },
-                              "required": [
-                                "uri",
-                                "position"
-                              ]
+                              "required": ["uri", "position"]
                             }
                           }
                         ]
@@ -979,22 +849,11 @@
                       "duration": {
                         "description": "The number of seconds of duration for the output video.",
                         "type": "number",
-                        "enum": [
-                          4,
-                          6,
-                          8
-                        ]
+                        "enum": [4, 6, 8]
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "veo3.1_fast"
-                      }
+                      "model": { "type": "string", "const": "veo3.1_fast" }
                     },
-                    "required": [
-                      "promptImage",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptImage", "ratio", "model"]
                   },
                   {
                     "title": "veo3",
@@ -1085,10 +944,7 @@
                                   "const": "first"
                                 }
                               },
-                              "required": [
-                                "uri",
-                                "position"
-                              ]
+                              "required": ["uri", "position"]
                             }
                           }
                         ]
@@ -1108,22 +964,12 @@
                           "1920:1080"
                         ]
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "veo3"
-                      }
+                      "model": { "type": "string", "const": "veo3" }
                     },
-                    "required": [
-                      "promptImage",
-                      "duration",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptImage", "duration", "ratio", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -1143,9 +989,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -1157,14 +1001,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -1175,9 +1013,7 @@
     },
     "/v1/text_to_video": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Text to video",
         "description": "This endpoint will start a new task to generate a video from a text prompt.",
         "x-codeSamples": [
@@ -1192,11 +1028,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.text_to_video.create(\n  model='veo3.1',\n  prompt_text='A cute bunny hopping in a meadow',\n  ratio='1280:720',\n  duration=8,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1231,22 +1063,11 @@
                       "duration": {
                         "description": "The number of seconds of duration for the output video.",
                         "type": "number",
-                        "enum": [
-                          4,
-                          6,
-                          8
-                        ]
+                        "enum": [4, 6, 8]
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "veo3.1"
-                      }
+                      "model": { "type": "string", "const": "veo3.1" }
                     },
-                    "required": [
-                      "promptText",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptText", "ratio", "model"]
                   },
                   {
                     "title": "veo3.1_fast",
@@ -1276,22 +1097,11 @@
                       "duration": {
                         "description": "The number of seconds of duration for the output video.",
                         "type": "number",
-                        "enum": [
-                          4,
-                          6,
-                          8
-                        ]
+                        "enum": [4, 6, 8]
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "veo3.1_fast"
-                      }
+                      "model": { "type": "string", "const": "veo3.1_fast" }
                     },
-                    "required": [
-                      "promptText",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptText", "ratio", "model"]
                   },
                   {
                     "title": "veo3",
@@ -1318,22 +1128,12 @@
                           "1920:1080"
                         ]
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "veo3"
-                      }
+                      "model": { "type": "string", "const": "veo3" }
                     },
-                    "required": [
-                      "promptText",
-                      "duration",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptText", "duration", "ratio", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -1353,9 +1153,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -1367,14 +1165,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -1385,9 +1177,7 @@
     },
     "/v1/video_to_video": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Video to video",
         "description": "This endpoint will start a new task to generate a video from a video.",
         "x-codeSamples": [
@@ -1402,11 +1192,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.video_to_video.create(\n  model='gen4_aleph',\n  video_uri='https://example.com/bunny.mp4',\n  prompt_text='string',\n  references=[\n    {\n      'type': 'image',\n      'uri': 'https://example.com/easter-scene.jpg',\n    },\n  ],\n  ratio='1280:720',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1484,10 +1270,7 @@
                               "description": "Passing an image reference allows the model to emulate the style or content of the reference in the output.",
                               "type": "object",
                               "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "const": "image"
-                                },
+                                "type": { "type": "string", "const": "image" },
                                 "uri": {
                                   "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
                                   "example": "https://example.com/image.jpg",
@@ -1519,15 +1302,10 @@
                                   ]
                                 }
                               },
-                              "required": [
-                                "type",
-                                "uri"
-                              ]
+                              "required": ["type", "uri"]
                             }
                           ],
-                          "discriminator": {
-                            "propertyName": "type"
-                          }
+                          "discriminator": { "propertyName": "type" }
                         }
                       },
                       "contentModeration": {
@@ -1537,28 +1315,16 @@
                           "publicFigureThreshold": {
                             "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
                             "type": "string",
-                            "enum": [
-                              "auto",
-                              "low"
-                            ]
+                            "enum": ["auto", "low"]
                           }
                         }
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "gen4_aleph"
-                      }
+                      "model": { "type": "string", "const": "gen4_aleph" }
                     },
-                    "required": [
-                      "videoUri",
-                      "promptText",
-                      "model"
-                    ]
+                    "required": ["videoUri", "promptText", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -1578,9 +1344,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -1592,14 +1356,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -1610,9 +1368,7 @@
     },
     "/v1/text_to_image": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Text/Image to Image",
         "description": "This endpoint will start a new task to generate images from text and/or image(s)",
         "x-codeSamples": [
@@ -1627,11 +1383,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.text_to_image.create(\n  model='gen4_image',\n  prompt_text='A serene landscape with mountains',\n  ratio='1360:768',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1723,9 +1475,7 @@
                               "pattern": "^[a-z][a-z0-9_]+$"
                             }
                           },
-                          "required": [
-                            "uri"
-                          ]
+                          "required": ["uri"]
                         }
                       },
                       "contentModeration": {
@@ -1735,17 +1485,11 @@
                           "publicFigureThreshold": {
                             "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
                             "type": "string",
-                            "enum": [
-                              "auto",
-                              "low"
-                            ]
+                            "enum": ["auto", "low"]
                           }
                         }
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "gen4_image_turbo"
-                      }
+                      "model": { "type": "string", "const": "gen4_image_turbo" }
                     },
                     "required": [
                       "promptText",
@@ -1838,9 +1582,7 @@
                               "pattern": "^[a-z][a-z0-9_]+$"
                             }
                           },
-                          "required": [
-                            "uri"
-                          ]
+                          "required": ["uri"]
                         }
                       },
                       "contentModeration": {
@@ -1850,23 +1592,13 @@
                           "publicFigureThreshold": {
                             "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
                             "type": "string",
-                            "enum": [
-                              "auto",
-                              "low"
-                            ]
+                            "enum": ["auto", "low"]
                           }
                         }
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "gen4_image"
-                      }
+                      "model": { "type": "string", "const": "gen4_image" }
                     },
-                    "required": [
-                      "promptText",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptText", "ratio", "model"]
                   },
                   {
                     "title": "gemini_2.5_flash",
@@ -1940,26 +1672,15 @@
                               "pattern": "^[a-z][a-z0-9_]+$"
                             }
                           },
-                          "required": [
-                            "uri"
-                          ]
+                          "required": ["uri"]
                         }
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "gemini_2.5_flash"
-                      }
+                      "model": { "type": "string", "const": "gemini_2.5_flash" }
                     },
-                    "required": [
-                      "promptText",
-                      "ratio",
-                      "model"
-                    ]
+                    "required": ["promptText", "ratio", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -1979,9 +1700,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -1993,14 +1712,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -2011,9 +1724,7 @@
     },
     "/v1/character_performance": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Control a character",
         "description": "This endpoint will start a new task to control a character's facial expressions and body movements using a reference video.",
         "x-codeSamples": [
@@ -2028,11 +1739,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.character_performance.create(\n  model='act_two',\n  character={\n    'type': 'video',\n    'uri': 'https://example.com/posedCharacter.mp4',\n  },\n  reference={\n    'type': 'video',\n    'uri': 'https://example.com/actorPerformance.mp4',\n  },\n  ratio='1280:720',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2057,10 +1764,7 @@
                             "description": "An image of your character. In the output, the character will use the reference video performance in its original static environment.",
                             "type": "object",
                             "properties": {
-                              "type": {
-                                "type": "string",
-                                "const": "image"
-                              },
+                              "type": { "type": "string", "const": "image" },
                               "uri": {
                                 "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
                                 "example": "https://example.com/image.jpg",
@@ -2092,20 +1796,14 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "type",
-                              "uri"
-                            ]
+                            "required": ["type", "uri"]
                           },
                           {
                             "title": "CharacterVideo",
                             "description": "A video of your character. In the output, the character will use the reference video performance in its original animated environment and some of the character's own movements.",
                             "type": "object",
                             "properties": {
-                              "type": {
-                                "type": "string",
-                                "const": "video"
-                              },
+                              "type": { "type": "string", "const": "video" },
                               "uri": {
                                 "description": "A HTTPS URL, Runway or data URI containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                 "example": "https://example.com/video.mp4",
@@ -2137,15 +1835,10 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "type",
-                              "uri"
-                            ]
+                            "required": ["type", "uri"]
                           }
                         ],
-                        "discriminator": {
-                          "propertyName": "type"
-                        }
+                        "discriminator": { "propertyName": "type" }
                       },
                       "reference": {
                         "description": "The reference video containing the performance to apply to the character.",
@@ -2159,10 +1852,7 @@
                             "description": "A video of a person performing in the manner that you would like your character to perform. The video must be between 3 and 30 seconds in duration.",
                             "type": "object",
                             "properties": {
-                              "type": {
-                                "type": "string",
-                                "const": "video"
-                              },
+                              "type": { "type": "string", "const": "video" },
                               "uri": {
                                 "description": "A video of a person performing in the manner that you would like your character to perform. The video must be between 3 and 30 seconds in duration. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                 "example": "https://example.com/reference-performance.mp4",
@@ -2194,15 +1884,10 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "type",
-                              "uri"
-                            ]
+                            "required": ["type", "uri"]
                           }
                         ],
-                        "discriminator": {
-                          "propertyName": "type"
-                        }
+                        "discriminator": { "propertyName": "type" }
                       },
                       "bodyControl": {
                         "description": "A boolean indicating whether to enable body control. When enabled, non-facial movements and gestures will be applied to the character in addition to facial expressions.",
@@ -2232,36 +1917,22 @@
                       },
                       "contentModeration": {
                         "description": "Settings that affect the behavior of the content moderation system.",
-                        "example": {
-                          "publicFigureThreshold": "auto"
-                        },
+                        "example": { "publicFigureThreshold": "auto" },
                         "type": "object",
                         "properties": {
                           "publicFigureThreshold": {
                             "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
                             "type": "string",
-                            "enum": [
-                              "auto",
-                              "low"
-                            ]
+                            "enum": ["auto", "low"]
                           }
                         }
                       },
-                      "model": {
-                        "type": "string",
-                        "const": "act_two"
-                      }
+                      "model": { "type": "string", "const": "act_two" }
                     },
-                    "required": [
-                      "character",
-                      "reference",
-                      "model"
-                    ]
+                    "required": ["character", "reference", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -2281,9 +1952,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -2295,14 +1964,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -2313,9 +1976,7 @@
     },
     "/v1/sound_effect": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Generate sound effects",
         "description": "This endpoint will start a new task to generate sound effects from a text description.",
         "x-codeSamples": [
@@ -2330,11 +1991,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.sound_effect.create(\n  model='eleven_text_to_sound_v2',\n  promptText='A thunderstorm with heavy rain',\n  duration=10,\n  loop=True,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2367,15 +2024,10 @@
                         "const": "eleven_text_to_sound_v2"
                       }
                     },
-                    "required": [
-                      "promptText",
-                      "model"
-                    ]
+                    "required": ["promptText", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -2395,9 +2047,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -2409,14 +2059,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -2427,9 +2071,7 @@
     },
     "/v1/speech_to_speech": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Speech to speech",
         "description": "This endpoint will start a new task to convert speech from one voice to another in audio or video.",
         "x-codeSamples": [
@@ -2444,11 +2086,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\naudioTask = client.speech_to_speech.create(\n  model='eleven_multilingual_sts_v2',\n  media={\n    'type': 'audio',\n    'uri': 'https://example.com/audio.mp3',\n  },\n  voice={\n    'type': 'runway-preset',\n    'presetId': 'Maggie',\n  },\n).wait_for_task_output()\n\nprint(audioTask)\n\nvideoTask = client.speech_to_speech.create(\n  model='eleven_multilingual_sts_v2',\n  media={\n    'type': 'video',\n    'uri': 'https://example.com/video.mp4',\n  },\n  voice={\n    'type': 'runway-preset',\n    'presetId': 'Noah',\n  },\n).wait_for_task_output()\n\nprint(videoTask)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2470,10 +2108,7 @@
                             "description": "An audio file containing dialogue to be processed.",
                             "type": "object",
                             "properties": {
-                              "type": {
-                                "type": "string",
-                                "const": "audio"
-                              },
+                              "type": { "type": "string", "const": "audio" },
                               "uri": {
                                 "description": "A HTTPS URL, Runway or data URI containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                 "example": "https://example.com/audio.mp3",
@@ -2505,20 +2140,14 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "type",
-                              "uri"
-                            ]
+                            "required": ["type", "uri"]
                           },
                           {
                             "title": "SpeechToSpeechVideo",
                             "description": "A video file containing dialogue to be processed.",
                             "type": "object",
                             "properties": {
-                              "type": {
-                                "type": "string",
-                                "const": "video"
-                              },
+                              "type": { "type": "string", "const": "video" },
                               "uri": {
                                 "description": "A HTTPS URL, Runway or data URI containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                 "example": "https://example.com/video.mp4",
@@ -2550,15 +2179,10 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "type",
-                              "uri"
-                            ]
+                            "required": ["type", "uri"]
                           }
                         ],
-                        "discriminator": {
-                          "propertyName": "type"
-                        }
+                        "discriminator": { "propertyName": "type" }
                       },
                       "voice": {
                         "description": "The voice to use for the generated speech.",
@@ -2628,31 +2252,20 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "type",
-                              "presetId"
-                            ]
+                            "required": ["type", "presetId"]
                           }
                         ],
-                        "discriminator": {
-                          "propertyName": "type"
-                        }
+                        "discriminator": { "propertyName": "type" }
                       },
                       "model": {
                         "type": "string",
                         "const": "eleven_multilingual_sts_v2"
                       }
                     },
-                    "required": [
-                      "media",
-                      "voice",
-                      "model"
-                    ]
+                    "required": ["media", "voice", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -2672,9 +2285,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -2686,14 +2297,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -2704,9 +2309,7 @@
     },
     "/v1/text_to_speech": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Text to speech",
         "description": "This endpoint will start a new task to generate speech from text.",
         "x-codeSamples": [
@@ -2721,11 +2324,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.text_to_speech.create(\n  model='eleven_multilingual_v2',\n  prompt_text='The quick brown fox jumps over the lazy dog',\n  voice={\n    'type': 'runway-preset',\n    'presetId': 'Leslie',\n  },\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2810,31 +2409,20 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "type",
-                              "presetId"
-                            ]
+                            "required": ["type", "presetId"]
                           }
                         ],
-                        "discriminator": {
-                          "propertyName": "type"
-                        }
+                        "discriminator": { "propertyName": "type" }
                       },
                       "model": {
                         "type": "string",
                         "const": "eleven_multilingual_v2"
                       }
                     },
-                    "required": [
-                      "promptText",
-                      "voice",
-                      "model"
-                    ]
+                    "required": ["promptText", "voice", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -2854,9 +2442,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -2868,14 +2454,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -2886,9 +2466,7 @@
     },
     "/v1/voice_dubbing": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Voice dubbing",
         "description": "This endpoint will start a new task to dub audio content to a target language.",
         "x-codeSamples": [
@@ -2903,11 +2481,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.voice_dubbing.create(\n  model='eleven_voice_dubbing',\n  audio_uri='https://example.com/audio.mp3',\n  target_lang='es',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3002,16 +2576,10 @@
                         "const": "eleven_voice_dubbing"
                       }
                     },
-                    "required": [
-                      "audioUri",
-                      "targetLang",
-                      "model"
-                    ]
+                    "required": ["audioUri", "targetLang", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -3031,9 +2599,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -3045,14 +2611,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -3063,9 +2623,7 @@
     },
     "/v1/voice_isolation": {
       "post": {
-        "tags": [
-          "Start generating"
-        ],
+        "tags": ["Start generating"],
         "summary": "Voice isolation",
         "description": "This endpoint will start a new task to isolate the voice from the background audio. Audio duration must be greater than 4.6 seconds and less than 3600 seconds.",
         "x-codeSamples": [
@@ -3080,11 +2638,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.voice_isolation.create(\n  model='eleven_voice_isolation',\n  audio_url='https://example.com/audio.mp3',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3130,15 +2684,10 @@
                         "const": "eleven_voice_isolation"
                       }
                     },
-                    "required": [
-                      "audioUri",
-                      "model"
-                    ]
+                    "required": ["audioUri", "model"]
                   }
                 ],
-                "discriminator": {
-                  "propertyName": "model"
-                }
+                "discriminator": { "propertyName": "model" }
               }
             }
           }
@@ -3158,9 +2707,7 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
+                  "required": ["id"],
                   "additionalProperties": false
                 }
               }
@@ -3172,14 +2719,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
                   "additionalProperties": false
                 }
               }
@@ -3190,9 +2731,7 @@
     },
     "/v1/organization": {
       "get": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "Get organization information",
         "description": "Get usage tier and credit balance information about the organization associated with the API key used to make the request.",
         "x-codeSamples": [
@@ -3207,11 +2746,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ndetails = client.organization.retrieve()\nprint(details.creditBalance)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "responses": {
           "200": {
             "description": "Success",
@@ -3281,10 +2816,7 @@
                           }
                         }
                       },
-                      "required": [
-                        "maxMonthlyCreditSpend",
-                        "models"
-                      ],
+                      "required": ["maxMonthlyCreditSpend", "models"],
                       "additionalProperties": false
                     },
                     "creditBalance": {
@@ -3333,24 +2865,16 @@
                                 "maximum": 9007199254740991
                               }
                             },
-                            "required": [
-                              "dailyGenerations"
-                            ],
+                            "required": ["dailyGenerations"],
                             "additionalProperties": false
                           }
                         }
                       },
-                      "required": [
-                        "models"
-                      ],
+                      "required": ["models"],
                       "additionalProperties": false
                     }
                   },
-                  "required": [
-                    "tier",
-                    "creditBalance",
-                    "usage"
-                  ],
+                  "required": ["tier", "creditBalance", "usage"],
                   "additionalProperties": false
                 }
               }
@@ -3361,9 +2885,7 @@
     },
     "/v1/organization/usage": {
       "post": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "Query credit usage",
         "description": "Fetch credit usage data broken down by model and day for the organization associated with the API key used to make the request. Up to 90 days of data can be queried at a time.",
         "x-codeSamples": [
@@ -3378,11 +2900,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nusage = client.organization.retrieve_usage()\nprint(usage)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3462,18 +2980,12 @@
                                   "maximum": 9007199254740991
                                 }
                               },
-                              "required": [
-                                "model",
-                                "amount"
-                              ],
+                              "required": ["model", "amount"],
                               "additionalProperties": false
                             }
                           }
                         },
-                        "required": [
-                          "date",
-                          "usedCredits"
-                        ],
+                        "required": ["date", "usedCredits"],
                         "additionalProperties": false
                       }
                     },
@@ -3504,10 +3016,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "results",
-                    "models"
-                  ],
+                  "required": ["results", "models"],
                   "additionalProperties": false
                 }
               }
@@ -3518,9 +3027,7 @@
     },
     "/v1/uploads": {
       "post": {
-        "tags": [
-          "Uploads"
-        ],
+        "tags": ["Uploads"],
         "summary": "Upload a file",
         "description": "Uploads a temporary media file that can be referenced in API generation requests. The uploaded files will be automatically expired and deleted after a period of time. It is strongly recommended to use our SDKs for this which have a simplified interface that directly accepts file objects.",
         "x-codeSamples": [
@@ -3535,11 +3042,7 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\nfrom pathlib import Path\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nfile = Path('./funny-cats.mp4');\nupload_uri = client.uploads.create_ephemeral(\n  file=file,\n)\n\n# Use the upload_uri in generation requests\ntask = client.video_to_video.create(\n  model='gen4_aleph',\n  video_uri=upload_uri,\n  prompt_text='Add the easter elements to the cat video',\n  references=[\n    {\n      'type': 'image',\n      'uri': 'https://example.com/easter-scene.jpg',\n    },\n  ],\n  ratio='1280:720',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/X-Runway-Version"
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3556,15 +3059,10 @@
                   "type": {
                     "description": "The type of upload to create",
                     "type": "string",
-                    "enum": [
-                      "ephemeral"
-                    ]
+                    "enum": ["ephemeral"]
                   }
                 },
-                "required": [
-                  "filename",
-                  "type"
-                ]
+                "required": ["filename", "type"]
               }
             }
           }
@@ -3585,12 +3083,8 @@
                     "fields": {
                       "description": "Fields that must be included in the file upload request as form data.",
                       "type": "object",
-                      "propertyNames": {
-                        "type": "string"
-                      },
-                      "additionalProperties": {
-                        "type": "string"
-                      }
+                      "propertyNames": { "type": "string" },
+                      "additionalProperties": { "type": "string" }
                     },
                     "runwayUri": {
                       "description": "The Runway upload URI to use in other API generation requests",
@@ -3598,11 +3092,7 @@
                       "pattern": "^runway:\\/\\/.*"
                     }
                   },
-                  "required": [
-                    "uploadUrl",
-                    "fields",
-                    "runwayUri"
-                  ],
+                  "required": ["uploadUrl", "fields", "runwayUri"],
                   "additionalProperties": false
                 }
               }
@@ -3634,20 +3124,11 @@
     "examples": {},
     "requestBodies": {},
     "headers": {},
-    "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    },
+    "securitySchemes": { "ApiKeyAuth": { "type": "http", "scheme": "bearer" } },
     "links": {},
     "callbacks": {}
   },
-  "security": [
-    {
-      "ApiKeyAuth": []
-    }
-  ],
+  "security": [{ "ApiKeyAuth": [] }],
   "tags": [
     {
       "name": "Start generating",
@@ -3657,14 +3138,7 @@
       "name": "Task management",
       "description": "Endpoints for managing tasks that have been submitted."
     },
-    {
-      "name": "Uploads",
-      "description": "Endpoints for uploading media files."
-    }
+    { "name": "Uploads", "description": "Endpoints for uploading media files." }
   ],
-  "servers": [
-    {
-      "url": "https://api.dev.runwayml.com"
-    }
-  ]
+  "servers": [{ "url": "https://api.dev.runwayml.com" }]
 }
