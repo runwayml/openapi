@@ -325,6 +325,146 @@
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "oneOf": [
                   {
+                    "title": "gen4.5",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A non-empty string up to 1000 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                      },
+                      "promptImage": {
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL.",
+                                "example": "https://example.com/file",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media.",
+                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "An array of objects representing images to be used in the output video. Only a `first` frame is supported.",
+                            "minItems": 1,
+                            "maxItems": 1,
+                            "type": "array",
+                            "items": {
+                              "title": "PromptImage",
+                              "x-stainless-variantName": "PromptImage",
+                              "type": "object",
+                              "properties": {
+                                "uri": {
+                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "anyOf": [
+                                    {
+                                      "description": "A HTTPS URL.",
+                                      "example": "https://example.com/file",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 2048,
+                                      "pattern": "^https:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                      "example": "runway://<token>",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5000,
+                                      "pattern": "^runway:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A data URI containing encoded media.",
+                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5242880,
+                                      "pattern": "^data:image\\/.*"
+                                    }
+                                  ]
+                                },
+                                "position": {
+                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video.",
+                                  "type": "string",
+                                  "const": "first"
+                                }
+                              },
+                              "required": ["uri", "position"]
+                            }
+                          }
+                        ]
+                      },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video.",
+                        "type": "string",
+                        "enum": [
+                          "1280:720",
+                          "720:1280",
+                          "1104:832",
+                          "960:960",
+                          "832:1104",
+                          "1584:672",
+                          "672:1584"
+                        ]
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video. Must be an integer from 2 to 10.",
+                        "type": "integer",
+                        "minimum": 2,
+                        "maximum": 10
+                      },
+                      "contentModeration": {
+                        "description": "Settings that affect the behavior of the content moderation system.",
+                        "type": "object",
+                        "properties": {
+                          "publicFigureThreshold": {
+                            "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
+                            "type": "string",
+                            "enum": ["auto", "low"]
+                          }
+                        }
+                      },
+                      "model": { "type": "string", "const": "gen4.5" }
+                    },
+                    "required": [
+                      "promptText",
+                      "promptImage",
+                      "ratio",
+                      "duration",
+                      "model"
+                    ]
+                  },
+                  {
                     "title": "gen4_turbo",
                     "type": "object",
                     "properties": {
@@ -1035,6 +1175,48 @@
               "schema": {
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "oneOf": [
+                  {
+                    "title": "gen4.5",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A non-empty string up to 1000 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video.",
+                        "type": "string",
+                        "enum": ["1280:720", "720:1280"]
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video. Must be an integer from 2 to 10.",
+                        "type": "integer",
+                        "minimum": 2,
+                        "maximum": 10
+                      },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "contentModeration": {
+                        "description": "Settings that affect the behavior of the content moderation system.",
+                        "type": "object",
+                        "properties": {
+                          "publicFigureThreshold": {
+                            "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
+                            "type": "string",
+                            "enum": ["auto", "low"]
+                          }
+                        }
+                      },
+                      "model": { "type": "string", "const": "gen4.5" }
+                    },
+                    "required": ["promptText", "ratio", "duration", "model"]
+                  },
                   {
                     "title": "veo3.1",
                     "type": "object",
@@ -2773,6 +2955,7 @@
                             "title": "ModelVariant",
                             "type": "string",
                             "enum": [
+                              "gen4.5",
                               "gen3a_turbo",
                               "gen4_turbo",
                               "gen4_image",
@@ -2836,6 +3019,7 @@
                             "title": "ModelVariant",
                             "type": "string",
                             "enum": [
+                              "gen4.5",
                               "gen3a_turbo",
                               "gen4_turbo",
                               "gen4_image",
@@ -2956,6 +3140,7 @@
                                   "description": "The model that credits were spent on.",
                                   "type": "string",
                                   "enum": [
+                                    "gen4.5",
                                     "gen3a_turbo",
                                     "gen4_turbo",
                                     "gen4_image",
@@ -2997,6 +3182,7 @@
                         "description": "A model that was used during the queried time range.",
                         "type": "string",
                         "enum": [
+                          "gen4.5",
                           "gen3a_turbo",
                           "gen4_turbo",
                           "gen4_image",
