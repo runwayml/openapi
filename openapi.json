@@ -682,7 +682,7 @@
                         "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                         "type": "string",
                         "minLength": 13,
-                        "maxLength": 10485760,
+                        "maxLength": 5242880,
                         "pattern": "^data:image\\/.*"
                       }
                     ]
@@ -1941,7 +1941,7 @@
                         "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                         "type": "string",
                         "minLength": 13,
-                        "maxLength": 10485760,
+                        "maxLength": 5242880,
                         "pattern": "^data:image\\/.*"
                       }
                     ]
@@ -2921,7 +2921,8 @@
               "type": "string",
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
-            }
+            },
+            "description": "The document ID."
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
@@ -3009,6 +3010,64 @@
           }
         }
       },
+      "patch": {
+        "tags": ["Knowledge"],
+        "summary": "Update document",
+        "description": "Update a knowledge document. At least one of `name` or `content` must be provided.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.documents.update(\n  '550e8400-e29b-41d4-a716-446655440000',\n  { name: 'Updated Product FAQ' }\n);"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nclient.documents.update(\n  id='550e8400-e29b-41d4-a716-446655440000',\n  name='Updated Product FAQ',\n)"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The document ID."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "A new name for the document.",
+                    "example": "Updated Product FAQ",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "content": {
+                    "description": "New markdown or plain text content for the document.",
+                    "example": "# Updated FAQ\n\n...",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "204": { "description": "Success" } }
+      },
       "delete": {
         "tags": ["Knowledge"],
         "summary": "Delete document",
@@ -3034,7 +3093,8 @@
               "type": "string",
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
-            }
+            },
+            "description": "The document ID."
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
@@ -3121,10 +3181,22 @@
                   },
                   "maxDuration": {
                     "description": "Maximum session duration in seconds.",
-                    "default": 120,
+                    "default": 300,
                     "type": "integer",
                     "minimum": 10,
                     "maximum": 300
+                  },
+                  "personality": {
+                    "description": "Override the avatar personality for this session. If not provided, uses the avatar default.",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "startScript": {
+                    "description": "Override the avatar start script for this session. If not provided, uses the avatar default.",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
                   }
                 },
                 "required": ["model", "avatar"]
@@ -3998,135 +4070,6 @@
                     "required": ["promptImage", "ratio", "model"]
                   },
                   {
-                    "title": "veo3.1",
-                    "type": "object",
-                    "properties": {
-                      "promptText": {
-                        "description": "A non-empty string up to 1000 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
-                        "type": "string",
-                        "minLength": 1,
-                        "maxLength": 1000
-                      },
-                      "promptImage": {
-                        "description": "You may specify an image to use as the first frame of the output video, or an array with a first frame and optionally a last frame. This model does not support generating with only a last frame.",
-                        "anyOf": [
-                          {
-                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                            "example": "https://example.com/image.jpg",
-                            "anyOf": [
-                              {
-                                "description": "A HTTPS URL.",
-                                "example": "https://example.com/file",
-                                "type": "string",
-                                "minLength": 13,
-                                "maxLength": 2048,
-                                "pattern": "^https:\\/\\/.*"
-                              },
-                              {
-                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                "example": "runway://<token>",
-                                "type": "string",
-                                "minLength": 13,
-                                "maxLength": 5000,
-                                "pattern": "^runway:\\/\\/.*"
-                              },
-                              {
-                                "description": "A data URI containing encoded media.",
-                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                "type": "string",
-                                "minLength": 13,
-                                "maxLength": 5242880,
-                                "pattern": "^data:image\\/.*"
-                              }
-                            ]
-                          },
-                          {
-                            "title": "PromptImages",
-                            "description": "An array of objects representing images to be used in the output video. No two provided images may have the same `position` value.",
-                            "example": [
-                              {
-                                "uri": "https://example.com/firstFrame.jpg",
-                                "position": "first"
-                              },
-                              {
-                                "uri": "https://example.com/lastFrame.jpg",
-                                "position": "last"
-                              }
-                            ],
-                            "minItems": 1,
-                            "maxItems": 2,
-                            "type": "array",
-                            "items": {
-                              "title": "PromptImage",
-                              "x-stainless-variantName": "PromptImage",
-                              "type": "object",
-                              "properties": {
-                                "uri": {
-                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                  "example": "https://example.com/image.jpg",
-                                  "anyOf": [
-                                    {
-                                      "description": "A HTTPS URL.",
-                                      "example": "https://example.com/file",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 2048,
-                                      "pattern": "^https:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                      "example": "runway://<token>",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5000,
-                                      "pattern": "^runway:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A data URI containing encoded media.",
-                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5242880,
-                                      "pattern": "^data:image\\/.*"
-                                    }
-                                  ]
-                                },
-                                "position": {
-                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video, \"last\" will use the image as the last frame of the video.",
-                                  "type": "string",
-                                  "enum": ["first", "last"]
-                                }
-                              },
-                              "required": ["uri", "position"]
-                            }
-                          }
-                        ]
-                      },
-                      "ratio": {
-                        "description": "The resolution of the output video.",
-                        "type": "string",
-                        "enum": [
-                          "1280:720",
-                          "720:1280",
-                          "1080:1920",
-                          "1920:1080"
-                        ]
-                      },
-                      "audio": {
-                        "description": "Whether to generate audio for the video. Audio inclusion affects pricing.",
-                        "default": true,
-                        "type": "boolean"
-                      },
-                      "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "number",
-                        "enum": [4, 6, 8]
-                      },
-                      "model": { "type": "string", "const": "veo3.1" }
-                    },
-                    "required": ["promptImage", "ratio", "model"]
-                  },
-                  {
                     "title": "gen3a_turbo",
                     "type": "object",
                     "properties": {
@@ -4265,6 +4208,135 @@
                       "model": { "type": "string", "const": "gen3a_turbo" }
                     },
                     "required": ["promptText", "promptImage", "model"]
+                  },
+                  {
+                    "title": "veo3.1",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A non-empty string up to 1000 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                      },
+                      "promptImage": {
+                        "description": "You may specify an image to use as the first frame of the output video, or an array with a first frame and optionally a last frame. This model does not support generating with only a last frame.",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL.",
+                                "example": "https://example.com/file",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media.",
+                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "An array of objects representing images to be used in the output video. No two provided images may have the same `position` value.",
+                            "example": [
+                              {
+                                "uri": "https://example.com/firstFrame.jpg",
+                                "position": "first"
+                              },
+                              {
+                                "uri": "https://example.com/lastFrame.jpg",
+                                "position": "last"
+                              }
+                            ],
+                            "minItems": 1,
+                            "maxItems": 2,
+                            "type": "array",
+                            "items": {
+                              "title": "PromptImage",
+                              "x-stainless-variantName": "PromptImage",
+                              "type": "object",
+                              "properties": {
+                                "uri": {
+                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "anyOf": [
+                                    {
+                                      "description": "A HTTPS URL.",
+                                      "example": "https://example.com/file",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 2048,
+                                      "pattern": "^https:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                      "example": "runway://<token>",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5000,
+                                      "pattern": "^runway:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A data URI containing encoded media.",
+                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5242880,
+                                      "pattern": "^data:image\\/.*"
+                                    }
+                                  ]
+                                },
+                                "position": {
+                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video, \"last\" will use the image as the last frame of the video.",
+                                  "type": "string",
+                                  "enum": ["first", "last"]
+                                }
+                              },
+                              "required": ["uri", "position"]
+                            }
+                          }
+                        ]
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video.",
+                        "type": "string",
+                        "enum": [
+                          "1280:720",
+                          "720:1280",
+                          "1080:1920",
+                          "1920:1080"
+                        ]
+                      },
+                      "audio": {
+                        "description": "Whether to generate audio for the video. Audio inclusion affects pricing.",
+                        "default": true,
+                        "type": "boolean"
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video.",
+                        "type": "number",
+                        "enum": [4, 6, 8]
+                      },
+                      "model": { "type": "string", "const": "veo3.1" }
+                    },
+                    "required": ["promptImage", "ratio", "model"]
                   },
                   {
                     "title": "veo3.1_fast",
@@ -6372,6 +6444,7 @@
                               "eleven_voice_dubbing",
                               "eleven_multilingual_sts_v2",
                               "gwm1_avatars",
+                              "gwm1_avatar_async_audio_to_video",
                               "voice_processing"
                             ]
                           },
@@ -6438,6 +6511,7 @@
                               "eleven_voice_dubbing",
                               "eleven_multilingual_sts_v2",
                               "gwm1_avatars",
+                              "gwm1_avatar_async_audio_to_video",
                               "voice_processing"
                             ]
                           },
@@ -6561,6 +6635,7 @@
                                     "eleven_voice_dubbing",
                                     "eleven_multilingual_sts_v2",
                                     "gwm1_avatars",
+                                    "gwm1_avatar_async_audio_to_video",
                                     "voice_processing"
                                   ]
                                 },
@@ -6605,6 +6680,7 @@
                           "eleven_voice_dubbing",
                           "eleven_multilingual_sts_v2",
                           "gwm1_avatars",
+                          "gwm1_avatar_async_audio_to_video",
                           "voice_processing"
                         ]
                       }
@@ -6991,75 +7067,6 @@
         }
       }
     },
-    "/v1/voices/preview": {
-      "post": {
-        "tags": ["Voices"],
-        "summary": "Preview a voice",
-        "description": "Generate a short audio preview of a voice from a text description. Use this to audition a voice before creating it.",
-        "x-codeSamples": [
-          {
-            "lang": "TypeScript",
-            "label": "Node SDK",
-            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst preview = await client.voices.preview({\n  prompt: 'A warm, friendly voice with a slight British accent',\n  model: 'eleven_multilingual_ttv_v2',\n});\nconsole.log(preview.url, preview.durationSecs);"
-          },
-          {
-            "lang": "Python",
-            "label": "Python SDK",
-            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\npreview = client.voices.preview(\n  prompt='A warm, friendly voice with a slight British accent',\n  model='eleven_multilingual_ttv_v2',\n)\nprint(preview.url, preview.duration_secs)"
-          }
-        ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "type": "object",
-                "properties": {
-                  "prompt": {
-                    "description": "A text description of the desired voice characteristics. Must be at least 20 characters.",
-                    "type": "string",
-                    "minLength": 20,
-                    "maxLength": 1000
-                  },
-                  "model": {
-                    "description": "The voice design model to use.",
-                    "type": "string",
-                    "enum": ["eleven_multilingual_ttv_v2", "eleven_ttv_v3"]
-                  }
-                },
-                "required": ["prompt", "model"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "description": "A presigned URL to the audio preview. The URL expires after 24 hours.",
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "durationSecs": {
-                      "description": "Duration of the audio preview in seconds.",
-                      "type": "number"
-                    }
-                  },
-                  "required": ["url", "durationSecs"],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/voices/{id}": {
       "get": {
         "tags": ["Voices"],
@@ -7259,6 +7266,75 @@
         ],
         "responses": { "204": { "description": "Success" } }
       }
+    },
+    "/v1/voices/preview": {
+      "post": {
+        "tags": ["Voices"],
+        "summary": "Preview a voice",
+        "description": "Generate a short audio preview of a voice from a text description. Use this to audition a voice before creating it.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst preview = await client.voices.preview({\n  prompt: 'A warm, friendly voice with a slight British accent',\n  model: 'eleven_multilingual_ttv_v2',\n});\nconsole.log(preview.url, preview.durationSecs);"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\npreview = client.voices.preview(\n  prompt='A warm, friendly voice with a slight British accent',\n  model='eleven_multilingual_ttv_v2',\n)\nprint(preview.url, preview.duration_secs)"
+          }
+        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "description": "A text description of the desired voice characteristics. Must be at least 20 characters.",
+                    "type": "string",
+                    "minLength": 20,
+                    "maxLength": 1000
+                  },
+                  "model": {
+                    "description": "The voice design model to use.",
+                    "type": "string",
+                    "enum": ["eleven_multilingual_ttv_v2", "eleven_ttv_v3"]
+                  }
+                },
+                "required": ["prompt", "model"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "description": "A presigned URL to the audio preview. The URL expires after 24 hours.",
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "durationSecs": {
+                      "description": "Duration of the audio preview in seconds.",
+                      "type": "number"
+                    }
+                  },
+                  "required": ["url", "durationSecs"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -7294,14 +7370,7 @@
       "name": "Task management",
       "description": "Endpoints for managing tasks that have been submitted."
     },
-    {
-      "name": "Uploads",
-      "description": "Endpoints for uploading media files."
-    },
-    { "name": "Avatars" },
-    { "name": "Knowledge" },
-    { "name": "Realtime Sessions" },
-    { "name": "Voices" }
+    { "name": "Uploads", "description": "Endpoints for uploading media files." }
   ],
   "servers": [{ "url": "https://api.dev.runwayml.com" }]
 }
