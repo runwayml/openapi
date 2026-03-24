@@ -7335,6 +7335,868 @@
           }
         }
       }
+    },
+    "/v1/workflows": {
+      "get": {
+        "tags": ["Workflows"],
+        "summary": "List published workflows",
+        "description": "Returns a list of all published workflows for the authenticated user, grouped by source workflow with their published versions.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst { data: workflows } = await client.workflows.list();\nconsole.log(workflows);"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nworkflows = client.workflows.list()\nprint(workflows.data)"
+          }
+        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "responses": {
+          "200": {
+            "description": "A list of published workflows grouped by source workflow.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "WorkflowList",
+                      "description": "A list of published workflows grouped by source workflow.",
+                      "type": "array",
+                      "items": {
+                        "title": "WorkflowListItem",
+                        "description": "A published workflow with all its available versions.",
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "description": "The name of the published workflow.",
+                            "type": "string"
+                          },
+                          "versions": {
+                            "description": "The published versions of this workflow, newest first.",
+                            "type": "array",
+                            "items": {
+                              "title": "WorkflowVersion",
+                              "description": "A specific published version of a workflow.",
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "description": "The globally unique ID of this published workflow version.",
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                                },
+                                "version": {
+                                  "description": "A monotonically increasing version number. Each workflow version for the same published workflow has a unique version number.",
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "createdAt": {
+                                  "description": "When this version was published",
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                                }
+                              },
+                              "required": ["id", "version", "createdAt"],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": ["name", "versions"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["data"],
+                  "additionalProperties": false
+                },
+                "examples": {
+                  "example": {
+                    "title": "Workflow list",
+                    "summary": "An example of a workflow list response",
+                    "value": {
+                      "data": [
+                        {
+                          "name": "My Video Generator",
+                          "versions": [
+                            {
+                              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                              "version": 2,
+                              "createdAt": "2024-06-27T19:49:32.334Z"
+                            },
+                            {
+                              "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                              "version": 1,
+                              "createdAt": "2024-06-20T10:30:00.000Z"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workflows/{id}": {
+      "post": {
+        "tags": ["Workflows"],
+        "summary": "Run a published workflow",
+        "description": "Start a new task to execute a published workflow. You can optionally provide custom input values via `nodeOutputs` to override the defaults defined in the workflow graph.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst { id } = await client.workflows.run('YOUR_WORKFLOW_ID', {\n  nodeOutputs: {\n    'node-uuid': {\n      // For text/number/boolean values, use type: 'primitive'\n      'prompt': { type: 'primitive', value: 'A beautiful sunset' },\n      // For media assets, use type: 'image', 'video', or 'audio'\n      'image': { type: 'image', uri: 'https://example.com/image.jpg' },\n    },\n  },\n});\n\n// Then poll for the workflow result\nconst invocation = await client.workflowInvocations\n  .retrieve(id)\n  .waitForTaskOutput();\n\nconsole.log(invocation);"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\n# Run a published workflow with custom inputs\ninvocation = client.workflows.run(\n  workflow_id='YOUR_WORKFLOW_ID',\n  node_outputs={\n    'node-uuid': {\n      # For text/number/boolean values, use type: 'primitive'\n      'prompt': { 'type': 'primitive', 'value': 'A beautiful sunset' },\n      # For media assets, use type: 'image', 'video', or 'audio'\n      'image': { 'type': 'image', 'uri': 'https://example.com/image.jpg' },\n    },\n  },\n)\n\n# Then poll for the workflow result\ninvocation = client.workflow_invocations.retrieve(id=invocation.id).wait_for_task_output()\nprint(invocation)"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The ID of the published workflow to run. You can copy this value from the developer portal."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "nodeOutputs": {
+                    "description": "Optional node outputs to override default values. Keys are node IDs from the workflow graph, values are objects mapping output keys to typed values.",
+                    "type": "object",
+                    "propertyNames": {
+                      "description": "The ID of the workflow node to override",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "propertyNames": {
+                        "description": "The output key to override",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "additionalProperties": {
+                        "oneOf": [
+                          {
+                            "title": "WorkflowNodeOutputPrimitive",
+                            "description": "A primitive value (string, number, or boolean)",
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "const": "primitive"
+                              },
+                              "value": {
+                                "anyOf": [
+                                  { "type": "string" },
+                                  { "type": "number" },
+                                  { "type": "boolean" }
+                                ]
+                              }
+                            },
+                            "required": ["type", "value"]
+                          },
+                          {
+                            "title": "WorkflowNodeOutputImage",
+                            "description": "An image asset",
+                            "type": "object",
+                            "properties": {
+                              "type": { "type": "string", "const": "image" },
+                              "uri": {
+                                "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                "example": "https://example.com/image.jpg",
+                                "anyOf": [
+                                  {
+                                    "description": "A HTTPS URL.",
+                                    "example": "https://example.com/file",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 2048,
+                                    "pattern": "^https://.*"
+                                  },
+                                  {
+                                    "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                    "example": "runway://<token>",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 5000,
+                                    "pattern": "^runway:\\/\\/.*"
+                                  },
+                                  {
+                                    "description": "A data URI containing encoded media.",
+                                    "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 5242880,
+                                    "pattern": "^data:image\\/.*"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": ["type", "uri"]
+                          },
+                          {
+                            "title": "WorkflowNodeOutputVideo",
+                            "description": "A video asset",
+                            "type": "object",
+                            "properties": {
+                              "type": { "type": "string", "const": "video" },
+                              "uri": {
+                                "description": "A HTTPS URL, Runway or data URI containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                "example": "https://example.com/video.mp4",
+                                "anyOf": [
+                                  {
+                                    "description": "A HTTPS URL.",
+                                    "example": "https://example.com/file",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 2048,
+                                    "pattern": "^https://.*"
+                                  },
+                                  {
+                                    "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                    "example": "runway://<token>",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 5000,
+                                    "pattern": "^runway:\\/\\/.*"
+                                  },
+                                  {
+                                    "description": "A data URI containing encoded media.",
+                                    "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 16777216,
+                                    "pattern": "^data:video\\/.*"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": ["type", "uri"]
+                          },
+                          {
+                            "title": "WorkflowNodeOutputAudio",
+                            "description": "An audio asset",
+                            "type": "object",
+                            "properties": {
+                              "type": { "type": "string", "const": "audio" },
+                              "uri": {
+                                "description": "A HTTPS URL, Runway or data URI containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                "example": "https://example.com/audio.mp3",
+                                "anyOf": [
+                                  {
+                                    "description": "A HTTPS URL.",
+                                    "example": "https://example.com/file",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 2048,
+                                    "pattern": "^https://.*"
+                                  },
+                                  {
+                                    "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                    "example": "runway://<token>",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 5000,
+                                    "pattern": "^runway:\\/\\/.*"
+                                  },
+                                  {
+                                    "description": "A data URI containing encoded media.",
+                                    "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                    "type": "string",
+                                    "minLength": 13,
+                                    "maxLength": 16777216,
+                                    "pattern": "^data:audio\\/.*"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": ["type", "uri"]
+                          }
+                        ],
+                        "discriminator": { "propertyName": "type" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The response from running a workflow.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "WorkflowRunResponse",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The ID of the workflow invocation that was created.",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                    }
+                  },
+                  "required": ["id"],
+                  "additionalProperties": false
+                },
+                "examples": {
+                  "example": {
+                    "title": "Workflow run response",
+                    "summary": "An example of a workflow run response",
+                    "value": { "id": "17f20503-6c24-4c16-946b-35dbbce2af2f" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The published workflow does not exist or was deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Workflows"],
+        "summary": "Get workflow details",
+        "description": "Returns details about a specific published workflow, including its graph schema.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst workflow = await client.workflows.retrieve(\n  'a1b2c3d4-e5f6-7890-abcd-ef1234567890'\n);\nconsole.log(workflow);"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nworkflow = client.workflows.retrieve(\n  id='a1b2c3d4-e5f6-7890-abcd-ef1234567890'\n)\nprint(workflow)"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The ID of the published workflow to run. You can copy this value from the developer portal."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "responses": {
+          "200": {
+            "description": "The workflow details including graph schema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "WorkflowDetail",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The globally unique ID of the published workflow.",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                    },
+                    "name": {
+                      "description": "The name of the published workflow.",
+                      "type": "string"
+                    },
+                    "description": {
+                      "description": "The description of the published workflow.",
+                      "anyOf": [{ "type": "string" }, { "type": "null" }]
+                    },
+                    "version": {
+                      "description": "A monotonically increasing version number. Each workflow version for the same published workflow has a unique version number.",
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "createdAt": {
+                      "description": "When this version was published",
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                    },
+                    "updatedAt": {
+                      "description": "When this version was last updated",
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                    },
+                    "graph": {
+                      "description": "The workflow graph definition.",
+                      "type": "object",
+                      "properties": {
+                        "nodes": {
+                          "description": "The list of nodes in the workflow graph. Each node represents a processing step.",
+                          "type": "array",
+                          "items": {}
+                        },
+                        "edges": {
+                          "description": "The list of edges connecting nodes in the workflow graph. Each edge defines data flow between nodes.",
+                          "type": "array",
+                          "items": {}
+                        },
+                        "version": {
+                          "description": "The schema version of the workflow graph format.",
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": ["nodes", "edges", "version"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "version",
+                    "createdAt",
+                    "updatedAt",
+                    "graph"
+                  ],
+                  "additionalProperties": false
+                },
+                "examples": {
+                  "example": {
+                    "title": "Workflow details",
+                    "summary": "An example of workflow details response",
+                    "value": {
+                      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "name": "My Video Generator",
+                      "description": "A workflow that generates videos from text prompts",
+                      "version": 1,
+                      "createdAt": "2024-06-27T19:49:32.334Z",
+                      "updatedAt": "2024-06-27T19:49:32.334Z",
+                      "graph": { "version": 1, "nodes": [], "edges": [] }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The workflow does not exist or was deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workflow_invocations/{id}": {
+      "get": {
+        "tags": ["Workflows"],
+        "summary": "Get workflow invocation detail",
+        "description": "Return details about a workflow invocation. Consumers of this API should not expect updates more frequent than once every five seconds for a given workflow invocation.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\n// Fetch the current state of the workflow invocation:\nconst invocation = await client.workflowInvocations.retrieve(\n  '17f20503-6c24-4c16-946b-35dbbce2af2f'\n);\n\n// Or, wait for the workflow to succeed or fail:\nconst invocation = await client.workflowInvocations\n  .retrieve('17f20503-6c24-4c16-946b-35dbbce2af2f')\n  .waitForTaskOutput();"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ninvocation_id = '17f20503-6c24-4c16-946b-35dbbce2af2f'\n\n# Fetch the current state of the workflow invocation:\ninvocation = client.workflow_invocations.retrieve(id=invocation_id)\nprint(invocation)\n\n# Or, wait for the workflow to succeed or fail:\ninvocation = client.workflow_invocations.retrieve(id=invocation_id).wait_for_task_output()\nprint(invocation)"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The ID of a previously-submitted workflow invocation that has not been canceled or deleted."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "WorkflowInvocationPending",
+                      "description": "A pending workflow invocation",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The ID of the workflow invocation being returned.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "createdAt": {
+                          "description": "The timestamp that the workflow invocation was submitted at.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "status": { "type": "string", "const": "PENDING" }
+                      },
+                      "required": ["id", "createdAt", "status"],
+                      "additionalProperties": false
+                    },
+                    {
+                      "title": "WorkflowInvocationThrottled",
+                      "description": "A throttled workflow invocation",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The ID of the workflow invocation being returned.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "createdAt": {
+                          "description": "The timestamp that the workflow invocation was submitted at.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "status": { "type": "string", "const": "THROTTLED" }
+                      },
+                      "required": ["id", "createdAt", "status"],
+                      "additionalProperties": false
+                    },
+                    {
+                      "title": "WorkflowInvocationCancelled",
+                      "description": "A cancelled or deleted workflow invocation",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The ID of the workflow invocation being returned.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "createdAt": {
+                          "description": "The timestamp that the workflow invocation was submitted at.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "status": { "type": "string", "const": "CANCELLED" }
+                      },
+                      "required": ["id", "createdAt", "status"],
+                      "additionalProperties": false
+                    },
+                    {
+                      "title": "WorkflowInvocationRunning",
+                      "description": "A running workflow invocation",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The ID of the workflow invocation being returned.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "createdAt": {
+                          "description": "The timestamp that the workflow invocation was submitted at.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "status": { "type": "string", "const": "RUNNING" },
+                        "progress": {
+                          "description": "A number between 0 and 1 representing the overall workflow execution progress.",
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "output": {
+                          "description": "A record mapping workflow node IDs to arrays of output URLs for nodes that have already completed. This allows streaming partial results while the workflow is still running.",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                          },
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": { "type": "string", "format": "uri" }
+                          }
+                        },
+                        "nodeErrors": {
+                          "description": "A record mapping workflow node IDs to their error details. Only present when one or more nodes have errored.",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                          },
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "nodeName": {
+                                "description": "The human-readable name of the node that errored.",
+                                "type": "string"
+                              },
+                              "message": {
+                                "description": "A human-readable description of the node error.",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["message"],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "createdAt",
+                        "status",
+                        "progress",
+                        "output"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "title": "WorkflowInvocationFailed",
+                      "description": "A failed workflow invocation",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The ID of the workflow invocation being returned.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "createdAt": {
+                          "description": "The timestamp that the workflow invocation was submitted at.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "status": { "type": "string", "const": "FAILED" },
+                        "failure": {
+                          "description": "A human-friendly reason for the failure. We do not recommend returning this to users directly without adding context.",
+                          "type": "string"
+                        },
+                        "failureCode": {
+                          "description": "A machine-readable error code for the failure. See https://docs.dev.runwayml.com/errors/task-failures/ for more information.",
+                          "type": "string"
+                        },
+                        "nodeErrors": {
+                          "description": "A record mapping workflow node IDs to their error details. Only present when one or more nodes have errored.",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                          },
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "nodeName": {
+                                "description": "The human-readable name of the node that errored.",
+                                "type": "string"
+                              },
+                              "message": {
+                                "description": "A human-readable description of the node error.",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["message"],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": ["id", "createdAt", "status", "failure"],
+                      "additionalProperties": false
+                    },
+                    {
+                      "title": "WorkflowInvocationSucceeded",
+                      "description": "A succeeded workflow invocation",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The ID of the workflow invocation being returned.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "createdAt": {
+                          "description": "The timestamp that the workflow invocation was submitted at.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "status": { "type": "string", "const": "SUCCEEDED" },
+                        "output": {
+                          "description": "A record mapping workflow node IDs to arrays of output URLs. Each key is the UUID of a workflow node that produced output, and each value is an array of URLs for that node's artifacts. These URLs will expire within 24-48 hours; fetch the invocation again to get fresh URLs. It is expected that you download the assets at these URLs and store them in your own storage system.",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                          },
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": { "type": "string", "format": "uri" }
+                          }
+                        },
+                        "nodeErrors": {
+                          "description": "A record mapping workflow node IDs to their error details. Even when the overall workflow succeeds, individual nodes may have encountered non-fatal errors. Only present when one or more nodes have errored.",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                          },
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "nodeName": {
+                                "description": "The human-readable name of the node that errored.",
+                                "type": "string"
+                              },
+                              "message": {
+                                "description": "A human-readable description of the node error.",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["message"],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": ["id", "createdAt", "status", "output"],
+                      "additionalProperties": false
+                    }
+                  ],
+                  "discriminator": { "propertyName": "status" }
+                },
+                "examples": {
+                  "pending": {
+                    "title": "Pending workflow invocation",
+                    "summary": "An example of a pending workflow invocation",
+                    "value": {
+                      "id": "17f20503-6c24-4c16-946b-35dbbce2af2f",
+                      "status": "PENDING",
+                      "createdAt": "2024-06-27T19:49:32.334Z"
+                    }
+                  },
+                  "running": {
+                    "title": "Running workflow invocation",
+                    "summary": "An example of a running workflow invocation",
+                    "value": {
+                      "id": "08388106-1b46-4f5c-bd46-1c1d7ee86892",
+                      "status": "RUNNING",
+                      "createdAt": "2024-06-27T19:49:32.335Z",
+                      "progress": 0.2,
+                      "output": {
+                        "a1b2c3d4-e5f6-7890-abcd-ef1234567890": [
+                          "https://example.com/output1.jpg"
+                        ]
+                      }
+                    }
+                  },
+                  "succeeded": {
+                    "title": "Succeeded workflow invocation",
+                    "summary": "An example of a succeeded workflow invocation",
+                    "value": {
+                      "id": "d2e3d1f4-1b3c-4b5c-8d46-1c1d7ee86892",
+                      "status": "SUCCEEDED",
+                      "createdAt": "2024-06-27T19:49:32.335Z",
+                      "output": {
+                        "a1b2c3d4-e5f6-7890-abcd-ef1234567890": [
+                          "https://example.com/output1.jpg"
+                        ],
+                        "b2c3d4e5-f6a7-8901-bcde-f12345678901": [
+                          "https://example.com/output2.mp4"
+                        ]
+                      }
+                    }
+                  },
+                  "failed": {
+                    "title": "Failed workflow invocation",
+                    "summary": "An example of a failed workflow invocation",
+                    "value": {
+                      "id": "6da960dd-ef88-40fc-9628-02e9b6a6a008",
+                      "status": "FAILED",
+                      "createdAt": "2024-06-27T19:49:32.335Z",
+                      "failure": "The provided image was flagged by content moderation.",
+                      "failureCode": "SAFETY.INPUT.IMAGE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The workflow invocation does not exist, was deleted or canceled, or is not a workflow task.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -7370,7 +8232,11 @@
       "name": "Task management",
       "description": "Endpoints for managing tasks that have been submitted."
     },
-    { "name": "Uploads", "description": "Endpoints for uploading media files." }
+    {
+      "name": "Uploads",
+      "description": "Endpoints for uploading media files."
+    },
+    { "name": "Workflows" }
   ],
   "servers": [{ "url": "https://api.dev.runwayml.com" }]
 }
