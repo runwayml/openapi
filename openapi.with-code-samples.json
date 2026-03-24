@@ -7656,7 +7656,7 @@
                                 "version": {
                                   "description": "A monotonically increasing version number. Each workflow version for the same published workflow has a unique version number.",
                                   "type": "integer",
-                                  "exclusiveMinimum": 0,
+                                  "minimum": 1,
                                   "maximum": 9007199254740991
                                 },
                                 "createdAt": {
@@ -7732,7 +7732,7 @@
           {
             "lang": "Python",
             "label": "Python SDK",
-            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\n# Run a published workflow with custom inputs\ninvocation = client.workflows.run(\n  workflow_id='YOUR_WORKFLOW_ID',\n  node_outputs={\n    'node-uuid': {\n      # For text/number/boolean values, use type: 'primitive'\n      'prompt': { 'type': 'primitive', 'value': 'A beautiful sunset' },\n      # For media assets, use type: 'image', 'video', or 'audio'\n      'image': { 'type': 'image', 'uri': 'https://example.com/image.jpg' },\n    },\n  },\n)\n\n# Then poll for the workflow result\ninvocation = client.workflow_invocations.retrieve(id=invocation.id).wait_for_task_output()\nprint(invocation)"
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\n# Run a published workflow with custom inputs\ninvocation = client.workflows.run(\n  'YOUR_WORKFLOW_ID',\n  node_outputs={\n    'node-uuid': {\n      # For text/number/boolean values, use type: 'primitive'\n      'prompt': { 'type': 'primitive', 'value': 'A beautiful sunset' },\n      # For media assets, use type: 'image', 'video', or 'audio'\n      'image': { 'type': 'image', 'uri': 'https://example.com/image.jpg' },\n    },\n  },\n)\n\n# Then poll for the workflow result\ninvocation = client.workflow_invocations.retrieve(id=invocation.id).wait_for_task_output()\nprint(invocation)"
           }
         ],
         "parameters": [
@@ -8029,7 +8029,7 @@
                     "version": {
                       "description": "A monotonically increasing version number. Each workflow version for the same published workflow has a unique version number.",
                       "type": "integer",
-                      "exclusiveMinimum": 0,
+                      "minimum": 1,
                       "maximum": 9007199254740991
                     },
                     "createdAt": {
@@ -8049,19 +8049,19 @@
                       "type": "object",
                       "properties": {
                         "nodes": {
-                          "description": "The list of nodes in the workflow graph. Each node represents a processing step.",
+                          "description": "The list of nodes in the workflow graph.",
                           "type": "array",
                           "items": {}
                         },
                         "edges": {
-                          "description": "The list of edges connecting nodes in the workflow graph. Each edge defines data flow between nodes.",
+                          "description": "The list of edges connecting nodes in the workflow graph.",
                           "type": "array",
                           "items": {}
                         },
                         "version": {
                           "description": "The schema version of the workflow graph format.",
                           "type": "integer",
-                          "exclusiveMinimum": 0,
+                          "minimum": 1,
                           "maximum": 9007199254740991
                         }
                       },
