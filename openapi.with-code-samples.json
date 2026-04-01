@@ -1336,6 +1336,791 @@
         }
       }
     },
+    "/v1/avatars/{id}/conversations": {
+      "get": {
+        "tags": ["Avatars"],
+        "summary": "List conversations",
+        "description": "List conversations for a specific avatar with cursor-based pagination.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nfor await (const conversation of client.avatars.conversations.list(\n  '550e8400-e29b-41d4-a716-446655440000'\n)) {\n  console.log(conversation.name, conversation.status);\n}"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nfor conversation in client.avatars.conversations.list(\n    avatar_id=\"550e8400-e29b-41d4-a716-446655440000\"\n):\n    print(conversation.name, conversation.status)"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The avatar ID."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 1000 },
+            "description": "Cursor from a previous response for fetching the next page of results."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "default": 20,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "The maximum number of items to return per page."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "description": "Array of conversation summaries.",
+                      "type": "array",
+                      "items": {
+                        "title": "ConversationListItem",
+                        "description": "Summary of a conversation for list responses.",
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "description": "Unique conversation identifier.",
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                          },
+                          "name": {
+                            "description": "Conversation name (auto-generated or user-provided).",
+                            "type": "string"
+                          },
+                          "status": {
+                            "description": "The status of the conversation. `in_progress` means the session is active, `ended` means it completed successfully, `failed` means it ended due to an error.",
+                            "type": "string",
+                            "enum": ["in_progress", "ended", "failed"]
+                          },
+                          "avatarId": {
+                            "description": "ID of the custom avatar used, or null for preset avatars.",
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid",
+                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "avatarName": {
+                            "description": "Name of the avatar used, or null if unavailable.",
+                            "anyOf": [{ "type": "string" }, { "type": "null" }]
+                          },
+                          "createdAt": {
+                            "description": "When the conversation was created.",
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                          },
+                          "duration": {
+                            "description": "Duration of the conversation in seconds, or null if not started.",
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              { "type": "null" }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "status",
+                          "avatarId",
+                          "avatarName",
+                          "createdAt",
+                          "duration"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "hasMore": {
+                      "description": "Whether there are more conversations to fetch.",
+                      "type": "boolean"
+                    },
+                    "nextCursor": {
+                      "description": "Cursor to use for fetching the next page, or null if no more pages.",
+                      "anyOf": [{ "type": "string" }, { "type": "null" }]
+                    }
+                  },
+                  "required": ["data", "hasMore", "nextCursor"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/avatars/{id}/conversations/{conversationId}": {
+      "get": {
+        "tags": ["Avatars"],
+        "summary": "Get conversation",
+        "description": "Get detailed information about a specific conversation.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst conversation = await client.avatars.conversations.retrieve(\n  '550e8400-e29b-41d4-a716-446655440000',\n  '660e8400-e29b-41d4-a716-446655440001'\n);\nconsole.log(conversation.status, conversation.transcript);"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nconversation = client.avatars.conversations.retrieve(\n    avatar_id=\"550e8400-e29b-41d4-a716-446655440000\",\n    conversation_id=\"660e8400-e29b-41d4-a716-446655440001\",\n)\nprint(conversation.status, conversation.transcript)"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The avatar ID."
+          },
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The conversation ID."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "description": "A conversation that is currently active.",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Unique conversation identifier.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "name": {
+                          "description": "Conversation name.",
+                          "type": "string"
+                        },
+                        "avatar": {
+                          "description": "The avatar used in this conversation, or null if unavailable.",
+                          "anyOf": [
+                            {
+                              "description": "The avatar used in this conversation.",
+                              "oneOf": [
+                                {
+                                  "title": "PresetAvatar",
+                                  "description": "A preset avatar.",
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "preset"
+                                    },
+                                    "presetId": {
+                                      "description": "The preset avatar ID.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": ["type", "presetId"],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "title": "CustomAvatar",
+                                  "description": "A custom avatar created by the user.",
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "custom"
+                                    },
+                                    "id": {
+                                      "description": "The custom avatar ID, or null if deleted.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "format": "uuid",
+                                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                                        },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "name": {
+                                      "description": "The avatar name, or null if unavailable.",
+                                      "anyOf": [
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "imageUrl": {
+                                      "description": "URL to the avatar image, or null if unavailable.",
+                                      "anyOf": [
+                                        { "type": "string", "format": "uri" },
+                                        { "type": "null" }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "id",
+                                    "name",
+                                    "imageUrl"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ],
+                              "discriminator": { "propertyName": "type" }
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "createdAt": {
+                          "description": "When the conversation was created.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "maxDuration": {
+                          "description": "Maximum allowed duration in seconds, or null if not set.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "transcript": {
+                          "description": "The conversation transcript.",
+                          "maxItems": 1000,
+                          "type": "array",
+                          "items": {
+                            "title": "TranscriptEntry",
+                            "description": "A single message in the conversation transcript.",
+                            "type": "object",
+                            "properties": {
+                              "role": {
+                                "description": "Who spoke this message.",
+                                "type": "string",
+                                "enum": ["user", "assistant"]
+                              },
+                              "content": {
+                                "description": "The spoken text.",
+                                "type": "string",
+                                "maxLength": 10000
+                              },
+                              "timestamp": {
+                                "description": "When this message was spoken, or null if unavailable.",
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                                  },
+                                  { "type": "null" }
+                                ]
+                              }
+                            },
+                            "required": ["role", "content", "timestamp"],
+                            "additionalProperties": false
+                          }
+                        },
+                        "recordingUrl": {
+                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh URL.",
+                          "anyOf": [
+                            { "type": "string", "format": "uri" },
+                            { "type": "null" }
+                          ]
+                        },
+                        "status": { "type": "string", "const": "in_progress" },
+                        "startedAt": {
+                          "description": "When the conversation started, or null if not yet started.",
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "duration": {
+                          "description": "Elapsed duration in seconds, or null if not yet started.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            { "type": "null" }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "avatar",
+                        "createdAt",
+                        "maxDuration",
+                        "transcript",
+                        "recordingUrl",
+                        "status",
+                        "startedAt",
+                        "duration"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "description": "A conversation that completed successfully.",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Unique conversation identifier.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "name": {
+                          "description": "Conversation name.",
+                          "type": "string"
+                        },
+                        "avatar": {
+                          "description": "The avatar used in this conversation, or null if unavailable.",
+                          "anyOf": [
+                            {
+                              "description": "The avatar used in this conversation.",
+                              "oneOf": [
+                                {
+                                  "title": "PresetAvatar",
+                                  "description": "A preset avatar.",
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "preset"
+                                    },
+                                    "presetId": {
+                                      "description": "The preset avatar ID.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": ["type", "presetId"],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "title": "CustomAvatar",
+                                  "description": "A custom avatar created by the user.",
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "custom"
+                                    },
+                                    "id": {
+                                      "description": "The custom avatar ID, or null if deleted.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "format": "uuid",
+                                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                                        },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "name": {
+                                      "description": "The avatar name, or null if unavailable.",
+                                      "anyOf": [
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "imageUrl": {
+                                      "description": "URL to the avatar image, or null if unavailable.",
+                                      "anyOf": [
+                                        { "type": "string", "format": "uri" },
+                                        { "type": "null" }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "id",
+                                    "name",
+                                    "imageUrl"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ],
+                              "discriminator": { "propertyName": "type" }
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "createdAt": {
+                          "description": "When the conversation was created.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "maxDuration": {
+                          "description": "Maximum allowed duration in seconds, or null if not set.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "transcript": {
+                          "description": "The conversation transcript.",
+                          "maxItems": 1000,
+                          "type": "array",
+                          "items": {
+                            "title": "TranscriptEntry",
+                            "description": "A single message in the conversation transcript.",
+                            "type": "object",
+                            "properties": {
+                              "role": {
+                                "description": "Who spoke this message.",
+                                "type": "string",
+                                "enum": ["user", "assistant"]
+                              },
+                              "content": {
+                                "description": "The spoken text.",
+                                "type": "string",
+                                "maxLength": 10000
+                              },
+                              "timestamp": {
+                                "description": "When this message was spoken, or null if unavailable.",
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                                  },
+                                  { "type": "null" }
+                                ]
+                              }
+                            },
+                            "required": ["role", "content", "timestamp"],
+                            "additionalProperties": false
+                          }
+                        },
+                        "recordingUrl": {
+                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh URL.",
+                          "anyOf": [
+                            { "type": "string", "format": "uri" },
+                            { "type": "null" }
+                          ]
+                        },
+                        "status": { "type": "string", "const": "ended" },
+                        "startedAt": {
+                          "description": "When the conversation started.",
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "endedAt": {
+                          "description": "When the conversation ended.",
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "duration": {
+                          "description": "Duration of the conversation in seconds.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            { "type": "null" }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "avatar",
+                        "createdAt",
+                        "maxDuration",
+                        "transcript",
+                        "recordingUrl",
+                        "status",
+                        "startedAt",
+                        "endedAt",
+                        "duration"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "description": "A conversation that ended due to an error.",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Unique conversation identifier.",
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                        },
+                        "name": {
+                          "description": "Conversation name.",
+                          "type": "string"
+                        },
+                        "avatar": {
+                          "description": "The avatar used in this conversation, or null if unavailable.",
+                          "anyOf": [
+                            {
+                              "description": "The avatar used in this conversation.",
+                              "oneOf": [
+                                {
+                                  "title": "PresetAvatar",
+                                  "description": "A preset avatar.",
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "preset"
+                                    },
+                                    "presetId": {
+                                      "description": "The preset avatar ID.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": ["type", "presetId"],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "title": "CustomAvatar",
+                                  "description": "A custom avatar created by the user.",
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "const": "custom"
+                                    },
+                                    "id": {
+                                      "description": "The custom avatar ID, or null if deleted.",
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "format": "uuid",
+                                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                                        },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "name": {
+                                      "description": "The avatar name, or null if unavailable.",
+                                      "anyOf": [
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "imageUrl": {
+                                      "description": "URL to the avatar image, or null if unavailable.",
+                                      "anyOf": [
+                                        { "type": "string", "format": "uri" },
+                                        { "type": "null" }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "type",
+                                    "id",
+                                    "name",
+                                    "imageUrl"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ],
+                              "discriminator": { "propertyName": "type" }
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "createdAt": {
+                          "description": "When the conversation was created.",
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                        },
+                        "maxDuration": {
+                          "description": "Maximum allowed duration in seconds, or null if not set.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "transcript": {
+                          "description": "The conversation transcript.",
+                          "maxItems": 1000,
+                          "type": "array",
+                          "items": {
+                            "title": "TranscriptEntry",
+                            "description": "A single message in the conversation transcript.",
+                            "type": "object",
+                            "properties": {
+                              "role": {
+                                "description": "Who spoke this message.",
+                                "type": "string",
+                                "enum": ["user", "assistant"]
+                              },
+                              "content": {
+                                "description": "The spoken text.",
+                                "type": "string",
+                                "maxLength": 10000
+                              },
+                              "timestamp": {
+                                "description": "When this message was spoken, or null if unavailable.",
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                                  },
+                                  { "type": "null" }
+                                ]
+                              }
+                            },
+                            "required": ["role", "content", "timestamp"],
+                            "additionalProperties": false
+                          }
+                        },
+                        "recordingUrl": {
+                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh URL.",
+                          "anyOf": [
+                            { "type": "string", "format": "uri" },
+                            { "type": "null" }
+                          ]
+                        },
+                        "status": { "type": "string", "const": "failed" },
+                        "startedAt": {
+                          "description": "When the conversation started, or null if it failed before starting.",
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "endedAt": {
+                          "description": "When the conversation ended, or null if it failed before starting.",
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time",
+                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "duration": {
+                          "description": "Duration in seconds, or null if the conversation failed before starting.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            { "type": "null" }
+                          ]
+                        },
+                        "failure": {
+                          "description": "A human-friendly reason for the failure. We do not recommend returning this to users directly without adding context.",
+                          "type": "string"
+                        },
+                        "failureCode": {
+                          "description": "A machine-readable error code for the failure. See https://docs.dev.runwayml.com/errors/task-failures/ for more information.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "avatar",
+                        "createdAt",
+                        "maxDuration",
+                        "transcript",
+                        "recordingUrl",
+                        "status",
+                        "startedAt",
+                        "endedAt",
+                        "duration",
+                        "failure",
+                        "failureCode"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ],
+                  "discriminator": { "propertyName": "status" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/avatars/{id}": {
       "get": {
         "tags": ["Avatars"],
@@ -3285,6 +4070,91 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 2000
+                  },
+                  "tools": {
+                    "description": "Tools available to the avatar during the session.",
+                    "default": [],
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "description": "A tool available to the avatar during the session.",
+                      "oneOf": [
+                        {
+                          "title": "ClientEventTool",
+                          "description": "A fire-and-forget tool that sends arguments to the frontend client of the realtime session.",
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "const": "client_event"
+                            },
+                            "name": {
+                              "description": "The tool name. Must start with a letter or underscore, followed by alphanumeric characters or underscores.",
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 64,
+                              "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+                            },
+                            "description": {
+                              "description": "A description of when and how the tool should be used. Be specific so the avatar understands the right context to invoke it.",
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 1024
+                            },
+                            "parameters": {
+                              "default": [],
+                              "maxItems": 20,
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/ToolParameter"
+                              }
+                            }
+                          },
+                          "required": ["type", "name", "description"]
+                        },
+                        {
+                          "title": "BackendRPCTool",
+                          "description": "A tool that makes a round-trip RPC call to your backend server during the session.",
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "const": "backend_rpc"
+                            },
+                            "name": {
+                              "description": "The tool name. Must start with a letter or underscore, followed by alphanumeric characters or underscores.",
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 64,
+                              "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+                            },
+                            "description": {
+                              "description": "A description of when and how the tool should be used. Be specific so the avatar understands the right context to invoke it.",
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 1024
+                            },
+                            "parameters": {
+                              "default": [],
+                              "maxItems": 20,
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/ToolParameter"
+                              }
+                            },
+                            "timeoutSeconds": {
+                              "description": "Maximum time to wait for the backend to respond.",
+                              "default": 4,
+                              "type": "number",
+                              "minimum": 1,
+                              "maximum": 8
+                            }
+                          },
+                          "required": ["type", "name", "description"]
+                        }
+                      ],
+                      "discriminator": { "propertyName": "type" }
+                    }
                   }
                 },
                 "required": ["model", "avatar"]
@@ -8488,7 +9358,194 @@
     }
   },
   "components": {
-    "schemas": {},
+    "schemas": {
+      "ToolParameter": {
+        "title": "ToolParameter",
+        "oneOf": [
+          {
+            "title": "StringParameter",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The parameter name.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+              },
+              "description": {
+                "description": "A description of the parameter.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "required": {
+                "description": "Whether the parameter is required.",
+                "default": true,
+                "type": "boolean"
+              },
+              "type": { "type": "string", "const": "string" },
+              "enum": {
+                "description": "Allowed values for the parameter.",
+                "maxItems": 20,
+                "type": "array",
+                "items": { "type": "string", "maxLength": 64 }
+              }
+            },
+            "required": ["name", "description", "type"]
+          },
+          {
+            "title": "IntegerParameter",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The parameter name.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+              },
+              "description": {
+                "description": "A description of the parameter.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "required": {
+                "description": "Whether the parameter is required.",
+                "default": true,
+                "type": "boolean"
+              },
+              "type": { "type": "string", "const": "integer" }
+            },
+            "required": ["name", "description", "type"]
+          },
+          {
+            "title": "NumberParameter",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The parameter name.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+              },
+              "description": {
+                "description": "A description of the parameter.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "required": {
+                "description": "Whether the parameter is required.",
+                "default": true,
+                "type": "boolean"
+              },
+              "type": { "type": "string", "const": "number" }
+            },
+            "required": ["name", "description", "type"]
+          },
+          {
+            "title": "BooleanParameter",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The parameter name.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+              },
+              "description": {
+                "description": "A description of the parameter.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "required": {
+                "description": "Whether the parameter is required.",
+                "default": true,
+                "type": "boolean"
+              },
+              "type": { "type": "string", "const": "boolean" }
+            },
+            "required": ["name", "description", "type"]
+          },
+          {
+            "title": "ArrayParameter",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The parameter name.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+              },
+              "description": {
+                "description": "A description of the parameter.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "required": {
+                "description": "Whether the parameter is required.",
+                "default": true,
+                "type": "boolean"
+              },
+              "type": { "type": "string", "const": "array" },
+              "items": {
+                "description": "Item schema for array elements.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "The type of each element in the array.",
+                    "type": "string",
+                    "enum": ["string", "integer", "number", "boolean"]
+                  }
+                },
+                "required": ["type"]
+              }
+            },
+            "required": ["name", "description", "type", "items"]
+          },
+          {
+            "title": "ObjectParameter",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The parameter name.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+              },
+              "description": {
+                "description": "A description of the parameter.",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "required": {
+                "description": "Whether the parameter is required.",
+                "default": true,
+                "type": "boolean"
+              },
+              "type": { "type": "string", "const": "object" },
+              "properties": {
+                "description": "The properties of the object.",
+                "maxItems": 20,
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/ToolParameter" }
+              }
+            },
+            "required": ["name", "description", "type", "properties"]
+          }
+        ],
+        "discriminator": { "propertyName": "type" }
+      }
+    },
     "responses": {},
     "parameters": {
       "X-Runway-Version": {
