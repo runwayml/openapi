@@ -708,7 +708,7 @@
                     "example": "You are a helpful support agent assisting users with their account questions. Be friendly, patient, and provide clear step-by-step guidance.",
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 2000
+                    "maxLength": 10000
                   },
                   "startScript": {
                     "description": "Optional opening message that the avatar will say when a session starts.",
@@ -1340,7 +1340,7 @@
       "get": {
         "tags": ["Avatars"],
         "summary": "List conversations",
-        "description": "List conversations for a specific avatar with cursor-based pagination.",
+        "description": "List conversations for a specific avatar with cursor-based pagination. Each conversation corresponds to a realtime session for that avatar, and the conversation ID matches the realtime session ID.",
         "x-codeSamples": [
           {
             "lang": "TypeScript",
@@ -1403,7 +1403,7 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "description": "Unique conversation identifier.",
+                            "description": "Unique conversation identifier. This is the same value as the realtime session ID for the call.",
                             "type": "string",
                             "format": "uuid",
                             "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -1448,6 +1448,10 @@
                               },
                               { "type": "null" }
                             ]
+                          },
+                          "hasTools": {
+                            "description": "Whether tools were configured for this conversation session.",
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -1457,7 +1461,8 @@
                           "avatarId",
                           "avatarName",
                           "createdAt",
-                          "duration"
+                          "duration",
+                          "hasTools"
                         ],
                         "additionalProperties": false
                       }
@@ -1484,7 +1489,7 @@
       "get": {
         "tags": ["Avatars"],
         "summary": "Get conversation",
-        "description": "Get detailed information about a specific conversation.",
+        "description": "Get detailed information about a specific conversation, including the transcript and recording download URL when available. The conversation ID is the same value returned when the realtime session was created.",
         "x-codeSamples": [
           {
             "lang": "TypeScript",
@@ -1518,7 +1523,7 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
             },
-            "description": "The conversation ID."
+            "description": "The conversation ID. This is the same value as the realtime session ID for the call."
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
@@ -1534,7 +1539,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "Unique conversation identifier.",
+                          "description": "Unique conversation identifier. This is the same value as the realtime session ID for the call.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -1638,21 +1643,23 @@
                           "type": "array",
                           "items": {
                             "title": "TranscriptEntry",
-                            "description": "A single message in the conversation transcript.",
+                            "description": "A single entry in the conversation transcript.",
                             "type": "object",
                             "properties": {
                               "role": {
-                                "description": "Who spoke this message.",
+                                "description": "Who produced this transcript entry.",
                                 "type": "string",
                                 "enum": ["user", "assistant"]
                               },
                               "content": {
-                                "description": "The spoken text.",
-                                "type": "string",
-                                "maxLength": 10000
+                                "description": "The spoken text, or null for tool-only turns.",
+                                "anyOf": [
+                                  { "type": "string" },
+                                  { "type": "null" }
+                                ]
                               },
                               "timestamp": {
-                                "description": "When this message was spoken, or null if unavailable.",
+                                "description": "When this entry occurred, or null if unavailable.",
                                 "anyOf": [
                                   {
                                     "type": "string",
@@ -1661,6 +1668,80 @@
                                   },
                                   { "type": "null" }
                                 ]
+                              },
+                              "toolCalls": {
+                                "description": "Tool invocations made during this assistant turn. Only present on assistant entries.",
+                                "type": "array",
+                                "items": {
+                                  "title": "ToolCall",
+                                  "description": "A tool invocation by the assistant.",
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "description": "Optional identifier linking this call to its result.",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "The name of the tool that was called.",
+                                      "type": "string"
+                                    },
+                                    "arguments": {
+                                      "description": "The arguments passed to the tool.",
+                                      "type": "object",
+                                      "propertyNames": { "type": "string" },
+                                      "additionalProperties": {}
+                                    }
+                                  },
+                                  "required": ["name", "arguments"],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "toolResults": {
+                                "description": "Tool results received during this assistant turn. Only present on assistant entries.",
+                                "type": "array",
+                                "items": {
+                                  "title": "ToolResult",
+                                  "description": "The result of a tool invocation.",
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "description": "Optional identifier linking this result to its call.",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "The name of the tool that returned a result.",
+                                      "type": "string"
+                                    },
+                                    "result": {
+                                      "description": "The tool result (object, string, or null).",
+                                      "anyOf": [
+                                        {
+                                          "type": "object",
+                                          "propertyNames": { "type": "string" },
+                                          "additionalProperties": {}
+                                        },
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "error": {
+                                      "description": "Error message if the tool call failed.",
+                                      "anyOf": [
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "durationMs": {
+                                      "description": "How long the tool call took in milliseconds.",
+                                      "anyOf": [
+                                        { "type": "number" },
+                                        { "type": "null" }
+                                      ]
+                                    }
+                                  },
+                                  "required": ["name"],
+                                  "additionalProperties": false
+                                }
                               }
                             },
                             "required": ["role", "content", "timestamp"],
@@ -1668,11 +1749,37 @@
                           }
                         },
                         "recordingUrl": {
-                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh URL.",
+                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh download URL.",
                           "anyOf": [
                             { "type": "string", "format": "uri" },
                             { "type": "null" }
                           ]
+                        },
+                        "tools": {
+                          "description": "The tools that were configured for this conversation session. Empty if no tools were used.",
+                          "type": "array",
+                          "items": {
+                            "title": "ConversationToolSummary",
+                            "description": "Summary of a tool configured for the session.",
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "description": "The tool type.",
+                                "type": "string",
+                                "enum": ["client_event", "backend_rpc"]
+                              },
+                              "name": {
+                                "description": "The tool name.",
+                                "type": "string"
+                              },
+                              "description": {
+                                "description": "A description of when and how the tool should be used.",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "name", "description"],
+                            "additionalProperties": false
+                          }
                         },
                         "status": { "type": "string", "const": "in_progress" },
                         "startedAt": {
@@ -1706,6 +1813,7 @@
                         "maxDuration",
                         "transcript",
                         "recordingUrl",
+                        "tools",
                         "status",
                         "startedAt",
                         "duration"
@@ -1717,7 +1825,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "Unique conversation identifier.",
+                          "description": "Unique conversation identifier. This is the same value as the realtime session ID for the call.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -1821,21 +1929,23 @@
                           "type": "array",
                           "items": {
                             "title": "TranscriptEntry",
-                            "description": "A single message in the conversation transcript.",
+                            "description": "A single entry in the conversation transcript.",
                             "type": "object",
                             "properties": {
                               "role": {
-                                "description": "Who spoke this message.",
+                                "description": "Who produced this transcript entry.",
                                 "type": "string",
                                 "enum": ["user", "assistant"]
                               },
                               "content": {
-                                "description": "The spoken text.",
-                                "type": "string",
-                                "maxLength": 10000
+                                "description": "The spoken text, or null for tool-only turns.",
+                                "anyOf": [
+                                  { "type": "string" },
+                                  { "type": "null" }
+                                ]
                               },
                               "timestamp": {
-                                "description": "When this message was spoken, or null if unavailable.",
+                                "description": "When this entry occurred, or null if unavailable.",
                                 "anyOf": [
                                   {
                                     "type": "string",
@@ -1844,6 +1954,80 @@
                                   },
                                   { "type": "null" }
                                 ]
+                              },
+                              "toolCalls": {
+                                "description": "Tool invocations made during this assistant turn. Only present on assistant entries.",
+                                "type": "array",
+                                "items": {
+                                  "title": "ToolCall",
+                                  "description": "A tool invocation by the assistant.",
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "description": "Optional identifier linking this call to its result.",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "The name of the tool that was called.",
+                                      "type": "string"
+                                    },
+                                    "arguments": {
+                                      "description": "The arguments passed to the tool.",
+                                      "type": "object",
+                                      "propertyNames": { "type": "string" },
+                                      "additionalProperties": {}
+                                    }
+                                  },
+                                  "required": ["name", "arguments"],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "toolResults": {
+                                "description": "Tool results received during this assistant turn. Only present on assistant entries.",
+                                "type": "array",
+                                "items": {
+                                  "title": "ToolResult",
+                                  "description": "The result of a tool invocation.",
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "description": "Optional identifier linking this result to its call.",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "The name of the tool that returned a result.",
+                                      "type": "string"
+                                    },
+                                    "result": {
+                                      "description": "The tool result (object, string, or null).",
+                                      "anyOf": [
+                                        {
+                                          "type": "object",
+                                          "propertyNames": { "type": "string" },
+                                          "additionalProperties": {}
+                                        },
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "error": {
+                                      "description": "Error message if the tool call failed.",
+                                      "anyOf": [
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "durationMs": {
+                                      "description": "How long the tool call took in milliseconds.",
+                                      "anyOf": [
+                                        { "type": "number" },
+                                        { "type": "null" }
+                                      ]
+                                    }
+                                  },
+                                  "required": ["name"],
+                                  "additionalProperties": false
+                                }
                               }
                             },
                             "required": ["role", "content", "timestamp"],
@@ -1851,11 +2035,37 @@
                           }
                         },
                         "recordingUrl": {
-                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh URL.",
+                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh download URL.",
                           "anyOf": [
                             { "type": "string", "format": "uri" },
                             { "type": "null" }
                           ]
+                        },
+                        "tools": {
+                          "description": "The tools that were configured for this conversation session. Empty if no tools were used.",
+                          "type": "array",
+                          "items": {
+                            "title": "ConversationToolSummary",
+                            "description": "Summary of a tool configured for the session.",
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "description": "The tool type.",
+                                "type": "string",
+                                "enum": ["client_event", "backend_rpc"]
+                              },
+                              "name": {
+                                "description": "The tool name.",
+                                "type": "string"
+                              },
+                              "description": {
+                                "description": "A description of when and how the tool should be used.",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "name", "description"],
+                            "additionalProperties": false
+                          }
                         },
                         "status": { "type": "string", "const": "ended" },
                         "startedAt": {
@@ -1900,6 +2110,7 @@
                         "maxDuration",
                         "transcript",
                         "recordingUrl",
+                        "tools",
                         "status",
                         "startedAt",
                         "endedAt",
@@ -1912,7 +2123,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "Unique conversation identifier.",
+                          "description": "Unique conversation identifier. This is the same value as the realtime session ID for the call.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -2016,21 +2227,23 @@
                           "type": "array",
                           "items": {
                             "title": "TranscriptEntry",
-                            "description": "A single message in the conversation transcript.",
+                            "description": "A single entry in the conversation transcript.",
                             "type": "object",
                             "properties": {
                               "role": {
-                                "description": "Who spoke this message.",
+                                "description": "Who produced this transcript entry.",
                                 "type": "string",
                                 "enum": ["user", "assistant"]
                               },
                               "content": {
-                                "description": "The spoken text.",
-                                "type": "string",
-                                "maxLength": 10000
+                                "description": "The spoken text, or null for tool-only turns.",
+                                "anyOf": [
+                                  { "type": "string" },
+                                  { "type": "null" }
+                                ]
                               },
                               "timestamp": {
-                                "description": "When this message was spoken, or null if unavailable.",
+                                "description": "When this entry occurred, or null if unavailable.",
                                 "anyOf": [
                                   {
                                     "type": "string",
@@ -2039,6 +2252,80 @@
                                   },
                                   { "type": "null" }
                                 ]
+                              },
+                              "toolCalls": {
+                                "description": "Tool invocations made during this assistant turn. Only present on assistant entries.",
+                                "type": "array",
+                                "items": {
+                                  "title": "ToolCall",
+                                  "description": "A tool invocation by the assistant.",
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "description": "Optional identifier linking this call to its result.",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "The name of the tool that was called.",
+                                      "type": "string"
+                                    },
+                                    "arguments": {
+                                      "description": "The arguments passed to the tool.",
+                                      "type": "object",
+                                      "propertyNames": { "type": "string" },
+                                      "additionalProperties": {}
+                                    }
+                                  },
+                                  "required": ["name", "arguments"],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "toolResults": {
+                                "description": "Tool results received during this assistant turn. Only present on assistant entries.",
+                                "type": "array",
+                                "items": {
+                                  "title": "ToolResult",
+                                  "description": "The result of a tool invocation.",
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "description": "Optional identifier linking this result to its call.",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "The name of the tool that returned a result.",
+                                      "type": "string"
+                                    },
+                                    "result": {
+                                      "description": "The tool result (object, string, or null).",
+                                      "anyOf": [
+                                        {
+                                          "type": "object",
+                                          "propertyNames": { "type": "string" },
+                                          "additionalProperties": {}
+                                        },
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "error": {
+                                      "description": "Error message if the tool call failed.",
+                                      "anyOf": [
+                                        { "type": "string" },
+                                        { "type": "null" }
+                                      ]
+                                    },
+                                    "durationMs": {
+                                      "description": "How long the tool call took in milliseconds.",
+                                      "anyOf": [
+                                        { "type": "number" },
+                                        { "type": "null" }
+                                      ]
+                                    }
+                                  },
+                                  "required": ["name"],
+                                  "additionalProperties": false
+                                }
                               }
                             },
                             "required": ["role", "content", "timestamp"],
@@ -2046,11 +2333,37 @@
                           }
                         },
                         "recordingUrl": {
-                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh URL.",
+                          "description": "A URL to download the conversation recording, or null if no recording is available. This URL will expire within 24-48 hours, fetch the conversation again to get a fresh download URL.",
                           "anyOf": [
                             { "type": "string", "format": "uri" },
                             { "type": "null" }
                           ]
+                        },
+                        "tools": {
+                          "description": "The tools that were configured for this conversation session. Empty if no tools were used.",
+                          "type": "array",
+                          "items": {
+                            "title": "ConversationToolSummary",
+                            "description": "Summary of a tool configured for the session.",
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "description": "The tool type.",
+                                "type": "string",
+                                "enum": ["client_event", "backend_rpc"]
+                              },
+                              "name": {
+                                "description": "The tool name.",
+                                "type": "string"
+                              },
+                              "description": {
+                                "description": "A description of when and how the tool should be used.",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "name", "description"],
+                            "additionalProperties": false
+                          }
                         },
                         "status": { "type": "string", "const": "failed" },
                         "startedAt": {
@@ -2103,6 +2416,7 @@
                         "maxDuration",
                         "transcript",
                         "recordingUrl",
+                        "tools",
                         "status",
                         "startedAt",
                         "endedAt",
@@ -2768,7 +3082,7 @@
                     "example": "You are a helpful support agent assisting users with their account questions. Be friendly, patient, and provide clear step-by-step guidance.",
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 2000
+                    "maxLength": 10000
                   },
                   "startScript": {
                     "description": "Optional opening message that the avatar will say when a session starts. Set to null to clear.",
@@ -3559,7 +3873,7 @@
                                 "type": "string",
                                 "minLength": 13,
                                 "maxLength": 2048,
-                                "pattern": "^https://.*"
+                                "pattern": "^https:\\/\\/.*"
                               },
                               {
                                 "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
@@ -3845,11 +4159,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const documentListResponse of client.documents.list({ limit: 1 })) {\n  console.log(documentListResponse.id);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const documentListResponse of client.documents.list({\n  limit: 1,\n  order: 'asc',\n  sort: 'createdAt',\n})) {\n  console.log(documentListResponse.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.documents.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.documents.list(\n    limit=1,\n    order=\"asc\",\n    sort=\"createdAt\",\n)\npage = page.data[0]\nprint(page.id)"
           },
           {
             "lang": "TypeScript",
@@ -3881,6 +4195,28 @@
               "maximum": 100
             },
             "description": "The maximum number of items to return per page."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "default": "createdAt",
+              "type": "string",
+              "enum": ["createdAt", "updatedAt"]
+            },
+            "description": "Field to sort results by."
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "default": "desc",
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "Sort direction."
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
@@ -4217,7 +4553,7 @@
       "post": {
         "tags": ["Realtime Sessions"],
         "summary": "Create realtime session",
-        "description": "Create a new realtime session with the specified model configuration.",
+        "description": "Create a new realtime session with the specified model configuration. The returned ID is also the conversation ID used later to fetch transcripts and recordings from the avatar conversation endpoints.",
         "x-codeSamples": [
           {
             "lang": "JavaScript",
@@ -4304,13 +4640,13 @@
                     "default": 300,
                     "type": "integer",
                     "minimum": 10,
-                    "maximum": 300
+                    "maximum": 1800
                   },
                   "personality": {
                     "description": "Override the avatar personality for this session. If not provided, uses the avatar default.",
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 2000
+                    "maxLength": 10000
                   },
                   "startScript": {
                     "description": "Override the avatar start script for this session. If not provided, uses the avatar default.",
@@ -4856,7 +5192,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "description": "The ID of the created realtime session.",
+                      "description": "The ID of the created realtime session. This same value is later used as the conversation ID in the avatar conversation endpoints.",
                       "type": "string",
                       "format": "uuid",
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -4875,7 +5211,7 @@
       "get": {
         "tags": ["Realtime Sessions"],
         "summary": "Get realtime session",
-        "description": "Get the status of a realtime session.",
+        "description": "Get the status of a realtime session. This endpoint uses the same ID that the avatar conversation endpoints later expose as the conversation ID.",
         "x-codeSamples": [
           {
             "lang": "JavaScript",
@@ -4906,7 +5242,7 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
             },
-            "description": "The realtime session ID."
+            "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints."
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
@@ -4923,7 +5259,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "The realtime session ID.",
+                          "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -4949,7 +5285,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "The realtime session ID.",
+                          "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -4987,7 +5323,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "The realtime session ID.",
+                          "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -5009,7 +5345,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "The realtime session ID.",
+                          "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -5037,7 +5373,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "The realtime session ID.",
+                          "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -5073,7 +5409,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "description": "The realtime session ID.",
+                          "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints.",
                           "type": "string",
                           "format": "uuid",
                           "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
@@ -5131,7 +5467,7 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
             },
-            "description": "The realtime session ID."
+            "description": "The realtime session ID. This same value is later used as the conversation ID in the avatar conversation endpoints."
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
@@ -6151,6 +6487,149 @@
                     "required": ["promptImage", "ratio", "model"]
                   },
                   {
+                    "title": "seedance2",
+                    "type": "object",
+                    "properties": {
+                      "promptImage": {
+                        "description": "An image or array of images. Use position `first`/`last` for keyframe mode, or omit position for reference images. The two modes cannot be mixed.",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL.",
+                                "example": "https://example.com/file",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media.",
+                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "An array of image objects. Use position \"first\"/\"last\" for keyframe mode, or omit position for reference images. The two modes cannot be mixed.",
+                            "example": [
+                              {
+                                "uri": "https://example.com/firstFrame.jpg",
+                                "position": "first"
+                              },
+                              {
+                                "uri": "https://example.com/lastFrame.jpg",
+                                "position": "last"
+                              }
+                            ],
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "title": "PromptImage",
+                              "x-stainless-variantName": "PromptImage",
+                              "type": "object",
+                              "properties": {
+                                "uri": {
+                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "anyOf": [
+                                    {
+                                      "description": "A HTTPS URL.",
+                                      "example": "https://example.com/file",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 2048,
+                                      "pattern": "^https:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                      "example": "runway://<token>",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5000,
+                                      "pattern": "^runway:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A data URI containing encoded media.",
+                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5242880,
+                                      "pattern": "^data:image\\/.*"
+                                    }
+                                  ]
+                                },
+                                "position": {
+                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame, \"last\" as the last frame. Omit for a reference image.",
+                                  "type": "string",
+                                  "enum": ["first", "last"]
+                                }
+                              },
+                              "required": ["uri"]
+                            }
+                          }
+                        ]
+                      },
+                      "promptText": {
+                        "description": "An optional text prompt up to 3500 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 3500
+                      },
+                      "audio": {
+                        "description": "Whether to generate audio for the video. Audio inclusion affects pricing.",
+                        "default": true,
+                        "type": "boolean"
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video.",
+                        "type": "integer",
+                        "minimum": 4,
+                        "maximum": 15
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video.",
+                        "type": "string",
+                        "enum": [
+                          "992:432",
+                          "864:496",
+                          "752:560",
+                          "640:640",
+                          "560:752",
+                          "496:864",
+                          "1470:630",
+                          "1280:720",
+                          "1112:834",
+                          "960:960",
+                          "834:1112",
+                          "720:1280"
+                        ]
+                      },
+                      "outputCount": {
+                        "description": "The number of video generations to produce.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "model": { "type": "string", "const": "seedance2" }
+                    },
+                    "required": ["promptImage", "model"]
+                  },
+                  {
                     "title": "veo3",
                     "type": "object",
                     "properties": {
@@ -6449,6 +6928,55 @@
                     "required": ["promptText", "ratio", "model"]
                   },
                   {
+                    "title": "seedance2",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A non-empty string up to 3500 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 3500
+                      },
+                      "audio": {
+                        "description": "Whether to generate audio for the video. Audio inclusion affects pricing.",
+                        "default": true,
+                        "type": "boolean"
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video.",
+                        "type": "integer",
+                        "minimum": 4,
+                        "maximum": 15
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video.",
+                        "type": "string",
+                        "enum": [
+                          "992:432",
+                          "864:496",
+                          "752:560",
+                          "640:640",
+                          "560:752",
+                          "496:864",
+                          "1470:630",
+                          "1280:720",
+                          "1112:834",
+                          "960:960",
+                          "834:1112",
+                          "720:1280"
+                        ]
+                      },
+                      "outputCount": {
+                        "description": "The number of video generations to produce.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "model": { "type": "string", "const": "seedance2" }
+                    },
+                    "required": ["promptText", "model"]
+                  },
+                  {
                     "title": "veo3",
                     "type": "object",
                     "properties": {
@@ -6675,6 +7203,223 @@
                       "model": { "type": "string", "const": "gen4_aleph" }
                     },
                     "required": ["videoUri", "promptText", "model"]
+                  },
+                  {
+                    "title": "seedance2",
+                    "type": "object",
+                    "properties": {
+                      "promptVideo": {
+                        "description": "The input video to use as a reference for the output video. Must be between 1.8 and 15 seconds long.",
+                        "example": "https://example.com/video.mp4",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL.",
+                            "example": "https://example.com/file",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 2048,
+                            "pattern": "^https:\\/\\/.*"
+                          },
+                          {
+                            "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                            "example": "runway://<token>",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5000,
+                            "pattern": "^runway:\\/\\/.*"
+                          },
+                          {
+                            "description": "A data URI containing encoded media.",
+                            "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 16777216,
+                            "pattern": "^data:video\\/.*"
+                          }
+                        ]
+                      },
+                      "promptText": {
+                        "description": "An optional text prompt up to 3500 characters describing what should appear in the output video.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 3500
+                      },
+                      "audio": {
+                        "description": "Whether to generate audio for the video. Audio inclusion affects pricing.",
+                        "default": true,
+                        "type": "boolean"
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video. Must be an integer from 4 to 15.",
+                        "type": "integer",
+                        "minimum": 4,
+                        "maximum": 15
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video.",
+                        "type": "string",
+                        "enum": [
+                          "992:432",
+                          "864:496",
+                          "752:560",
+                          "640:640",
+                          "560:752",
+                          "496:864",
+                          "1470:630",
+                          "1280:720",
+                          "1112:834",
+                          "960:960",
+                          "834:1112",
+                          "720:1280"
+                        ]
+                      },
+                      "outputCount": {
+                        "description": "The number of video generations to produce.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "references": {
+                        "description": "An optional array of image references (up to 9). See [our docs](/assets/inputs#images) on image inputs for more information.",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL.",
+                                "example": "https://example.com/file",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media.",
+                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "An array of image objects. Use position \"first\"/\"last\" for keyframe mode, or omit position for reference images. The two modes cannot be mixed.",
+                            "example": [
+                              {
+                                "uri": "https://example.com/firstFrame.jpg",
+                                "position": "first"
+                              },
+                              {
+                                "uri": "https://example.com/lastFrame.jpg",
+                                "position": "last"
+                              }
+                            ],
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "title": "PromptImage",
+                              "x-stainless-variantName": "PromptImage",
+                              "type": "object",
+                              "properties": {
+                                "uri": {
+                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "anyOf": [
+                                    {
+                                      "description": "A HTTPS URL.",
+                                      "example": "https://example.com/file",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 2048,
+                                      "pattern": "^https:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                      "example": "runway://<token>",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5000,
+                                      "pattern": "^runway:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A data URI containing encoded media.",
+                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5242880,
+                                      "pattern": "^data:image\\/.*"
+                                    }
+                                  ]
+                                },
+                                "position": {
+                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame, \"last\" as the last frame. Omit for a reference image.",
+                                  "type": "string",
+                                  "enum": ["first", "last"]
+                                }
+                              },
+                              "required": ["uri"]
+                            }
+                          }
+                        ]
+                      },
+                      "referenceVideos": {
+                        "description": "An optional array of up to 3 video references. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                        "maxItems": 3,
+                        "type": "array",
+                        "items": {
+                          "title": "VideoReference",
+                          "description": "A video reference allows the model to use the video as additional context for the output.",
+                          "type": "object",
+                          "properties": {
+                            "type": { "type": "string", "const": "video" },
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                              "example": "https://example.com/video.mp4",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL.",
+                                  "example": "https://example.com/file",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media.",
+                                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 16777216,
+                                  "pattern": "^data:video\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["type", "uri"]
+                        }
+                      },
+                      "model": { "type": "string", "const": "seedance2" }
+                    },
+                    "required": ["promptVideo", "model"]
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -7482,6 +8227,7 @@
                     "title": "eleven_multilingual_sts_v2",
                     "type": "object",
                     "properties": {
+                      "runwayVoiceId": { "type": "string" },
                       "removeBackgroundNoise": {
                         "description": "Whether to remove background noise from the generated speech.",
                         "type": "boolean"
@@ -8201,14 +8947,20 @@
                               "veo3.1",
                               "veo3.1_fast",
                               "gemini_2.5_flash",
+                              "gemini_image3_pro",
+                              "gemini_image3.1_flash",
                               "eleven_multilingual_v2",
+                              "eleven_v3",
                               "eleven_text_to_sound_v2",
                               "eleven_voice_isolation",
                               "eleven_voice_dubbing",
                               "eleven_multilingual_sts_v2",
+                              "eleven_scribe_v2",
                               "gwm1_avatars",
                               "gwm1_avatar_async_audio_to_video",
-                              "voice_processing"
+                              "gwm1_avatar_async_text_to_video",
+                              "voice_processing",
+                              "seedance2"
                             ]
                           },
                           "additionalProperties": {
@@ -8268,14 +9020,20 @@
                               "veo3.1",
                               "veo3.1_fast",
                               "gemini_2.5_flash",
+                              "gemini_image3_pro",
+                              "gemini_image3.1_flash",
                               "eleven_multilingual_v2",
+                              "eleven_v3",
                               "eleven_text_to_sound_v2",
                               "eleven_voice_isolation",
                               "eleven_voice_dubbing",
                               "eleven_multilingual_sts_v2",
+                              "eleven_scribe_v2",
                               "gwm1_avatars",
                               "gwm1_avatar_async_audio_to_video",
-                              "voice_processing"
+                              "gwm1_avatar_async_text_to_video",
+                              "voice_processing",
+                              "seedance2"
                             ]
                           },
                           "additionalProperties": {
@@ -8400,20 +9158,26 @@
                                     "veo3.1",
                                     "veo3.1_fast",
                                     "gemini_2.5_flash",
+                                    "gemini_image3_pro",
+                                    "gemini_image3.1_flash",
                                     "eleven_multilingual_v2",
+                                    "eleven_v3",
                                     "eleven_text_to_sound_v2",
                                     "eleven_voice_isolation",
                                     "eleven_voice_dubbing",
                                     "eleven_multilingual_sts_v2",
+                                    "eleven_scribe_v2",
                                     "gwm1_avatars",
                                     "gwm1_avatar_async_audio_to_video",
-                                    "voice_processing"
+                                    "gwm1_avatar_async_text_to_video",
+                                    "voice_processing",
+                                    "seedance2"
                                   ]
                                 },
                                 "amount": {
-                                  "description": "The number of credits spent on the model.",
+                                  "description": "The net number of credits spent on the model. May be negative if refunds exceeded charges on this day.",
                                   "type": "integer",
-                                  "minimum": 0,
+                                  "minimum": -9007199254740991,
                                   "maximum": 9007199254740991
                                 }
                               },
@@ -8445,14 +9209,20 @@
                           "veo3.1",
                           "veo3.1_fast",
                           "gemini_2.5_flash",
+                          "gemini_image3_pro",
+                          "gemini_image3.1_flash",
                           "eleven_multilingual_v2",
+                          "eleven_v3",
                           "eleven_text_to_sound_v2",
                           "eleven_voice_isolation",
                           "eleven_voice_dubbing",
                           "eleven_multilingual_sts_v2",
+                          "eleven_scribe_v2",
                           "gwm1_avatars",
                           "gwm1_avatar_async_audio_to_video",
-                          "voice_processing"
+                          "gwm1_avatar_async_text_to_video",
+                          "voice_processing",
+                          "seedance2"
                         ]
                       }
                     }
@@ -8766,11 +9536,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voice = await client.voices.create({\n  from: {\n    model: 'eleven_ttv_v3',\n    prompt: 'xxxxxxxxxxxxxxxxxxxx',\n    type: 'text',\n  },\n  name: 'x',\n});\n\nconsole.log(voice.id);"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voice = await client.voices.create({\n  from: { audio: 'https://example.com/file', type: 'audio' },\n  name: 'x',\n});\n\nconsole.log(voice.id);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice = client.voices.create(\n    from_={\n        \"model\": \"eleven_ttv_v3\",\n        \"prompt\": \"xxxxxxxxxxxxxxxxxxxx\",\n        \"type\": \"text\",\n    },\n    name=\"x\",\n)\nprint(voice.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice = client.voices.create(\n    from_={\n        \"audio\": \"https://example.com/file\",\n        \"type\": \"audio\",\n    },\n    name=\"x\",\n)\nprint(voice.id)"
           },
           {
             "lang": "TypeScript",
@@ -8806,29 +9576,6 @@
                   },
                   "from": {
                     "oneOf": [
-                      {
-                        "title": "VoiceFromText",
-                        "description": "The source configuration for creating the voice.",
-                        "type": "object",
-                        "properties": {
-                          "type": { "type": "string", "const": "text" },
-                          "prompt": {
-                            "description": "A text description of the desired voice characteristics. Must be at least 20 characters.",
-                            "type": "string",
-                            "minLength": 20,
-                            "maxLength": 1000
-                          },
-                          "model": {
-                            "description": "The voice design model to use. Prefer eleven_ttv_v3 (latest); eleven_multilingual_ttv_v2 is the previous generation.",
-                            "type": "string",
-                            "enum": [
-                              "eleven_ttv_v3",
-                              "eleven_multilingual_ttv_v2"
-                            ]
-                          }
-                        },
-                        "required": ["type", "prompt", "model"]
-                      },
                       {
                         "title": "VoiceFromAudio",
                         "type": "object",
@@ -8866,6 +9613,28 @@
                           }
                         },
                         "required": ["type", "audio"]
+                      },
+                      {
+                        "title": "VoiceFromText",
+                        "type": "object",
+                        "properties": {
+                          "type": { "type": "string", "const": "text" },
+                          "prompt": {
+                            "description": "A text description of the desired voice characteristics. Must be at least 20 characters.",
+                            "type": "string",
+                            "minLength": 20,
+                            "maxLength": 1000
+                          },
+                          "model": {
+                            "description": "The voice design model to use. Prefer eleven_ttv_v3 (latest); eleven_multilingual_ttv_v2 is the previous generation.",
+                            "type": "string",
+                            "enum": [
+                              "eleven_ttv_v3",
+                              "eleven_multilingual_ttv_v2"
+                            ]
+                          }
+                        },
+                        "required": ["type", "prompt", "model"]
                       }
                     ],
                     "discriminator": { "propertyName": "type" }
@@ -9075,46 +9844,6 @@
           }
         }
       },
-      "delete": {
-        "tags": ["Voices"],
-        "summary": "Delete a voice",
-        "description": "Delete a custom voice.",
-        "x-codeSamples": [
-          {
-            "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.voices.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
-          },
-          {
-            "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.voices.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
-          },
-          {
-            "lang": "TypeScript",
-            "label": "Node SDK",
-            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.voices.delete('550e8400-e29b-41d4-a716-446655440000');"
-          },
-          {
-            "lang": "Python",
-            "label": "Python SDK",
-            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nclient.voices.delete(id='550e8400-e29b-41d4-a716-446655440000')"
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
-            },
-            "description": "The ID of the voice to delete."
-          },
-          { "$ref": "#/components/parameters/X-Runway-Version" }
-        ],
-        "responses": { "204": { "description": "Success" } }
-      },
       "patch": {
         "tags": ["Voices"],
         "summary": "Update a voice",
@@ -9306,6 +10035,46 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": ["Voices"],
+        "summary": "Delete a voice",
+        "description": "Delete a custom voice.",
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.voices.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.voices.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.voices.delete('550e8400-e29b-41d4-a716-446655440000');"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nclient.voices.delete(id='550e8400-e29b-41d4-a716-446655440000')"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+            },
+            "description": "The ID of the voice to delete."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "responses": { "204": { "description": "Success" } }
       }
     },
     "/v1/voices/preview": {
@@ -9378,124 +10147,6 @@
                   },
                   "required": ["url", "durationSecs"],
                   "additionalProperties": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/workflows": {
-      "get": {
-        "tags": ["Workflows"],
-        "summary": "List published workflows",
-        "description": "Returns a list of all published workflows for the authenticated user, grouped by source workflow with their published versions.",
-        "x-codeSamples": [
-          {
-            "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst workflows = await client.workflows.list();\n\nconsole.log(workflows.data);"
-          },
-          {
-            "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nworkflows = client.workflows.list()\nprint(workflows.data)"
-          },
-          {
-            "lang": "TypeScript",
-            "label": "Node SDK",
-            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst { data: workflows } = await client.workflows.list();\nconsole.log(workflows);"
-          },
-          {
-            "lang": "Python",
-            "label": "Python SDK",
-            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nworkflows = client.workflows.list()\nprint(workflows.data)"
-          }
-        ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
-        "responses": {
-          "200": {
-            "description": "A list of published workflows grouped by source workflow.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "title": "WorkflowList",
-                      "description": "A list of published workflows grouped by source workflow.",
-                      "type": "array",
-                      "items": {
-                        "title": "WorkflowListItem",
-                        "description": "A published workflow with all its available versions.",
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "description": "The name of the published workflow.",
-                            "type": "string"
-                          },
-                          "versions": {
-                            "description": "The published versions of this workflow, newest first.",
-                            "type": "array",
-                            "items": {
-                              "title": "WorkflowVersion",
-                              "description": "A specific published version of a workflow.",
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "description": "The globally unique ID of this published workflow version.",
-                                  "type": "string",
-                                  "format": "uuid",
-                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
-                                },
-                                "version": {
-                                  "description": "A monotonically increasing version number. Each workflow version for the same published workflow has a unique version number.",
-                                  "type": "integer",
-                                  "minimum": 1,
-                                  "maximum": 9007199254740991
-                                },
-                                "createdAt": {
-                                  "description": "When this version was published",
-                                  "type": "string",
-                                  "format": "date-time",
-                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-                                }
-                              },
-                              "required": ["id", "version", "createdAt"],
-                              "additionalProperties": false
-                            }
-                          }
-                        },
-                        "required": ["name", "versions"],
-                        "additionalProperties": false
-                      }
-                    }
-                  },
-                  "required": ["data"],
-                  "additionalProperties": false
-                },
-                "examples": {
-                  "example": {
-                    "title": "Workflow list",
-                    "summary": "An example of a workflow list response",
-                    "value": {
-                      "data": [
-                        {
-                          "name": "My Video Generator",
-                          "versions": [
-                            {
-                              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                              "version": 2,
-                              "createdAt": "2024-06-27T19:49:32.334Z"
-                            },
-                            {
-                              "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-                              "version": 1,
-                              "createdAt": "2024-06-20T10:30:00.000Z"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  }
                 }
               }
             }
@@ -9603,7 +10254,7 @@
                                     "type": "string",
                                     "minLength": 13,
                                     "maxLength": 2048,
-                                    "pattern": "^https://.*"
+                                    "pattern": "^https:\\/\\/.*"
                                   },
                                   {
                                     "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
@@ -9642,7 +10293,7 @@
                                     "type": "string",
                                     "minLength": 13,
                                     "maxLength": 2048,
-                                    "pattern": "^https://.*"
+                                    "pattern": "^https:\\/\\/.*"
                                   },
                                   {
                                     "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
@@ -9681,7 +10332,7 @@
                                     "type": "string",
                                     "minLength": 13,
                                     "maxLength": 2048,
-                                    "pattern": "^https://.*"
+                                    "pattern": "^https:\\/\\/.*"
                                   },
                                   {
                                     "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
@@ -9900,6 +10551,124 @@
                   "properties": { "error": { "type": "string" } },
                   "required": ["error"],
                   "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workflows": {
+      "get": {
+        "tags": ["Workflows"],
+        "summary": "List published workflows",
+        "description": "Returns a list of all published workflows for the authenticated user, grouped by source workflow with their published versions.",
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst workflows = await client.workflows.list();\n\nconsole.log(workflows.data);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nworkflows = client.workflows.list()\nprint(workflows.data)"
+          },
+          {
+            "lang": "TypeScript",
+            "label": "Node SDK",
+            "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst { data: workflows } = await client.workflows.list();\nconsole.log(workflows);"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nworkflows = client.workflows.list()\nprint(workflows.data)"
+          }
+        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "responses": {
+          "200": {
+            "description": "A list of published workflows grouped by source workflow.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "WorkflowList",
+                      "description": "A list of published workflows grouped by source workflow.",
+                      "type": "array",
+                      "items": {
+                        "title": "WorkflowListItem",
+                        "description": "A published workflow with all its available versions.",
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "description": "The name of the published workflow.",
+                            "type": "string"
+                          },
+                          "versions": {
+                            "description": "The published versions of this workflow, newest first.",
+                            "type": "array",
+                            "items": {
+                              "title": "WorkflowVersion",
+                              "description": "A specific published version of a workflow.",
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "description": "The globally unique ID of this published workflow version.",
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                                },
+                                "version": {
+                                  "description": "A monotonically increasing version number. Each workflow version for the same published workflow has a unique version number.",
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 9007199254740991
+                                },
+                                "createdAt": {
+                                  "description": "When this version was published",
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                                }
+                              },
+                              "required": ["id", "version", "createdAt"],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": ["name", "versions"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["data"],
+                  "additionalProperties": false
+                },
+                "examples": {
+                  "example": {
+                    "title": "Workflow list",
+                    "summary": "An example of a workflow list response",
+                    "value": {
+                      "data": [
+                        {
+                          "name": "My Video Generator",
+                          "versions": [
+                            {
+                              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                              "version": 2,
+                              "createdAt": "2024-06-27T19:49:32.334Z"
+                            },
+                            {
+                              "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                              "version": 1,
+                              "createdAt": "2024-06-20T10:30:00.000Z"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -10313,11 +11082,7 @@
       "name": "Task management",
       "description": "Endpoints for managing tasks that have been submitted."
     },
-    {
-      "name": "Uploads",
-      "description": "Endpoints for uploading media files."
-    },
-    { "name": "Workflows" }
+    { "name": "Uploads", "description": "Endpoints for uploading media files." }
   ],
   "servers": [{ "url": "https://api.dev.runwayml.com" }]
 }
