@@ -8242,7 +8242,6 @@
                     "title": "eleven_multilingual_sts_v2",
                     "type": "object",
                     "properties": {
-                      "runwayVoiceId": { "type": "string" },
                       "removeBackgroundNoise": {
                         "description": "Whether to remove background noise from the generated speech.",
                         "type": "boolean"
