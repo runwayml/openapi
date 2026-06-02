@@ -8241,6 +8241,14 @@
         "description": "Upscale an image with Magnific precision upscaling. Each input dimension must be between 300px and 8000px. Output width and height are the input dimensions multiplied by `scaleFactor` (default 2). Output width times height cannot exceed 25,300,000 pixels (~25.3 million).",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst imageUpscale = await client.imageUpscale.create({\n  imageUri: 'https://example.com/image.jpg',\n  model: 'magnific_precision_upscaler_v2',\n});\n\nconsole.log(imageUpscale.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nimage_upscale = client.image_upscale.create(\n    image_uri=\"https://example.com/image.jpg\",\n    model=\"magnific_precision_upscaler_v2\",\n)\nprint(image_upscale.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.imageUpscale\n  .create({\n    model: 'magnific_precision_upscaler_v2',\n    imageUri: 'https://example.com/photo.jpg',\n    scaleFactor: 2,\n  })\n  .waitForTaskOutput();\nconsole.log(task);"
