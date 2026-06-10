@@ -1343,6 +1343,14 @@
         "description": "List realtime avatar conversations for the authenticated user with cursor-based pagination. Each conversation corresponds to a realtime session, and the conversation ID matches the realtime session ID. Pass `avatar` to restrict results to a single avatar.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const avatarConversationListResponse of client.avatarConversations.list({ limit: 1 })) {\n  console.log(avatarConversationListResponse.id);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.avatar_conversations.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nfor await (const conversation of client.avatarConversations.list()) {\n  console.log(conversation.name, conversation.avatar?.name, conversation.status);\n}"
@@ -1652,7 +1660,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.avatars.getUsage({\n  endDate: '2019-12-27T18:11:19.117Z',\n  startDate: '2019-12-27T18:11:19.117Z',\n});\n\nconsole.log(response.avgDurationSeconds);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom datetime import datetime\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.avatars.get_usage(\n    end_date=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n    start_date=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n)\nprint(response.avg_duration_seconds)"
+          }
+        ]
       }
     },
     "/v1/avatar_conversations/{id}": {
@@ -1661,6 +1679,14 @@
         "summary": "Get conversation",
         "description": "Get detailed information about a specific conversation, including the transcript and recording download URL when available. The conversation ID is the same value returned when the realtime session was created.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst avatarConversation = await client.avatarConversations.retrieve(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(avatarConversation);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\navatar_conversation = client.avatar_conversations.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(avatar_conversation)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -2598,6 +2624,14 @@
         "summary": "Delete conversation",
         "description": "Delete a conversation and its associated data.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.avatarConversations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.avatar_conversations.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -11414,6 +11448,14 @@
         "summary": "Update a voice",
         "description": "Update the name and/or description of a custom voice.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voice = await client.voices.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(voice);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice = client.voices.update(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(voice)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
