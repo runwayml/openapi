@@ -6411,147 +6411,6 @@
                     "required": ["promptImage", "ratio", "model"]
                   },
                   {
-                    "title": "gen3a_turbo",
-                    "type": "object",
-                    "properties": {
-                      "promptText": {
-                        "description": "A non-empty string up to 1000 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
-                        "example": "A beautiful sunset over a calm ocean.",
-                        "type": "string",
-                        "minLength": 1,
-                        "maxLength": 1000
-                      },
-                      "promptImage": {
-                        "anyOf": [
-                          {
-                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                            "example": "https://example.com/image.jpg",
-                            "anyOf": [
-                              {
-                                "description": "A HTTPS URL.",
-                                "example": "https://example.com/file",
-                                "type": "string",
-                                "minLength": 13,
-                                "maxLength": 2048,
-                                "pattern": "^https:\\/\\/.*"
-                              },
-                              {
-                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                "example": "runway://<token>",
-                                "type": "string",
-                                "minLength": 13,
-                                "maxLength": 5000,
-                                "pattern": "^runway:\\/\\/.*"
-                              },
-                              {
-                                "description": "A data URI containing encoded media.",
-                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                "type": "string",
-                                "minLength": 13,
-                                "maxLength": 5242880,
-                                "pattern": "^data:image\\/.*"
-                              }
-                            ]
-                          },
-                          {
-                            "title": "PromptImages",
-                            "description": "An array of objects representing images to be used in the output video. No two provided images may have the same `position` value.",
-                            "example": [
-                              {
-                                "uri": "https://example.com/firstFrame.jpg",
-                                "position": "first"
-                              },
-                              {
-                                "uri": "https://example.com/lastFrame.jpg",
-                                "position": "last"
-                              }
-                            ],
-                            "minItems": 1,
-                            "maxItems": 2,
-                            "type": "array",
-                            "items": {
-                              "title": "PromptImage",
-                              "x-stainless-variantName": "PromptImage",
-                              "type": "object",
-                              "properties": {
-                                "uri": {
-                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                  "example": "https://example.com/image.jpg",
-                                  "anyOf": [
-                                    {
-                                      "description": "A HTTPS URL.",
-                                      "example": "https://example.com/file",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 2048,
-                                      "pattern": "^https:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                      "example": "runway://<token>",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5000,
-                                      "pattern": "^runway:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A data URI containing encoded media.",
-                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5242880,
-                                      "pattern": "^data:image\\/.*"
-                                    }
-                                  ]
-                                },
-                                "position": {
-                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video, \"last\" will use the image as the last frame of the video.",
-                                  "type": "string",
-                                  "enum": ["first", "last"]
-                                }
-                              },
-                              "required": ["uri", "position"]
-                            }
-                          }
-                        ]
-                      },
-                      "seed": {
-                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 4294967295
-                      },
-                      "duration": {
-                        "description": "The duration of the output video in seconds.",
-                        "example": 5,
-                        "default": 10,
-                        "type": "number",
-                        "enum": [5, 10]
-                      },
-                      "ratio": {
-                        "description": "The resolution of the output video.",
-                        "example": "1280:768",
-                        "type": "string",
-                        "enum": ["768:1280", "1280:768"]
-                      },
-                      "contentModeration": {
-                        "description": "Settings that affect the behavior of the content moderation system.",
-                        "example": { "publicFigureThreshold": "auto" },
-                        "type": "object",
-                        "properties": {
-                          "publicFigureThreshold": {
-                            "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
-                            "type": "string",
-                            "enum": ["auto", "low"]
-                          }
-                        },
-                        "additionalProperties": false
-                      },
-                      "model": { "type": "string", "const": "gen3a_turbo" }
-                    },
-                    "required": ["promptText", "promptImage", "model"]
-                  },
-                  {
                     "title": "veo3.1_fast",
                     "type": "object",
                     "properties": {
@@ -7938,11 +7797,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst videoToVideo = await client.videoToVideo.create({\n  model: 'gen4_aleph',\n  promptText: 'x',\n  videoUri: 'https://example.com/video.mp4',\n});\n\nconsole.log(videoToVideo.id);"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst videoToVideo = await client.videoToVideo.create({\n  model: 'aleph2',\n  promptText: 'x',\n  videoUri: 'https://example.com/video.mp4',\n});\n\nconsole.log(videoToVideo.id);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo_to_video = client.video_to_video.create(\n    model=\"gen4_aleph\",\n    prompt_text=\"x\",\n    video_uri=\"https://example.com/video.mp4\",\n)\nprint(video_to_video.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo_to_video = client.video_to_video.create(\n    model=\"aleph2\",\n    prompt_text=\"x\",\n    video_uri=\"https://example.com/video.mp4\",\n)\nprint(video_to_video.id)"
           },
           {
             "lang": "TypeScript",
@@ -7963,132 +7822,6 @@
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "oneOf": [
                   {
-                    "title": "gen4_aleph",
-                    "type": "object",
-                    "properties": {
-                      "videoUri": {
-                        "description": "A HTTPS URL, Runway or data URI containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
-                        "example": "https://example.com/video.mp4",
-                        "anyOf": [
-                          {
-                            "description": "A HTTPS URL.",
-                            "example": "https://example.com/file",
-                            "type": "string",
-                            "minLength": 13,
-                            "maxLength": 2048,
-                            "pattern": "^https:\\/\\/.*"
-                          },
-                          {
-                            "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                            "example": "runway://<token>",
-                            "type": "string",
-                            "minLength": 13,
-                            "maxLength": 5000,
-                            "pattern": "^runway:\\/\\/.*"
-                          },
-                          {
-                            "description": "A data URI containing encoded media.",
-                            "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                            "type": "string",
-                            "minLength": 13,
-                            "maxLength": 16777216,
-                            "pattern": "^data:video\\/.*"
-                          }
-                        ]
-                      },
-                      "promptText": {
-                        "description": "A non-empty string up to 1000 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
-                        "type": "string",
-                        "minLength": 1,
-                        "maxLength": 1000
-                      },
-                      "ratio": {
-                        "description": "Deprecated. This field is ignored. The resolution of the output video is determined by the input video.",
-                        "deprecated": true,
-                        "type": "string",
-                        "enum": [
-                          "1280:720",
-                          "720:1280",
-                          "1104:832",
-                          "960:960",
-                          "832:1104",
-                          "1584:672",
-                          "848:480",
-                          "640:480"
-                        ]
-                      },
-                      "seed": {
-                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 4294967295
-                      },
-                      "references": {
-                        "description": "An array of references. Currently up to one reference is supported. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                        "type": "array",
-                        "items": {
-                          "oneOf": [
-                            {
-                              "title": "ImageReference",
-                              "description": "Passing an image reference allows the model to emulate the style or content of the reference in the output.",
-                              "type": "object",
-                              "properties": {
-                                "type": { "type": "string", "const": "image" },
-                                "uri": {
-                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                  "example": "https://example.com/image.jpg",
-                                  "anyOf": [
-                                    {
-                                      "description": "A HTTPS URL.",
-                                      "example": "https://example.com/file",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 2048,
-                                      "pattern": "^https:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                      "example": "runway://<token>",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5000,
-                                      "pattern": "^runway:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A data URI containing encoded media.",
-                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5242880,
-                                      "pattern": "^data:image\\/.*"
-                                    }
-                                  ]
-                                }
-                              },
-                              "required": ["type", "uri"]
-                            }
-                          ],
-                          "discriminator": { "propertyName": "type" }
-                        }
-                      },
-                      "contentModeration": {
-                        "description": "Settings that affect the behavior of the content moderation system.",
-                        "type": "object",
-                        "properties": {
-                          "publicFigureThreshold": {
-                            "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
-                            "type": "string",
-                            "enum": ["auto", "low"]
-                          }
-                        },
-                        "additionalProperties": false
-                      },
-                      "model": { "type": "string", "const": "gen4_aleph" }
-                    },
-                    "required": ["videoUri", "promptText", "model"]
-                  },
-                  {
-                    "title": "aleph2",
                     "type": "object",
                     "properties": {
                       "promptText": {
@@ -8194,98 +7927,6 @@
                               "additionalProperties": false
                             }
                           ]
-                        }
-                      },
-                      "promptImage": {
-                        "description": "A list of up to 5 image keyframes for guiding the edit at specific points in the video.",
-                        "title": "PromptImages",
-                        "minItems": 1,
-                        "maxItems": 5,
-                        "type": "array",
-                        "items": {
-                          "title": "PromptImage",
-                          "x-stainless-variantName": "PromptImage",
-                          "type": "object",
-                          "properties": {
-                            "uri": {
-                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                              "example": "https://example.com/image.jpg",
-                              "anyOf": [
-                                {
-                                  "description": "A HTTPS URL.",
-                                  "example": "https://example.com/file",
-                                  "type": "string",
-                                  "minLength": 13,
-                                  "maxLength": 2048,
-                                  "pattern": "^https:\\/\\/.*"
-                                },
-                                {
-                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                  "example": "runway://<token>",
-                                  "type": "string",
-                                  "minLength": 13,
-                                  "maxLength": 5000,
-                                  "pattern": "^runway:\\/\\/.*"
-                                },
-                                {
-                                  "description": "A data URI containing encoded media.",
-                                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                  "type": "string",
-                                  "minLength": 13,
-                                  "maxLength": 5242880,
-                                  "pattern": "^data:image\\/.*"
-                                }
-                              ]
-                            },
-                            "position": {
-                              "anyOf": [
-                                {
-                                  "description": "Places the image at the start of the output video (timestamp 0).",
-                                  "type": "string",
-                                  "const": "first"
-                                },
-                                {
-                                  "description": "Places the image at the end of the output video (timestamp = duration).",
-                                  "type": "string",
-                                  "const": "last"
-                                },
-                                {
-                                  "title": "TimestampPosition",
-                                  "type": "object",
-                                  "properties": {
-                                    "type": {
-                                      "type": "string",
-                                      "const": "timestamp"
-                                    },
-                                    "timestampSeconds": {
-                                      "description": "Absolute timestamp in seconds from the start of the output video.",
-                                      "type": "number",
-                                      "minimum": 0
-                                    }
-                                  },
-                                  "required": ["type", "timestampSeconds"]
-                                },
-                                {
-                                  "title": "RelativePosition",
-                                  "type": "object",
-                                  "properties": {
-                                    "type": {
-                                      "type": "string",
-                                      "const": "position"
-                                    },
-                                    "positionPercentage": {
-                                      "description": "Position as a fraction [0.0, 1.0] of the total video duration.",
-                                      "type": "number",
-                                      "minimum": 0,
-                                      "maximum": 1
-                                    }
-                                  },
-                                  "required": ["type", "positionPercentage"]
-                                }
-                              ]
-                            }
-                          },
-                          "required": ["uri", "position"]
                         }
                       },
                       "videoUri": {
@@ -10834,7 +10475,8 @@
                               "klingO3_standard",
                               "klingO3_4k",
                               "happyhorse_1_0",
-                              "aleph2"
+                              "aleph2",
+                              "product_swap"
                             ]
                           },
                           "additionalProperties": {
@@ -10919,7 +10561,8 @@
                               "klingO3_standard",
                               "klingO3_4k",
                               "happyhorse_1_0",
-                              "aleph2"
+                              "aleph2",
+                              "product_swap"
                             ]
                           },
                           "additionalProperties": {
@@ -11069,7 +10712,8 @@
                                     "klingO3_standard",
                                     "klingO3_4k",
                                     "happyhorse_1_0",
-                                    "aleph2"
+                                    "aleph2",
+                                    "product_swap"
                                   ]
                                 },
                                 "amount": {
@@ -11132,7 +10776,8 @@
                           "klingO3_standard",
                           "klingO3_4k",
                           "happyhorse_1_0",
-                          "aleph2"
+                          "aleph2",
+                          "product_swap"
                         ]
                       }
                     }
