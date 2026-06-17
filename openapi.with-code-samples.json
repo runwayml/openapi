@@ -7912,27 +7912,6 @@
                                   "type": "number",
                                   "minimum": 0,
                                   "maximum": 30
-                                },
-                                "range": {
-                                  "description": "Optional edit window. When set, the edit applies only to this time range and the keyframe timestamp must fall within it. All keyframes must either set a range or none may.",
-                                  "title": "KeyframeRange",
-                                  "type": "object",
-                                  "properties": {
-                                    "start_seconds": {
-                                      "description": "Start of the edit window in whole seconds from the start of the input video.",
-                                      "type": "integer",
-                                      "minimum": 0,
-                                      "maximum": 9007199254740991
-                                    },
-                                    "end_seconds": {
-                                      "description": "End of the edit window (exclusive) in whole seconds from the start of the input video.",
-                                      "type": "integer",
-                                      "exclusiveMinimum": 0,
-                                      "maximum": 9007199254740991
-                                    }
-                                  },
-                                  "required": ["start_seconds", "end_seconds"],
-                                  "additionalProperties": false
                                 }
                               },
                               "required": ["uri", "seconds"],
@@ -7976,27 +7955,6 @@
                                   "type": "number",
                                   "minimum": 0,
                                   "maximum": 1
-                                },
-                                "range": {
-                                  "description": "Optional edit window. When set, the edit applies only to this time range and the keyframe timestamp must fall within it. All keyframes must either set a range or none may.",
-                                  "title": "KeyframeRange",
-                                  "type": "object",
-                                  "properties": {
-                                    "start_seconds": {
-                                      "description": "Start of the edit window in whole seconds from the start of the input video.",
-                                      "type": "integer",
-                                      "minimum": 0,
-                                      "maximum": 9007199254740991
-                                    },
-                                    "end_seconds": {
-                                      "description": "End of the edit window (exclusive) in whole seconds from the start of the input video.",
-                                      "type": "integer",
-                                      "exclusiveMinimum": 0,
-                                      "maximum": 9007199254740991
-                                    }
-                                  },
-                                  "required": ["start_seconds", "end_seconds"],
-                                  "additionalProperties": false
                                 }
                               },
                               "required": ["uri", "at"],
