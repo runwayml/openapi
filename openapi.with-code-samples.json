@@ -10957,6 +10957,14 @@
         "description": "Generate a polished marketing stock image from a text brief and optional brand logo image.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.marketingStockImage({ prompt: 'x', version: '2026-06' });\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.marketing_stock_image(\n    prompt=\"x\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\n\nconst task = await client.recipes.marketingStockImage({\n  version: '2026-06',\n  prompt: 'Premium lifestyle photo for a sustainable travel backpack campaign, urban morning commute, natural copy space on the left',\n  referenceImage: { uri: 'https://example.com/brand-logo.png' },\n});\n\nconsole.log(task);"
@@ -11074,6 +11082,14 @@
         "summary": "Create a product ad video",
         "description": "Generate a cinematic product ad from product images, optional style references, product info, and creative direction.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productAd({\n  productImages: [{ uri: 'https://example.com/file' }],\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_ad(\n    product_images=[{\n        \"uri\": \"https://example.com/file\"\n    }],\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -11271,6 +11287,14 @@
         "description": "Generate four fashion campaign images from a product image and style brief.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productCampaignImage({\n  image: { uri: 'https://example.com/file' },\n  prompt: 'x',\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_campaign_image(\n    image={\n        \"uri\": \"https://example.com/file\"\n    },\n    prompt=\"x\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\n\nconst task = await client.recipes.productCampaignImage({\n  version: '2026-06',\n  image: { uri: 'https://example.com/product.jpg' },\n  prompt: 'High-key fashion editorial, gorpcore-meets-blokecore-meets-Y2K',\n});\n\nconsole.log(task);"
@@ -11388,6 +11412,14 @@
         "summary": "Swap a product in a reference video",
         "description": "Replace the product in a reference video with a new product, preserving camera motion, lighting, and scene composition.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productSwap({\n  newProductImages: [{ uri: 'https://example.com/file' }],\n  originalProductImage: { uri: 'https://example.com/file' },\n  referenceVideo: { uri: 'https://example.com/file' },\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_swap(\n    new_product_images=[{\n        \"uri\": \"https://example.com/file\"\n    }],\n    original_product_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    reference_video={\n        \"uri\": \"https://example.com/file\"\n    },\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -11607,6 +11639,14 @@
         "summary": "Create a multi-shot video",
         "description": "Generate a multi-cut video from a story prompt (auto mode) or a custom shot list (custom mode).",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.multiShotVideo({\n  mode: 'auto',\n  prompt: 'x',\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.multi_shot_video(\n    mode=\"auto\",\n    prompt=\"x\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -11859,6 +11899,14 @@
         "summary": "Create a product UGC video",
         "description": "Generate a vertical user-generated content ad from a character image, product image, product details, and optional creative direction.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productUgc({\n  characterImage: { uri: 'https://example.com/file' },\n  productImage: { uri: 'https://example.com/file' },\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_ugc(\n    character_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    product_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
