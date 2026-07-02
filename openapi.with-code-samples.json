@@ -12180,6 +12180,14 @@
         "description": "Localize an existing ad image for a target language, preserving visual creative while adapting on-screen messaging.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.adLocalization({\n  referenceImage: { uri: 'https://example.com/file' },\n  targetLanguage: 'ar',\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.ad_localization(\n    reference_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    target_language=\"ar\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\n\nconst task = await client.recipes.adLocalization({\n  version: '2026-06',\n  referenceImage: { uri: 'https://example.com/source-ad.jpg' },\n  targetLanguage: 'ja',\n});\n\nconsole.log(task);"
