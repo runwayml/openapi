@@ -5401,6 +5401,89 @@
                       ],
                       "discriminator": { "propertyName": "type" }
                     }
+                  },
+                  "integration": {
+                    "description": "External integration. Runway renders the avatar; the integration owns conversation or audio.",
+                    "oneOf": [
+                      {
+                        "title": "ElevenLabsIntegration",
+                        "description": "ElevenLabs handles conversation; Runway renders the avatar video.",
+                        "type": "object",
+                        "properties": {
+                          "type": { "type": "string", "const": "elevenlabs" },
+                          "signedUrl": {
+                            "description": "ConvAI signed WebSocket URL (~15 min lifetime).",
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        },
+                        "required": ["type", "signedUrl"]
+                      },
+                      {
+                        "title": "LiveKitIntegration",
+                        "description": "Join an external LiveKit room; Runway publishes video, your agent supplies audio.",
+                        "type": "object",
+                        "properties": {
+                          "type": { "type": "string", "const": "livekit" },
+                          "url": {
+                            "description": "WebSocket URL of the external LiveKit server the avatar worker should join.",
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "token": {
+                            "description": "LiveKit access token granting the avatar worker publish rights in the external room.",
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2048
+                          },
+                          "roomName": {
+                            "description": "Name of the external LiveKit room.",
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 256
+                          },
+                          "agentIdentity": {
+                            "description": "The participant identity of the customer agent already in the room. When provided, the avatar worker trusts audio published by this identity.",
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 256
+                          }
+                        },
+                        "required": ["type", "url", "token", "roomName"]
+                      }
+                    ],
+                    "discriminator": { "propertyName": "type" }
+                  },
+                  "livekit": {
+                    "deprecated": true,
+                    "description": "Use integration with type \"livekit\" instead.",
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "description": "WebSocket URL of the external LiveKit server the avatar worker should join.",
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "token": {
+                        "description": "LiveKit access token granting the avatar worker publish rights in the external room.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2048
+                      },
+                      "roomName": {
+                        "description": "Name of the external LiveKit room.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "agentIdentity": {
+                        "description": "The participant identity of the customer agent already in the room. When provided, the avatar worker trusts audio published by this identity.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      }
+                    },
+                    "required": ["url", "token", "roomName"]
                   }
                 },
                 "required": ["model", "avatar"]
