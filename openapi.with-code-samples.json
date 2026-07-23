@@ -12806,7 +12806,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst image = await client.generate.image.create({\n  configId: 'n6_',\n  input: { promptText: 'x' },\n});\n\nconsole.log(image.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nimage = client.generate.image.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\"\n    },\n)\nprint(image.id)"
+          }
+        ]
       }
     },
     "/v1/generate/audio": {
@@ -13231,7 +13241,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst audio = await client.generate.audio.create({\n  configId: 'n6_',\n  input: { promptText: 'x', type: 'speech' },\n});\n\nconsole.log(audio.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\naudio = client.generate.audio.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\",\n        \"type\": \"speech\",\n    },\n)\nprint(audio.id)"
+          }
+        ]
       }
     },
     "/v1/organization": {
