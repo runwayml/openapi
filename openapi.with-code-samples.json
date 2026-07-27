@@ -13,6 +13,14 @@
         "description": "List avatars for the authenticated user with cursor-based pagination.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const avatarListResponse of client.avatars.list({ limit: 1 })) {\n  console.log(avatarListResponse);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.avatars.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst avatars = await client.avatars.list();\nfor await (const avatar of avatars) {\n  console.log(avatar);\n}"
@@ -632,6 +640,14 @@
         "summary": "Create avatar",
         "description": "Create a new avatar with a reference image and voice.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst avatar = await client.avatars.create({\n  name: 'x',\n  personality:\n    'You are a helpful support agent assisting users with their account questions. Be friendly, patient, and provide clear step-by-step guidance.',\n  referenceImage: 'https://example.com/reference.jpg',\n  voice: { presetId: 'adrian', type: 'runway-live-preset' },\n});\n\nconsole.log(avatar);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\navatar = client.avatars.create(\n    name=\"x\",\n    personality=\"You are a helpful support agent assisting users with their account questions. Be friendly, patient, and provide clear step-by-step guidance.\",\n    reference_image=\"https://example.com/reference.jpg\",\n    voice={\n        \"preset_id\": \"adrian\",\n        \"type\": \"runway-live-preset\",\n    },\n)\nprint(avatar)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -1327,6 +1343,14 @@
         "description": "List realtime avatar conversations for the authenticated user with cursor-based pagination. Each conversation corresponds to a realtime session, and the conversation ID matches the realtime session ID. Pass `avatar` to restrict results to a single avatar.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const avatarConversationListResponse of client.avatarConversations.list({ limit: 1 })) {\n  console.log(avatarConversationListResponse.id);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.avatar_conversations.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nfor await (const conversation of client.avatarConversations.list()) {\n  console.log(conversation.name, conversation.avatar?.name, conversation.status);\n}"
@@ -1636,7 +1660,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.avatars.getUsage({\n  endDate: '2019-12-27T18:11:19.117Z',\n  startDate: '2019-12-27T18:11:19.117Z',\n});\n\nconsole.log(response.avgDurationSeconds);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom datetime import datetime\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.avatars.get_usage(\n    end_date=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n    start_date=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n)\nprint(response.avg_duration_seconds)"
+          }
+        ]
       }
     },
     "/v1/avatar_conversations/{id}": {
@@ -1645,6 +1679,14 @@
         "summary": "Get conversation",
         "description": "Get detailed information about a specific conversation, including the transcript and recording download URL when available. The conversation ID is the same value returned when the realtime session was created.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst avatarConversation = await client.avatarConversations.retrieve(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(avatarConversation);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\navatar_conversation = client.avatar_conversations.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(avatar_conversation)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -2583,6 +2625,14 @@
         "description": "Delete a conversation and its associated data.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.avatarConversations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.avatar_conversations.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.avatarConversations.delete(\n  '660e8400-e29b-41d4-a716-446655440001'\n);"
@@ -2616,6 +2666,14 @@
         "summary": "Get avatar",
         "description": "Get details of a specific avatar.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst avatar = await client.avatars.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(avatar);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\navatar = client.avatars.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(avatar)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -3169,6 +3227,14 @@
         "summary": "Update avatar",
         "description": "Update an existing avatar. At least one field must be provided.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst avatar = await client.avatars.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(avatar);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\navatar = client.avatars.update(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(avatar)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -3893,6 +3959,14 @@
         "description": "Delete an avatar.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.avatars.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.avatars.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.avatars.delete('550e8400-e29b-41d4-a716-446655440000');"
@@ -3925,6 +3999,14 @@
         "summary": "Generate avatar video from audio or text",
         "description": "Start an asynchronous task to generate a video of an avatar speaking. Provide `speech` with `type: \"audio\"` (audio file) or `type: \"text\"` (text script for TTS). Poll `GET /v1/tasks/:id` to check progress and retrieve the output video URL once complete.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst avatarVideo = await client.avatarVideos.create({\n  avatar: { presetId: 'game-character', type: 'runway-preset' },\n  model: 'gwm1_avatars',\n  speech: { audio: 'https://example.com/file', type: 'audio' },\n});\n\nconsole.log(avatarVideo.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\navatar_video = client.avatar_videos.create(\n    avatar={\n        \"preset_id\": \"game-character\",\n        \"type\": \"runway-preset\",\n    },\n    model=\"gwm1_avatars\",\n    speech={\n        \"audio\": \"https://example.com/file\",\n        \"type\": \"audio\",\n    },\n)\nprint(avatar_video.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -4165,6 +4247,14 @@
         "description": "Create a new knowledge document. Documents can be attached to avatars to provide additional context during conversations.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst document = await client.documents.create({\n  content: '# Product FAQ\\n\\n## What is your return policy?\\n\\nWe offer a 30-day return policy...',\n  name: 'Product FAQ',\n});\n\nconsole.log(document.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\ndocument = client.documents.create(\n    content=\"# Product FAQ\\n\\n## What is your return policy?\\n\\nWe offer a 30-day return policy...\",\n    name=\"Product FAQ\",\n)\nprint(document.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst document = await client.documents.create({\n  name: 'Product FAQ',\n  content: '# Product FAQ\\n\\n## What is your return policy?\\n...',\n});\nconsole.log(document);"
@@ -4292,6 +4382,14 @@
         "summary": "List documents",
         "description": "List knowledge documents for the authenticated user with cursor-based pagination.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const documentListResponse of client.documents.list({\n  limit: 1,\n  order: 'asc',\n  sort: 'createdAt',\n})) {\n  console.log(documentListResponse.id);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.documents.list(\n    limit=1,\n    order=\"asc\",\n    sort=\"createdAt\",\n)\npage = page.data[0]\nprint(page.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -4453,6 +4551,14 @@
         "description": "Get details of a specific knowledge document.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst document = await client.documents.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(document.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\ndocument = client.documents.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(document.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst document = await client.documents.retrieve(\n  '550e8400-e29b-41d4-a716-446655440000'\n);\nconsole.log(document);"
@@ -4567,6 +4673,14 @@
         "description": "Update a knowledge document. At least one of `name` or `content` must be provided.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.documents.update(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.documents.update(\n  '550e8400-e29b-41d4-a716-446655440000',\n  { name: 'Updated Product FAQ' }\n);"
@@ -4625,6 +4739,14 @@
         "description": "Delete a knowledge document. This also removes it from all avatars it was attached to.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.documents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.documents.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.documents.delete('550e8400-e29b-41d4-a716-446655440000');"
@@ -4658,6 +4780,14 @@
         "summary": "Create realtime session",
         "description": "Create a new realtime session with the specified model configuration. The returned ID is also the conversation ID used later to fetch transcripts and recordings from the avatar conversation endpoints.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst realtimeSession = await client.realtimeSessions.create({\n  avatar: { presetId: 'game-character', type: 'runway-preset' },\n  model: 'gwm1_avatars',\n});\n\nconsole.log(realtimeSession.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nrealtime_session = client.realtime_sessions.create(\n    avatar={\n        \"preset_id\": \"game-character\",\n        \"type\": \"runway-preset\",\n    },\n    model=\"gwm1_avatars\",\n)\nprint(realtime_session.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -5392,6 +5522,14 @@
         "description": "Get the status of a realtime session. This endpoint uses the same ID that the avatar conversation endpoints later expose as the conversation ID.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst realtimeSession = await client.realtimeSessions.retrieve(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(realtimeSession);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nrealtime_session = client.realtime_sessions.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(realtime_session)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst session = await client.realtimeSessions.retrieve(\n  '550e8400-e29b-41d4-a716-446655440000'\n);\nconsole.log(session.status);"
@@ -5609,6 +5747,14 @@
         "description": "Cancel an active realtime session.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.realtimeSessions.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.realtime_sessions.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.realtimeSessions.delete(\n  '550e8400-e29b-41d4-a716-446655440000'\n);"
@@ -5642,6 +5788,14 @@
         "summary": "Get task detail",
         "description": "Return details about a task. Consumers of this API should not expect updates more frequent than once every five seconds for a given task.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst task = await client.tasks.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(task);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\ntask = client.tasks.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(task)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -5899,6 +6053,14 @@
         "description": "Tasks that are running, pending, or throttled can be canceled by invoking this method. Invoking this method for other tasks will delete them.\n\nThe output data associated with a deleted task will be deleted from persistent storage in accordance with our data retention policy. Aborted and deleted tasks will not be able to be fetched again in the future.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.tasks.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.tasks.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.tasks.delete('17f20503-6c24-4c16-946b-35dbbce2af2f');"
@@ -5936,6 +6098,14 @@
         "summary": "Image to video",
         "description": "This endpoint will start a new task to generate a video from an image.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst imageToVideo = await client.imageToVideo.create({\n  duration: 2,\n  model: 'gen4.5',\n  promptImage: 'https://example.com/file',\n  promptText: 'x',\n  ratio: '1280:720',\n});\n\nconsole.log(imageToVideo.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nimage_to_video = client.image_to_video.create(\n    duration=2,\n    model=\"gen4.5\",\n    prompt_image=\"https://example.com/file\",\n    prompt_text=\"x\",\n    ratio=\"1280:720\",\n)\nprint(image_to_video.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -7445,6 +7615,14 @@
         "description": "This endpoint will start a new task to generate a video from a text prompt.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst textToVideo = await client.textToVideo.create({\n  duration: 2,\n  model: 'gen4.5',\n  promptText: 'x',\n  ratio: '1280:720',\n});\n\nconsole.log(textToVideo.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\ntext_to_video = client.text_to_video.create(\n    duration=2,\n    model=\"gen4.5\",\n    prompt_text=\"x\",\n    ratio=\"1280:720\",\n)\nprint(text_to_video.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.textToVideo\n  .create({\n    model: 'veo3.1',\n    promptText: 'A cute bunny hopping in a meadow',\n    ratio: '1280:720',\n    duration: 8,\n  })\n  .waitForTaskOutput();\n\nconsole.log(task);"
@@ -8274,6 +8452,14 @@
         "summary": "Video to video",
         "description": "This endpoint will start a new task to generate a video from a video.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst videoToVideo = await client.videoToVideo.create({\n  model: 'aleph2',\n  videoUri: 'https://example.com/video.mp4',\n});\n\nconsole.log(videoToVideo.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo_to_video = client.video_to_video.create(\n    model=\"aleph2\",\n    video_uri=\"https://example.com/video.mp4\",\n)\nprint(video_to_video.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -9282,6 +9468,14 @@
         "description": "This endpoint will start a new task to generate images from text and/or image(s)",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst textToImage = await client.textToImage.create({\n  model: 'gen4_image_turbo',\n  promptText: 'x',\n  ratio: '1024:1024',\n  referenceImages: [{ uri: 'https://example.com/file' }],\n});\n\nconsole.log(textToImage.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\ntext_to_image = client.text_to_image.create(\n    model=\"gen4_image_turbo\",\n    prompt_text=\"x\",\n    ratio=\"1024:1024\",\n    reference_images=[{\n        \"uri\": \"https://example.com/file\"\n    }],\n)\nprint(text_to_image.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.textToImage\n  .create({\n    model: 'gen4_image',\n    promptText: 'A serene landscape with mountains',\n    ratio: '1360:768',\n  })\n  .waitForTaskOutput();\n\nconsole.log(task);"
@@ -10194,6 +10388,14 @@
         "description": "Upscale an image with Magnific precision upscaling. Each input dimension must be between 300px and 8000px. Output width and height are the input dimensions multiplied by `scaleFactor` (default 2). Output width times height cannot exceed 25,300,000 pixels (~25.3 million).",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst imageUpscale = await client.imageUpscale.create({\n  imageUri: 'https://example.com/image.jpg',\n  model: 'magnific_precision_upscaler_v2',\n});\n\nconsole.log(imageUpscale.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nimage_upscale = client.image_upscale.create(\n    image_uri=\"https://example.com/image.jpg\",\n    model=\"magnific_precision_upscaler_v2\",\n)\nprint(image_upscale.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.imageUpscale\n  .create({\n    model: 'magnific_precision_upscaler_v2',\n    imageUri: 'https://example.com/photo.jpg',\n    scaleFactor: 2,\n  })\n  .waitForTaskOutput();\nconsole.log(task);"
@@ -10330,6 +10532,14 @@
         "summary": "Video upscale",
         "description": "This endpoint starts a task to upscale a video. Set `model` to choose the upscaler.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst videoUpscale = await client.videoUpscale.create({\n  model: 'magnific_video_upscaler_creative',\n  videoUri: 'https://example.com/video.mp4',\n});\n\nconsole.log(videoUpscale.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo_upscale = client.video_upscale.create(\n    model=\"magnific_video_upscaler_creative\",\n    video_uri=\"https://example.com/video.mp4\",\n)\nprint(video_upscale.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -10471,6 +10681,14 @@
         "summary": "Control a character",
         "description": "This endpoint will start a new task to control a character's facial expressions and body movements using a reference video.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst characterPerformance = await client.characterPerformance.create({\n  character: { type: 'image', uri: 'https://example.com/file' },\n  model: 'act_two',\n  reference: { type: 'video', uri: 'https://example.com/reference-performance.mp4' },\n});\n\nconsole.log(characterPerformance.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\ncharacter_performance = client.character_performance.create(\n    character={\n        \"type\": \"image\",\n        \"uri\": \"https://example.com/file\",\n    },\n    model=\"act_two\",\n    reference={\n        \"type\": \"video\",\n        \"uri\": \"https://example.com/reference-performance.mp4\",\n    },\n)\nprint(character_performance.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -10725,6 +10943,14 @@
         "description": "This endpoint will start a new task to generate sound effects from a text description.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst soundEffect = await client.soundEffect.create({ model: 'seed_audio', promptText: 'x' });\n\nconsole.log(soundEffect.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nsound_effect = client.sound_effect.create(\n    model=\"seed_audio\",\n    prompt_text=\"x\",\n)\nprint(sound_effect.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.soundEffect\n  .create({\n    model: 'eleven_text_to_sound_v2',\n    promptText: 'A thunderstorm with heavy rain',\n    duration: 10,\n    loop: true,\n  })\n  .waitForTaskOutput();\nconsole.log(task);"
@@ -10897,6 +11123,14 @@
         "summary": "Speech to speech",
         "description": "This endpoint will start a new task to convert speech from one voice to another in audio or video.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst speechToSpeech = await client.speechToSpeech.create({\n  media: { type: 'audio', uri: 'https://example.com/file' },\n  model: 'eleven_multilingual_sts_v2',\n  voice: { presetId: 'Maya', type: 'runway-preset' },\n});\n\nconsole.log(speechToSpeech.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nspeech_to_speech = client.speech_to_speech.create(\n    media={\n        \"type\": \"audio\",\n        \"uri\": \"https://example.com/file\",\n    },\n    model=\"eleven_multilingual_sts_v2\",\n    voice={\n        \"preset_id\": \"Maya\",\n        \"type\": \"runway-preset\",\n    },\n)\nprint(speech_to_speech.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -11135,6 +11369,14 @@
         "summary": "Text to speech",
         "description": "This endpoint will start a new task to generate speech from text.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst textToSpeech = await client.textToSpeech.create({ model: 'seed_audio', promptText: 'x' });\n\nconsole.log(textToSpeech.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\ntext_to_speech = client.text_to_speech.create(\n    model=\"seed_audio\",\n    prompt_text=\"x\",\n)\nprint(text_to_speech.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -11384,6 +11626,14 @@
         "description": "This endpoint will start a new task to dub audio content to a target language.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voiceDubbing = await client.voiceDubbing.create({\n  audioUri: 'https://example.com/audio.mp3',\n  model: 'eleven_voice_dubbing',\n  targetLang: 'en',\n});\n\nconsole.log(voiceDubbing.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice_dubbing = client.voice_dubbing.create(\n    audio_uri=\"https://example.com/audio.mp3\",\n    model=\"eleven_voice_dubbing\",\n    target_lang=\"en\",\n)\nprint(voice_dubbing.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.voiceDubbing\n  .create({\n    model: 'eleven_voice_dubbing',\n    audioUri: 'https://example.com/audio.mp3',\n    targetLang: 'es',\n  })\n  .waitForTaskOutput();\nconsole.log(task);"
@@ -11541,6 +11791,14 @@
         "description": "This endpoint will start a new task to isolate the voice from the background audio. Audio duration must be greater than 4.6 seconds and less than 3600 seconds.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voiceIsolation = await client.voiceIsolation.create({\n  audioUri: 'https://example.com/audio.mp3',\n  model: 'eleven_voice_isolation',\n});\n\nconsole.log(voiceIsolation.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice_isolation = client.voice_isolation.create(\n    audio_uri=\"https://example.com/audio.mp3\",\n    model=\"eleven_voice_isolation\",\n)\nprint(voice_isolation.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.voiceIsolation\n  .create({\n    model: 'eleven_voice_isolation',\n    audioUrl: 'https://example.com/audio.mp3',\n  })\n  .waitForTaskOutput();\nconsole.log(task);"
@@ -11648,6 +11906,14 @@
         "summary": "Get organization information",
         "description": "Get usage tier and credit balance information about the organization associated with the API key used to make the request.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst organization = await client.organization.retrieve();\n\nconsole.log(organization.creditBalance);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\norganization = client.organization.retrieve()\nprint(organization.credit_balance)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -11870,6 +12136,14 @@
         "summary": "Query credit usage",
         "description": "Fetch credit usage data broken down by model and day for the organization associated with the API key used to make the request. Up to 90 days of data can be queried at a time.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.organization.retrieveUsage();\n\nconsole.log(response.models);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.organization.retrieve_usage()\nprint(response.models)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -12215,6 +12489,14 @@
         "description": "Localize an existing ad image for a target language, preserving visual creative while adapting on-screen messaging.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.adLocalization({\n  referenceImage: { uri: 'https://example.com/file' },\n  targetLanguage: 'ar',\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.ad_localization(\n    reference_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    target_language=\"ar\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\n\nconst task = await client.recipes.adLocalization({\n  version: '2026-06',\n  referenceImage: { uri: 'https://example.com/source-ad.jpg' },\n  targetLanguage: 'ja',\n});\n\nconsole.log(task);"
@@ -12355,6 +12637,14 @@
         "description": "Generate a polished marketing stock image from a text brief and optional brand logo image.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.marketingStockImage({ prompt: 'x', version: '2026-06' });\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.marketing_stock_image(\n    prompt=\"x\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\n\nconst task = await client.recipes.marketingStockImage({\n  version: '2026-06',\n  prompt: 'Premium lifestyle photo for a sustainable travel backpack campaign, urban morning commute, natural copy space on the left',\n  referenceImage: { uri: 'https://example.com/brand-logo.png' },\n});\n\nconsole.log(task);"
@@ -12485,6 +12775,14 @@
         "summary": "Create a product ad video",
         "description": "Generate a cinematic product ad from product images, optional style references, product info, and creative direction.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productAd({\n  productImages: [{ uri: 'https://example.com/file' }],\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_ad(\n    product_images=[{\n        \"uri\": \"https://example.com/file\"\n    }],\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -12682,6 +12980,14 @@
         "description": "Generate four fashion campaign images from a product image and style brief.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productCampaignImage({\n  image: { uri: 'https://example.com/file' },\n  prompt: 'x',\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_campaign_image(\n    image={\n        \"uri\": \"https://example.com/file\"\n    },\n    prompt=\"x\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\n\nconst task = await client.recipes.productCampaignImage({\n  version: '2026-06',\n  image: { uri: 'https://example.com/product.jpg' },\n  prompt: 'High-key fashion editorial, gorpcore-meets-blokecore-meets-Y2K',\n});\n\nconsole.log(task);"
@@ -12799,6 +13105,14 @@
         "summary": "Swap a product in a reference video",
         "description": "Replace the product in a reference video with a new product, preserving camera motion, lighting, and scene composition.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productSwap({\n  newProductImages: [{ uri: 'https://example.com/file' }],\n  originalProductImage: { uri: 'https://example.com/file' },\n  referenceVideo: { uri: 'https://example.com/file' },\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_swap(\n    new_product_images=[{\n        \"uri\": \"https://example.com/file\"\n    }],\n    original_product_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    reference_video={\n        \"uri\": \"https://example.com/file\"\n    },\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -13018,6 +13332,14 @@
         "summary": "Create a multi-shot video",
         "description": "Generate a multi-cut video from a story prompt (auto mode) or a custom shot list (custom mode).",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.multiShotVideo({\n  mode: 'auto',\n  prompt: 'x',\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.multi_shot_video(\n    mode=\"auto\",\n    prompt=\"x\",\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -13271,6 +13593,14 @@
         "description": "Generate a vertical user-generated content ad from a character image, product image, product details, and optional creative direction.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.recipes.productUgc({\n  characterImage: { uri: 'https://example.com/file' },\n  productImage: { uri: 'https://example.com/file' },\n  version: '2026-06',\n});\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.recipes.product_ugc(\n    character_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    product_image={\n        \"uri\": \"https://example.com/file\"\n    },\n    version=\"2026-06\",\n)\nprint(response.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\n\nconst task = await client.recipes.productUgc({\n  version: '2026-06',\n  characterImage: { uri: 'https://example.com/creator.jpg' },\n  productImage: { uri: 'https://example.com/product.jpg' },\n  productInfo: 'Wireless game controller with haptic feedback triggers',\n  userConcept: 'Enthusiastic creator tone, demonstrate the product in hand',\n  duration: 15,\n});\n\nconsole.log(task);"
@@ -13448,6 +13778,14 @@
         "summary": "List voices",
         "description": "List custom voices for the authenticated organization with cursor-based pagination.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const voiceListResponse of client.voices.list({ limit: 1 })) {\n  console.log(voiceListResponse);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.voices.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -13654,6 +13992,14 @@
         "description": "Create a custom voice from a text description, or clone a voice from an audio sample.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voice = await client.voices.create({\n  from: { audio: 'https://example.com/file', type: 'audio' },\n  name: 'x',\n});\n\nconsole.log(voice.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice = client.voices.create(\n    from_={\n        \"audio\": \"https://example.com/file\",\n        \"type\": \"audio\",\n    },\n    name=\"x\",\n)\nprint(voice.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst voice = await client.voices.create({\n  name: 'My Custom Voice',\n  from: {\n    type: 'text',\n    prompt: 'A warm, friendly voice with a slight British accent',\n    model: 'eleven_ttv_v3',\n  },\n});\nconsole.log(voice.id);"
@@ -13786,6 +14132,14 @@
         "summary": "Get a voice",
         "description": "Get details about a specific custom voice.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voice = await client.voices.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(voice);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice = client.voices.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(voice)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -13952,6 +14306,14 @@
         "summary": "Update a voice",
         "description": "Update the name and/or description of a custom voice.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst voice = await client.voices.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(voice);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvoice = client.voices.update(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(voice)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -14145,6 +14507,14 @@
         "description": "Delete a custom voice.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.voices.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.voices.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.voices.delete('550e8400-e29b-41d4-a716-446655440000');"
@@ -14178,6 +14548,14 @@
         "summary": "Preview a voice",
         "description": "Generate a short audio preview of a voice from a text description. Use this to audition a voice before creating it.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.voices.preview({\n  model: 'eleven_ttv_v3',\n  prompt: 'xxxxxxxxxxxxxxxxxxxx',\n});\n\nconsole.log(response.durationSecs);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.voices.preview(\n    model=\"eleven_ttv_v3\",\n    prompt=\"xxxxxxxxxxxxxxxxxxxx\",\n)\nprint(response.duration_secs)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -14247,6 +14625,14 @@
         "summary": "Run a published workflow",
         "description": "Start a new task to execute a published workflow. You can optionally provide custom input values via `nodeOutputs` to override the defaults defined in the workflow graph.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst response = await client.workflows.run('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nresponse = client.workflows.run(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(response.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -14494,6 +14880,14 @@
         "description": "Returns details about a specific published workflow, including its graph schema.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst workflow = await client.workflows.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(workflow.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nworkflow = client.workflows.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(workflow.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst workflow = await client.workflows.retrieve(\n  'a1b2c3d4-e5f6-7890-abcd-ef1234567890'\n);\nconsole.log(workflow);"
@@ -14636,6 +15030,14 @@
         "description": "Returns a list of all published workflows for the authenticated user, grouped by source workflow with their published versions.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst workflows = await client.workflows.list();\n\nconsole.log(workflows.data);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nworkflows = client.workflows.list()\nprint(workflows.data)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst { data: workflows } = await client.workflows.list();\nconsole.log(workflows);"
@@ -14745,6 +15147,14 @@
         "summary": "Get workflow invocation detail",
         "description": "Return details about a workflow invocation. Consumers of this API should not expect updates more frequent than once every five seconds for a given workflow invocation.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst workflowInvocation = await client.workflowInvocations.retrieve(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(workflowInvocation);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nworkflow_invocation = client.workflow_invocations.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(workflow_invocation)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
