@@ -7826,7 +7826,7 @@
                         "maximum": 30
                       },
                       "ratio": {
-                        "description": "The resolution of the output video. Seedance 2.5 supports 480p and 720p only.",
+                        "description": "The resolution of the output video. Seedance 2.5 supports 480p, 720p, and 1080p.",
                         "type": "string",
                         "enum": [
                           "992:432",
@@ -7840,7 +7840,13 @@
                           "1112:834",
                           "960:960",
                           "834:1112",
-                          "720:1280"
+                          "720:1280",
+                          "2206:946",
+                          "1920:1080",
+                          "1664:1248",
+                          "1440:1440",
+                          "1248:1664",
+                          "1080:1920"
                         ]
                       },
                       "referenceAudio": {
@@ -9090,7 +9096,7 @@
                         "maximum": 30
                       },
                       "ratio": {
-                        "description": "The resolution of the output video. Seedance 2.5 supports 480p and 720p only.",
+                        "description": "The resolution of the output video. Seedance 2.5 supports 480p, 720p, and 1080p.",
                         "type": "string",
                         "enum": [
                           "992:432",
@@ -9104,7 +9110,13 @@
                           "1112:834",
                           "960:960",
                           "834:1112",
-                          "720:1280"
+                          "720:1280",
+                          "2206:946",
+                          "1920:1080",
+                          "1664:1248",
+                          "1440:1440",
+                          "1248:1664",
+                          "1080:1920"
                         ]
                       },
                       "references": {
@@ -10738,7 +10750,7 @@
                         "maximum": 30
                       },
                       "ratio": {
-                        "description": "The resolution of the output video. Seedance 2.5 supports 480p and 720p only.",
+                        "description": "The resolution of the output video. Seedance 2.5 supports 480p, 720p, and 1080p.",
                         "type": "string",
                         "enum": [
                           "992:432",
@@ -10752,7 +10764,13 @@
                           "1112:834",
                           "960:960",
                           "834:1112",
-                          "720:1280"
+                          "720:1280",
+                          "2206:946",
+                          "1920:1080",
+                          "1664:1248",
+                          "1440:1440",
+                          "1248:1664",
+                          "1080:1920"
                         ]
                       },
                       "references": {
@@ -14992,7 +15010,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst video = await client.generate.video.create({\n  configId: 'n6_',\n  input: {},\n});\n\nconsole.log(video);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo = client.generate.video.create(\n    config_id=\"n6_\",\n    input={},\n)\nprint(video)"
+          }
+        ]
       }
     },
     "/v1/generate/image": {
@@ -15484,7 +15512,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst image = await client.generate.image.create({\n  configId: 'n6_',\n  input: { promptText: 'x' },\n});\n\nconsole.log(image);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nimage = client.generate.image.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\"\n    },\n)\nprint(image)"
+          }
+        ]
       }
     },
     "/v1/generate/audio": {
@@ -16060,7 +16098,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst audio = await client.generate.audio.create({\n  configId: 'n6_',\n  input: { promptText: 'x', type: 'speech' },\n});\n\nconsole.log(audio);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\naudio = client.generate.audio.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\",\n        \"type\": \"speech\",\n    },\n)\nprint(audio)"
+          }
+        ]
       }
     },
     "/v1/organization/webapp/usage": {
@@ -19019,6 +19067,14 @@
         "description": "List Model Router configurations for the authenticated organization with cursor-based pagination.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const routerListResponse of client.routers.list({ limit: 1 })) {\n  console.log(routerListResponse.id);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.routers.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML();\nconst routers = await client.routers.list();\nfor await (const router of routers) {\n  console.log(router);\n}"
@@ -19207,6 +19263,14 @@
         "summary": "Create Model Router",
         "description": "Create a Model Router configuration.",
         "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst router = await client.routers.create({ slug: 'slug' });\n\nconsole.log(router.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nrouter = client.routers.create(\n    slug=\"slug\",\n)\nprint(router.id)"
+          },
           {
             "lang": "TypeScript",
             "label": "Node SDK",
@@ -19593,7 +19657,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst router = await client.routers.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(router.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nrouter = client.routers.retrieve(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(router.id)"
+          }
+        ]
       },
       "patch": {
         "tags": ["Model Router"],
@@ -19835,7 +19909,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst router = await client.routers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(router.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nrouter = client.routers.update(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(router.id)"
+          }
+        ]
       },
       "delete": {
         "tags": ["Model Router"],
@@ -19855,7 +19939,17 @@
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
-        "responses": { "204": { "description": "Success" } }
+        "responses": { "204": { "description": "Success" } },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nawait client.routers.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nclient.routers.delete(\n    \"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)"
+          }
+        ]
       }
     },
     "/v1/routers/{id}/requests": {
@@ -20102,7 +20196,17 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const routerListRequestsResponse of client.routers.listRequests(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { limit: 1 },\n)) {\n  console.log(routerListRequestsResponse.id);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.routers.list_requests(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+          }
+        ]
       }
     },
     "/v1/voices": {
