@@ -15195,11 +15195,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst video = await client.videoUpscale.video.create({\n  configId: 'n6_',\n  input: {},\n});\n\nconsole.log(video.id);"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst video = await client.generate.video.create({\n  configId: 'n6_',\n  input: {},\n});\n\nconsole.log(video.id);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo = client.video_upscale.video.create(\n    config_id=\"n6_\",\n    input={},\n)\nprint(video.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo = client.generate.video.create(\n    config_id=\"n6_\",\n    input={},\n)\nprint(video.id)"
           }
         ]
       }
@@ -15697,11 +15697,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst image = await client.videoUpscale.image.create({\n  configId: 'n6_',\n  input: { promptText: 'x' },\n});\n\nconsole.log(image.id);"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst image = await client.generate.image.create({\n  configId: 'n6_',\n  input: { promptText: 'x' },\n});\n\nconsole.log(image.id);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nimage = client.video_upscale.image.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\"\n    },\n)\nprint(image.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nimage = client.generate.image.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\"\n    },\n)\nprint(image.id)"
           }
         ]
       }
@@ -16283,11 +16283,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst audio = await client.videoUpscale.audio.create({\n  configId: 'n6_',\n  input: { promptText: 'x', type: 'speech' },\n});\n\nconsole.log(audio.id);"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst audio = await client.generate.audio.create({\n  configId: 'n6_',\n  input: { promptText: 'x', type: 'speech' },\n});\n\nconsole.log(audio.id);"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\naudio = client.video_upscale.audio.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\",\n        \"type\": \"speech\",\n    },\n)\nprint(audio.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\naudio = client.generate.audio.create(\n    config_id=\"n6_\",\n    input={\n        \"prompt_text\": \"x\",\n        \"type\": \"speech\",\n    },\n)\nprint(audio.id)"
           }
         ]
       }
