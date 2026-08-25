@@ -11050,6 +11050,14 @@
         "description": "This endpoint starts a task to upconvert an SDR video to true HDR with Ruby, Runway's HDR grading model. The output keeps the source's own pixels — luma and color are extended into the HDR range, nothing is re-synthesized. Set `outputFormat` to choose the delivery profile: `hdr10` (HEVC Main 10, BT.2020 + PQ, the default), `hlg` (HEVC Main 10, BT.2020 + HLG), `hdr_prores` (BT.2020 + PQ ProRes .mov editorial mezzanine, tier selectable with `proresProfile`), or `hdr_exr_sequence` (a .zip of half-float OpenEXR frames in linear BT.2020 display light, for compositing). Tasks bill per second of output at 20 credits per second, rising to 40 credits per second when the source is larger than 4 megapixels (roughly 4K) — an upconvert delivers at the source's own resolution.",
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\nconst videoToHdr = await client.videoToHdr.create({\n  model: 'ruby',\n  videoUri: 'https://example.com/video.mp4',\n});\n\nconsole.log(videoToHdr.id);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\nvideo_to_hdr = client.video_to_hdr.create(\n    model=\"ruby\",\n    video_uri=\"https://example.com/video.mp4\",\n)\nprint(video_to_hdr.id)"
+          },
+          {
             "lang": "TypeScript",
             "label": "Node SDK",
             "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nconst task = await client.videoToHdr\n  .create({\n    model: 'ruby',\n    videoUri: 'https://example.com/bunny.mp4',\n    outputFormat: 'hdr10',\n  })\n  .waitForTaskOutput();\nconsole.log(task);"
