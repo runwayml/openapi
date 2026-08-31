@@ -54,9 +54,27 @@ jobs:
           # outranks the remote URL credential; blank it for this fetch only.
           git -c "http.https://github.com/.extraheader=" fetch production main
 
-      - name: Check whether production has content staging lacks
+      - name: Check whether staging must advance to production
         id: diff
         run: |
+          STAGING_SHA=$(git rev-parse origin/main)
+          PRODUCTION_SHA=$(git rev-parse production/main)
+
+          if [ "$STAGING_SHA" = "$PRODUCTION_SHA" ]; then
+            echo "Staging and production already point to the same commit."
+            echo "behind=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Advance the ref even when the trees match. Merge-commit promotions can
+          # produce an empty production commit that the next codegen ancestry check
+          # still needs staging to contain.
+          if git merge-base --is-ancestor origin/main production/main; then
+            echo "Production contains newer commits. Staging must fast-forward."
+            echo "behind=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           # Content compare: would merging production into staging change its tree?
           # If not, staging already has production's content (release-please commits).
           MERGED=$(git merge-tree --write-tree origin/main production/main) || MERGED=conflict
