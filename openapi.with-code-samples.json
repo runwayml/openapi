@@ -694,7 +694,7 @@
                         "pattern": "^runway:\\/\\/.*"
                       },
                       {
-                        "description": "A data URI containing encoded media.",
+                        "description": "A data URI containing encoded media, up to 5MB.",
                         "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                         "type": "string",
                         "minLength": 13,
@@ -3293,7 +3293,7 @@
                         "pattern": "^runway:\\/\\/.*"
                       },
                       {
-                        "description": "A data URI containing encoded media.",
+                        "description": "A data URI containing encoded media, up to 5MB.",
                         "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                         "type": "string",
                         "minLength": 13,
@@ -4093,7 +4093,7 @@
                             "example": "https://example.com/audio.mp3",
                             "anyOf": [
                               {
-                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                 "example": "https://example.com/audio.mp3",
                                 "type": "string",
                                 "minLength": 13,
@@ -4109,11 +4109,11 @@
                                 "pattern": "^runway:\\/\\/.*"
                               },
                               {
-                                "description": "A data URI containing encoded media.",
+                                "description": "A data URI containing encoded media, up to 5MB.",
                                 "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                 "type": "string",
                                 "minLength": 13,
-                                "maxLength": 16777216,
+                                "maxLength": 5242880,
                                 "pattern": "^data:audio\\/.*"
                               }
                             ]
@@ -9980,7 +9980,7 @@
                                       "pattern": "^runway:\\/\\/.*"
                                     },
                                     {
-                                      "description": "A data URI containing encoded media.",
+                                      "description": "A data URI containing encoded media, up to 5MB.",
                                       "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                       "type": "string",
                                       "minLength": 13,
@@ -10044,7 +10044,7 @@
                                       "pattern": "^runway:\\/\\/.*"
                                     },
                                     {
-                                      "description": "A data URI containing encoded media.",
+                                      "description": "A data URI containing encoded media, up to 5MB.",
                                       "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                       "type": "string",
                                       "minLength": 13,
@@ -10092,7 +10092,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -10108,11 +10108,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -10186,7 +10186,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -10202,11 +10202,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -10271,7 +10271,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -10300,7 +10300,7 @@
                               "example": "https://example.com/video.mp4",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                   "example": "https://example.com/video.mp4",
                                   "type": "string",
                                   "minLength": 13,
@@ -10316,11 +10316,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:video\\/.*"
                                 }
                               ]
@@ -10345,7 +10345,7 @@
                               "example": "https://example.com/audio.mp3",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                   "example": "https://example.com/audio.mp3",
                                   "type": "string",
                                   "minLength": 13,
@@ -10361,11 +10361,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:audio\\/.*"
                                 }
                               ]
@@ -10389,7 +10389,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -10405,11 +10405,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -10491,7 +10491,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -10520,7 +10520,7 @@
                               "example": "https://example.com/video.mp4",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                   "example": "https://example.com/video.mp4",
                                   "type": "string",
                                   "minLength": 13,
@@ -10536,11 +10536,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:video\\/.*"
                                 }
                               ]
@@ -10564,7 +10564,7 @@
                               "example": "https://example.com/audio.mp3",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                   "example": "https://example.com/audio.mp3",
                                   "type": "string",
                                   "minLength": 13,
@@ -10580,11 +10580,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:audio\\/.*"
                                 }
                               ]
@@ -10607,7 +10607,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -10623,11 +10623,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -10697,7 +10697,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -10726,7 +10726,7 @@
                               "example": "https://example.com/video.mp4",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                   "example": "https://example.com/video.mp4",
                                   "type": "string",
                                   "minLength": 13,
@@ -10742,11 +10742,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:video\\/.*"
                                 }
                               ]
@@ -10770,7 +10770,7 @@
                               "example": "https://example.com/audio.mp3",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                   "example": "https://example.com/audio.mp3",
                                   "type": "string",
                                   "minLength": 13,
@@ -10786,11 +10786,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:audio\\/.*"
                                 }
                               ]
@@ -10813,7 +10813,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -10829,11 +10829,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -10903,7 +10903,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -10932,7 +10932,7 @@
                               "example": "https://example.com/video.mp4",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                   "example": "https://example.com/video.mp4",
                                   "type": "string",
                                   "minLength": 13,
@@ -10948,11 +10948,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:video\\/.*"
                                 }
                               ]
@@ -10976,7 +10976,7 @@
                               "example": "https://example.com/audio.mp3",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                   "example": "https://example.com/audio.mp3",
                                   "type": "string",
                                   "minLength": 13,
@@ -10992,11 +10992,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:audio\\/.*"
                                 }
                               ]
@@ -11019,7 +11019,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -11035,11 +11035,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -11080,7 +11080,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -11111,7 +11111,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -11127,11 +11127,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -11213,7 +11213,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -11242,7 +11242,7 @@
                               "example": "https://example.com/video.mp4",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                   "example": "https://example.com/video.mp4",
                                   "type": "string",
                                   "minLength": 13,
@@ -11258,11 +11258,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:video\\/.*"
                                 }
                               ]
@@ -11286,7 +11286,7 @@
                               "example": "https://example.com/audio.mp3",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                   "example": "https://example.com/audio.mp3",
                                   "type": "string",
                                   "minLength": 13,
@@ -11302,11 +11302,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:audio\\/.*"
                                 }
                               ]
@@ -11467,7 +11467,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -11483,11 +11483,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media, up to 16MB.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -11718,7 +11718,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -11826,7 +11826,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -11948,7 +11948,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -12055,7 +12055,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -12196,7 +12196,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -12379,7 +12379,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -12474,7 +12474,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -12585,7 +12585,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -12668,7 +12668,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -12855,7 +12855,7 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
@@ -13047,7 +13047,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -13063,11 +13063,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -13290,7 +13290,7 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
@@ -13313,7 +13313,7 @@
                                 "example": "https://example.com/video.mp4",
                                 "anyOf": [
                                   {
-                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                     "example": "https://example.com/video.mp4",
                                     "type": "string",
                                     "minLength": 13,
@@ -13329,11 +13329,11 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
-                                    "maxLength": 16777216,
+                                    "maxLength": 5242880,
                                     "pattern": "^data:video\\/.*"
                                   }
                                 ]
@@ -13362,7 +13362,7 @@
                                 "example": "https://example.com/reference-performance.mp4",
                                 "anyOf": [
                                   {
-                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                     "example": "https://example.com/video.mp4",
                                     "type": "string",
                                     "minLength": 13,
@@ -13378,11 +13378,11 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
-                                    "maxLength": 16777216,
+                                    "maxLength": 5242880,
                                     "pattern": "^data:video\\/.*"
                                   }
                                 ]
@@ -13593,7 +13593,7 @@
                           "example": "https://example.com/audio.mp3",
                           "anyOf": [
                             {
-                              "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                              "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                               "example": "https://example.com/audio.mp3",
                               "type": "string",
                               "minLength": 13,
@@ -13609,11 +13609,11 @@
                               "pattern": "^runway:\\/\\/.*"
                             },
                             {
-                              "description": "A data URI containing encoded media.",
+                              "description": "A data URI containing encoded media, up to 5MB.",
                               "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                               "type": "string",
                               "minLength": 13,
-                              "maxLength": 16777216,
+                              "maxLength": 5242880,
                               "pattern": "^data:audio\\/.*"
                             }
                           ]
@@ -13839,7 +13839,7 @@
                                 "example": "https://example.com/audio.mp3",
                                 "anyOf": [
                                   {
-                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                     "example": "https://example.com/audio.mp3",
                                     "type": "string",
                                     "minLength": 13,
@@ -13855,11 +13855,11 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
-                                    "maxLength": 16777216,
+                                    "maxLength": 5242880,
                                     "pattern": "^data:audio\\/.*"
                                   }
                                 ]
@@ -13878,7 +13878,7 @@
                                 "example": "https://example.com/video.mp4",
                                 "anyOf": [
                                   {
-                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                     "example": "https://example.com/video.mp4",
                                     "type": "string",
                                     "minLength": 13,
@@ -13894,11 +13894,11 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
-                                    "maxLength": 16777216,
+                                    "maxLength": 5242880,
                                     "pattern": "^data:video\\/.*"
                                   }
                                 ]
@@ -14587,7 +14587,7 @@
                         "example": "https://example.com/audio.mp3",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                             "example": "https://example.com/audio.mp3",
                             "type": "string",
                             "minLength": 13,
@@ -14603,11 +14603,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:audio\\/.*"
                           }
                         ]
@@ -14815,7 +14815,7 @@
                         "example": "https://example.com/audio.mp3",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                             "example": "https://example.com/audio.mp3",
                             "type": "string",
                             "minLength": 13,
@@ -14831,11 +14831,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:audio\\/.*"
                           }
                         ]
@@ -15017,7 +15017,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -15048,7 +15048,7 @@
                               "example": "https://example.com/video.mp4",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                   "example": "https://example.com/video.mp4",
                                   "type": "string",
                                   "minLength": 13,
@@ -15064,11 +15064,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:video\\/.*"
                                 }
                               ]
@@ -15095,7 +15095,7 @@
                               "example": "https://example.com/audio.mp3",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                   "example": "https://example.com/audio.mp3",
                                   "type": "string",
                                   "minLength": 13,
@@ -15111,11 +15111,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:audio\\/.*"
                                 }
                               ]
@@ -15156,7 +15156,7 @@
                                       "pattern": "^runway:\\/\\/.*"
                                     },
                                     {
-                                      "description": "A data URI containing encoded media.",
+                                      "description": "A data URI containing encoded media, up to 5MB.",
                                       "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                       "type": "string",
                                       "minLength": 13,
@@ -15215,7 +15215,7 @@
                                       "pattern": "^runway:\\/\\/.*"
                                     },
                                     {
-                                      "description": "A data URI containing encoded media.",
+                                      "description": "A data URI containing encoded media, up to 5MB.",
                                       "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                       "type": "string",
                                       "minLength": 13,
@@ -15614,7 +15614,7 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
@@ -16060,7 +16060,7 @@
                                 "example": "https://example.com/audio.mp3",
                                 "anyOf": [
                                   {
-                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                     "example": "https://example.com/audio.mp3",
                                     "type": "string",
                                     "minLength": 13,
@@ -16076,11 +16076,11 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
-                                    "maxLength": 16777216,
+                                    "maxLength": 5242880,
                                     "pattern": "^data:audio\\/.*"
                                   }
                                 ]
@@ -16106,7 +16106,7 @@
                               "example": "https://example.com/audio.mp3",
                               "anyOf": [
                                 {
-                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                   "example": "https://example.com/audio.mp3",
                                   "type": "string",
                                   "minLength": 13,
@@ -16122,11 +16122,11 @@
                                   "pattern": "^runway:\\/\\/.*"
                                 },
                                 {
-                                  "description": "A data URI containing encoded media.",
+                                  "description": "A data URI containing encoded media, up to 5MB.",
                                   "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                   "type": "string",
                                   "minLength": 13,
-                                  "maxLength": 16777216,
+                                  "maxLength": 5242880,
                                   "pattern": "^data:audio\\/.*"
                                 }
                               ]
@@ -17733,7 +17733,7 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
@@ -17950,7 +17950,7 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
@@ -18150,7 +18150,7 @@
                               "pattern": "^runway:\\/\\/.*"
                             },
                             {
-                              "description": "A data URI containing encoded media.",
+                              "description": "A data URI containing encoded media, up to 5MB.",
                               "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                               "type": "string",
                               "minLength": 13,
@@ -18192,7 +18192,7 @@
                               "pattern": "^runway:\\/\\/.*"
                             },
                             {
-                              "description": "A data URI containing encoded media.",
+                              "description": "A data URI containing encoded media, up to 5MB.",
                               "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                               "type": "string",
                               "minLength": 13,
@@ -18413,7 +18413,7 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
@@ -18586,7 +18586,7 @@
                         "example": "https://example.com/video.mp4",
                         "anyOf": [
                           {
-                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                             "example": "https://example.com/video.mp4",
                             "type": "string",
                             "minLength": 13,
@@ -18602,11 +18602,11 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
-                            "maxLength": 16777216,
+                            "maxLength": 5242880,
                             "pattern": "^data:video\\/.*"
                           }
                         ]
@@ -18640,7 +18640,7 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
@@ -18682,7 +18682,7 @@
                               "pattern": "^runway:\\/\\/.*"
                             },
                             {
-                              "description": "A data URI containing encoded media.",
+                              "description": "A data URI containing encoded media, up to 5MB.",
                               "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                               "type": "string",
                               "minLength": 13,
@@ -18905,7 +18905,7 @@
                                 "pattern": "^runway:\\/\\/.*"
                               },
                               {
-                                "description": "A data URI containing encoded media.",
+                                "description": "A data URI containing encoded media, up to 5MB.",
                                 "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                 "type": "string",
                                 "minLength": 13,
@@ -19007,7 +19007,7 @@
                                 "pattern": "^runway:\\/\\/.*"
                               },
                               {
-                                "description": "A data URI containing encoded media.",
+                                "description": "A data URI containing encoded media, up to 5MB.",
                                 "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                 "type": "string",
                                 "minLength": 13,
@@ -19215,7 +19215,7 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
@@ -19253,7 +19253,7 @@
                             "pattern": "^runway:\\/\\/.*"
                           },
                           {
-                            "description": "A data URI containing encoded media.",
+                            "description": "A data URI containing encoded media, up to 5MB.",
                             "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                             "type": "string",
                             "minLength": 13,
@@ -20821,7 +20821,7 @@
                             "example": "https://example.com/audio.mp3",
                             "anyOf": [
                               {
-                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                 "example": "https://example.com/audio.mp3",
                                 "type": "string",
                                 "minLength": 13,
@@ -20837,11 +20837,11 @@
                                 "pattern": "^runway:\\/\\/.*"
                               },
                               {
-                                "description": "A data URI containing encoded media.",
+                                "description": "A data URI containing encoded media, up to 5MB.",
                                 "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                 "type": "string",
                                 "minLength": 13,
-                                "maxLength": 16777216,
+                                "maxLength": 5242880,
                                 "pattern": "^data:audio\\/.*"
                               }
                             ]
@@ -21508,7 +21508,7 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
@@ -21531,7 +21531,7 @@
                                 "example": "https://example.com/video.mp4",
                                 "anyOf": [
                                   {
-                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 16MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
                                     "example": "https://example.com/video.mp4",
                                     "type": "string",
                                     "minLength": 13,
@@ -21547,11 +21547,11 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
-                                    "maxLength": 16777216,
+                                    "maxLength": 5242880,
                                     "pattern": "^data:video\\/.*"
                                   }
                                 ]
@@ -21570,7 +21570,7 @@
                                 "example": "https://example.com/audio.mp3",
                                 "anyOf": [
                                   {
-                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 16MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                    "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
                                     "example": "https://example.com/audio.mp3",
                                     "type": "string",
                                     "minLength": 13,
@@ -21586,11 +21586,11 @@
                                     "pattern": "^runway:\\/\\/.*"
                                   },
                                   {
-                                    "description": "A data URI containing encoded media.",
+                                    "description": "A data URI containing encoded media, up to 5MB.",
                                     "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                                     "type": "string",
                                     "minLength": 13,
-                                    "maxLength": 16777216,
+                                    "maxLength": 5242880,
                                     "pattern": "^data:audio\\/.*"
                                   }
                                 ]
