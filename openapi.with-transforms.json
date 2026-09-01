@@ -6520,7 +6520,13 @@
                         "type": "number",
                         "enum": [4, 6, 8]
                       },
-                      "model": { "type": "string", "const": "veo3.1" }
+                      "model": { "type": "string", "const": "veo3.1" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptImage", "ratio", "model"]
                   },
@@ -6655,7 +6661,13 @@
                         "type": "number",
                         "enum": [4, 6, 8]
                       },
-                      "model": { "type": "string", "const": "veo3.1_fast" }
+                      "model": { "type": "string", "const": "veo3.1_fast" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptImage", "ratio", "model"]
                   },
@@ -7003,10 +7015,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video.",
@@ -7082,7 +7095,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2" }
+                      "model": { "type": "string", "const": "seedance2" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptImage", "model"],
                     "additionalProperties": false
@@ -7196,10 +7215,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.0 Fast supports 480p and 720p only.",
@@ -7263,7 +7283,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_fast" }
+                      "model": { "type": "string", "const": "seedance2_fast" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptImage", "model"],
                     "additionalProperties": false
@@ -7377,10 +7403,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.0 Mini supports 480p and 720p only.",
@@ -7444,7 +7471,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_mini" }
+                      "model": { "type": "string", "const": "seedance2_mini" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptImage", "model"],
                     "additionalProperties": false
@@ -7671,10 +7704,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 30
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 30 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.5 supports 480p, 720p, and 1080p.",
@@ -7744,7 +7778,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_5" }
+                      "model": { "type": "string", "const": "seedance2_5" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptImage", "model"],
                     "additionalProperties": false
@@ -8296,7 +8336,13 @@
                         "type": "number",
                         "enum": [4, 6, 8]
                       },
-                      "model": { "type": "string", "const": "veo3.1" }
+                      "model": { "type": "string", "const": "veo3.1" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptText", "ratio", "model"]
                   },
@@ -8336,7 +8382,13 @@
                         "type": "number",
                         "enum": [4, 6, 8]
                       },
-                      "model": { "type": "string", "const": "veo3.1_fast" }
+                      "model": { "type": "string", "const": "veo3.1_fast" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptText", "ratio", "model"]
                   },
@@ -8566,10 +8618,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video.",
@@ -8733,7 +8786,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2" }
+                      "model": { "type": "string", "const": "seedance2" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptText", "model"],
                     "additionalProperties": false
@@ -8754,10 +8813,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.0 Fast supports 480p and 720p only.",
@@ -8909,7 +8969,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_fast" }
+                      "model": { "type": "string", "const": "seedance2_fast" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptText", "model"],
                     "additionalProperties": false
@@ -8930,10 +8996,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.0 Mini supports 480p and 720p only.",
@@ -9085,7 +9152,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_mini" }
+                      "model": { "type": "string", "const": "seedance2_mini" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptText", "model"],
                     "additionalProperties": false
@@ -9134,10 +9207,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 30
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 30 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.5 supports 480p, 720p, and 1080p.",
@@ -9295,7 +9369,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_5" }
+                      "model": { "type": "string", "const": "seedance2_5" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["model"],
                     "additionalProperties": false
@@ -10240,10 +10320,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video.",
@@ -10407,7 +10488,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2" }
+                      "model": { "type": "string", "const": "seedance2" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptVideo", "model"],
                     "additionalProperties": false
@@ -10458,10 +10545,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.0 Fast supports 480p and 720p only.",
@@ -10613,7 +10701,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_fast" }
+                      "model": { "type": "string", "const": "seedance2_fast" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptVideo", "model"],
                     "additionalProperties": false
@@ -10664,10 +10758,11 @@
                         "type": "boolean"
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 15
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 15 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.0 Mini supports 480p and 720p only.",
@@ -10819,7 +10914,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_mini" }
+                      "model": { "type": "string", "const": "seedance2_mini" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptVideo", "model"],
                     "additionalProperties": false
@@ -10962,16 +11063,17 @@
                         "type": "boolean"
                       },
                       "mode": {
-                        "description": "How the input video is used. `reference` (the default) generates a new video conditioned on the input video and accepts `duration` and `ratio`. `extend` continues the input video, requires `promptText`, and matches the input aspect ratio, so `ratio` may not be provided.",
+                        "description": "How the input video is used. `reference` (the default) generates a new video conditioned on the input video and accepts `duration` and `ratio`. `extend` continues the input video, requires `promptText`, and matches the input aspect ratio, so `ratio` may not be provided. `edit` modifies the input video in place, requires `promptText`, requires `duration: \"auto\"`, and does not accept `ratio`.",
                         "default": "reference",
                         "type": "string",
-                        "enum": ["reference", "extend"]
+                        "enum": ["reference", "extend", "edit"]
                       },
                       "duration": {
-                        "description": "The number of seconds of duration for the output video. Defaults to 5.",
-                        "type": "integer",
-                        "minimum": 4,
-                        "maximum": 30
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes. Defaults to 5.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 30 },
+                          { "type": "string", "const": "auto" }
+                        ]
                       },
                       "ratio": {
                         "description": "The resolution of the output video. Seedance 2.5 supports 480p, 720p, and 1080p.",
@@ -11129,7 +11231,13 @@
                           "required": ["type", "uri"]
                         }
                       },
-                      "model": { "type": "string", "const": "seedance2_5" }
+                      "model": { "type": "string", "const": "seedance2_5" },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      }
                     },
                     "required": ["promptVideo", "model"],
                     "additionalProperties": false
@@ -14715,7 +14823,7 @@
                         "description": "A text prompt describing the desired video.",
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 6000
+                        "maxLength": 20000
                       },
                       "negativePrompt": {
                         "description": "A text description of what to avoid in the output.",
