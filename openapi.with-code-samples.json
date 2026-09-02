@@ -12023,12 +12023,12 @@
                         "enum": ["low", "medium", "high", "auto"]
                       },
                       "background": {
-                        "description": "Background treatment. Defaults to `auto`, which lets the model pick. `transparent` is not supported by this model.",
+                        "description": "Background treatment. Defaults to `auto`, which lets the model pick. Use `transparent` to generate a PNG with an alpha-channel background.",
                         "type": "string",
-                        "enum": ["opaque", "auto"]
+                        "enum": ["transparent", "opaque", "auto"]
                       },
                       "referenceImages": {
-                        "description": "An array of up to 16 images to be used as references for the generated image output.",
+                        "description": "An array of up to 16 images to be used as references for the generated image output. No two images may share the same tag.",
                         "maxItems": 16,
                         "type": "array",
                         "items": {
@@ -12416,7 +12416,12 @@
                         "minimum": 1,
                         "maximum": 10
                       },
-                      "model": { "type": "string", "const": "muse_image" }
+                      "model": { "type": "string", "const": "muse_image" },
+                      "outputFormat": {
+                        "description": "The file format of the output image. Defaults to png.",
+                        "type": "string",
+                        "enum": ["webp", "png", "jpeg"]
+                      }
                     },
                     "required": ["promptText", "ratio", "model"],
                     "additionalProperties": false
@@ -12527,25 +12532,30 @@
                         "maxLength": 4000
                       },
                       "ratio": {
-                        "description": "The resolution of the output image, expressed as `<width>:<height>`.",
-                        "type": "string",
-                        "enum": [
-                          "2048:2048",
-                          "2304:1728",
-                          "1728:2304",
-                          "2848:1600",
-                          "1600:2848",
-                          "2496:1664",
-                          "1664:2496",
-                          "3136:1344",
-                          "3072:3072",
-                          "3456:2592",
-                          "2592:3456",
-                          "4096:2304",
-                          "2304:4096",
-                          "3744:2496",
-                          "2496:3744",
-                          "4704:2016"
+                        "description": "The resolution of the output image, expressed as `<width>:<height>`. Also accepts freeform sizes whose width*height is between 3686400 and 16777216 pixels.",
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "2048:2048",
+                              "2304:1728",
+                              "1728:2304",
+                              "2848:1600",
+                              "1600:2848",
+                              "2496:1664",
+                              "1664:2496",
+                              "3136:1344",
+                              "3072:3072",
+                              "3456:2592",
+                              "2592:3456",
+                              "4096:2304",
+                              "2304:4096",
+                              "3744:2496",
+                              "2496:3744",
+                              "4704:2016"
+                            ]
+                          },
+                          { "type": "string", "maxLength": 32 }
                         ]
                       },
                       "outputFormat": {
