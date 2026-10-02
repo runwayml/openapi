@@ -8742,6 +8742,120 @@
                     },
                     "required": ["promptImage", "promptText", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "grok_imagine_1_5_lite",
+                    "type": "object",
+                    "properties": {
+                      "promptImage": {
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                "example": "https://example.com/image.jpg",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media, up to 5MB.",
+                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "An array of objects representing images to be used in the output video. Only a `first` frame is supported.",
+                            "minItems": 1,
+                            "maxItems": 1,
+                            "type": "array",
+                            "items": {
+                              "title": "PromptImage",
+                              "x-stainless-variantName": "PromptImage",
+                              "type": "object",
+                              "properties": {
+                                "uri": {
+                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "anyOf": [
+                                    {
+                                      "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                      "example": "https://example.com/image.jpg",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 2048,
+                                      "pattern": "^https:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                      "example": "runway://<token>",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5000,
+                                      "pattern": "^runway:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A data URI containing encoded media, up to 5MB.",
+                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5242880,
+                                      "pattern": "^data:image\\/.*"
+                                    }
+                                  ]
+                                },
+                                "position": {
+                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame of the video.",
+                                  "type": "string",
+                                  "const": "first"
+                                }
+                              },
+                              "required": ["uri", "position"],
+                              "additionalProperties": false
+                            }
+                          }
+                        ]
+                      },
+                      "promptText": {
+                        "description": "An optional text prompt describing motion or changes in the output video.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2500
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 15
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video. The output keeps the input image's aspect ratio. `auto_1080p` is rendered at 720p and upscaled.",
+                        "type": "string",
+                        "enum": ["auto_480p", "auto_720p", "auto_1080p"]
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "grok_imagine_1_5_lite"
+                      }
+                    },
+                    "required": ["promptImage", "model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -8821,6 +8935,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -10695,6 +10893,57 @@
                     },
                     "required": ["promptText", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "grok_imagine_1_5_lite",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A non-empty text prompt describing what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2500
+                      },
+                      "duration": {
+                        "description": "The number of seconds of duration for the output video.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 15
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video. The 1080p sizes are rendered at 720p and upscaled.",
+                        "type": "string",
+                        "enum": [
+                          "848:480",
+                          "480:848",
+                          "480:480",
+                          "640:480",
+                          "480:640",
+                          "720:480",
+                          "480:720",
+                          "1280:720",
+                          "720:1280",
+                          "720:720",
+                          "960:720",
+                          "720:960",
+                          "1088:720",
+                          "720:1088",
+                          "1904:1072",
+                          "1072:1904",
+                          "1424:1424",
+                          "1648:1232",
+                          "1232:1648",
+                          "1744:1152",
+                          "1152:1744"
+                        ]
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "grok_imagine_1_5_lite"
+                      }
+                    },
+                    "required": ["promptText", "model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -10774,6 +11023,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -12450,6 +12783,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -13882,6 +14299,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -14089,6 +14590,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -14360,6 +14945,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -14553,6 +15222,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -14878,6 +15631,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -15121,6 +15958,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -15431,6 +16352,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -15574,6 +16579,140 @@
                     },
                     "required": ["promptText", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "eleven_v4",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "The text to convert to speech. You can include expressive audio tags like [laughs], [whispers], or [pause] in the script.",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "voice": {
+                        "description": "The voice to use for the generated speech.",
+                        "oneOf": [
+                          {
+                            "title": "RunwayPresetVoice",
+                            "description": "A voice preset from the RunwayML API.",
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "const": "runway-preset"
+                              },
+                              "presetId": {
+                                "description": "The preset voice ID to use for the generated speech.",
+                                "type": "string",
+                                "enum": [
+                                  "Maya",
+                                  "Arjun",
+                                  "Serene",
+                                  "Bernard",
+                                  "Billy",
+                                  "Mark",
+                                  "Clint",
+                                  "Mabel",
+                                  "Chad",
+                                  "Leslie",
+                                  "Eleanor",
+                                  "Elias",
+                                  "Elliot",
+                                  "Grungle",
+                                  "Brodie",
+                                  "Sandra",
+                                  "Kirk",
+                                  "Kylie",
+                                  "Lara",
+                                  "Lisa",
+                                  "Malachi",
+                                  "Marlene",
+                                  "Martin",
+                                  "Miriam",
+                                  "Monster",
+                                  "Paula",
+                                  "Pip",
+                                  "Rusty",
+                                  "Ragnar",
+                                  "Xylar",
+                                  "Maggie",
+                                  "Jack",
+                                  "Katie",
+                                  "Noah",
+                                  "James",
+                                  "Rina",
+                                  "Ella",
+                                  "Mariah",
+                                  "Frank",
+                                  "Claudia",
+                                  "Niki",
+                                  "Vincent",
+                                  "Kendrick",
+                                  "Myrna",
+                                  "Tom",
+                                  "Wanda",
+                                  "Benjamin",
+                                  "Kiana",
+                                  "Rachel"
+                                ]
+                              }
+                            },
+                            "required": ["type", "presetId"]
+                          }
+                        ],
+                        "discriminator": { "propertyName": "type" }
+                      },
+                      "stability": {
+                        "description": "Voice stability. Lower values allow broader emotional range; higher values are steadier.",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "similarityBoost": {
+                        "description": "How closely the output tracks the original speaker.",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "style": {
+                        "description": "Style exaggeration. Higher values amplify the speaker style.",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "speed": {
+                        "description": "Speech speed multiplier. Values below 1 slow the speech down, and values above 1 speed it up.",
+                        "type": "number",
+                        "minimum": 0.7,
+                        "maximum": 1.2
+                      },
+                      "useSpeakerBoost": {
+                        "description": "Boost similarity to the original speaker at a small latency cost.",
+                        "type": "boolean"
+                      },
+                      "languageCode": {
+                        "description": "Language code to enforce pronunciation, such as \"en\" or \"pt\". A regional code such as \"pt-BR\" is read as its language.",
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 16
+                      },
+                      "previousText": {
+                        "description": "Text that comes before this request, so the speech can continue from an earlier generation.",
+                        "type": "string"
+                      },
+                      "nextText": {
+                        "description": "Text that comes after this request, so the speech can lead into a later generation.",
+                        "type": "string"
+                      },
+                      "seed": {
+                        "description": "Optional seed for more consistent output. The same seed and settings tend to sound alike, but it is not guaranteed.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "model": { "type": "string", "const": "eleven_v4" }
+                    },
+                    "required": ["promptText", "voice", "model"]
                   },
                   {
                     "title": "eleven_multilingual_v2",
@@ -15780,7 +16919,7 @@
                         "description": "ISO 639-1 language code to enforce pronunciation and normalization.",
                         "type": "string",
                         "minLength": 2,
-                        "maxLength": 5
+                        "maxLength": 16
                       },
                       "applyTextNormalization": {
                         "description": "Text normalization mode: 'auto', 'on', or 'off' (e.g. spelling out numbers).",
@@ -15875,6 +17014,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -16104,6 +17327,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -16282,6 +17589,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -17974,7 +19365,7 @@
             "in": "query",
             "required": false,
             "schema": { "type": "string" },
-            "description": "Restrict results to these audit log actions, as a comma-separated list of up to 50 actions. Allowed values: `UserLogin`, `PasswordChanged`, `EmailChangeRequested`, `EmailChanged`, `UserRegistered`, `UserAccountDeleted`, `WorkspaceCreated`, `WorkspaceDeleted`, `MemberInvited`, `MemberRemoved`, `MemberRoleChanged`, `InviteAccepted`, `TeamSettingsUpdated`, `InviteLinkToggled`, `UserGroupCreated`, `UserGroupUpdated`, `UserGroupDeleted`, `UserGroupArchived`, `UserGroupRestored`, `UserGroupMemberAdded`, `UserGroupMemberRemoved`, `SSOLogin`, `SSOUserProvisioned`, `SSOConfigCreated`, `SSOUserAutoAddedToTeam`, `SSODomainRegistrationCloned`, `AssetCreated`, `AssetUpdated`, `AssetDeleted`, `AssetDownloaded`, `AssetShared`, `AssetUnshared`, `CommentCreated`, `CommentEdited`, `CommentDeleted`, `CommentAgentCallRun`, `CommentRemovedByModerator`, `CommentRestoredByModerator`, `CommentRemovalReasonChanged`, `PermissionGranted`, `PermissionUpdated`, `PermissionRevoked`, `PermissionAccepted`, `SubscriptionCancelled`, `SubscriptionReactivatedWithOffer`, `SubscriptionPlanSwitched`, `CreditsTransferred`, `SeatsTransferred`, `SessionShared`, `SessionUnshared`, `VideoProjectShared`, `VideoProjectUnshared`, `BrandKitShared`, `BrandKitUnshared`, `AgentCustomSkillCreated`, `AgentCustomSkillDeleted`, `AgentCustomSkillShared`, `AgentCustomSkillUnshared`, `AgentSessionShared`, `AgentSessionUnshared`, `AgentConnectorLinkTokenCreated`, `AgentConnectorConnected`, `AgentConnectorDisconnected`, `AgentConnectorAssetExported`, `AgentConnectorSessionEnabled`, `AgentConnectorSessionDisabled`, `GenerationCreated`, `AccountLinkCreated`, `AccountLinkDeleted`, `OrganizationSettingsUpdated`, `OrganizationDisabledModelsUpdated`, `OrganizationApiAccountReleased`, `OrganizationApiAccountMemberInvited`, `OrganizationApiAccountMemberRoleChanged`, `OrganizationApiAccountMemberRemoved`, `WorkspaceCountryLockUpdated`, `WorkspaceTagCreated`, `WorkspaceTagUpdated`, `WorkspaceTagDeleted`, `WorkspaceTagAssigned`, `WorkspaceTagUnassigned`, `MeteredBillingConfigUpdated`, `MeteredBillingRefillTriggered`, `MeteredBillingRetryTriggered`, `EnterpriseSpendCapEnforcementUpdated`, `AwsMarketplaceEnterpriseSubscriptionLinked`."
+            "description": "Restrict results to these audit log actions, as a comma-separated list of up to 50 actions. Allowed values: `UserLogin`, `PasswordChanged`, `EmailChangeRequested`, `EmailChanged`, `UserRegistered`, `UserAccountDeleted`, `WorkspaceCreated`, `WorkspaceDeleted`, `MemberInvited`, `MemberRemoved`, `MemberRoleChanged`, `InviteAccepted`, `MemberJoinedViaDomain`, `TeamSettingsUpdated`, `InviteLinkToggled`, `UserGroupCreated`, `UserGroupUpdated`, `UserGroupDeleted`, `UserGroupArchived`, `UserGroupRestored`, `UserGroupMemberAdded`, `UserGroupMemberRemoved`, `UserGroupCreditCapUpdated`, `SSOLogin`, `SSOUserProvisioned`, `SSOConfigCreated`, `SSOUserAutoAddedToTeam`, `SSODomainRegistrationCloned`, `AssetCreated`, `AssetUpdated`, `AssetDeleted`, `AssetDownloaded`, `AssetShared`, `AssetUnshared`, `CommentCreated`, `CommentEdited`, `CommentDeleted`, `CommentAgentCallRun`, `CommentRemovedByModerator`, `CommentRestoredByModerator`, `CommentRemovalReasonChanged`, `PermissionGranted`, `PermissionUpdated`, `PermissionRevoked`, `PermissionAccepted`, `SubscriptionCancelled`, `SubscriptionReactivatedWithOffer`, `SubscriptionPlanSwitched`, `CreditsTransferred`, `SeatsTransferred`, `SessionShared`, `SessionUnshared`, `VideoProjectShared`, `VideoProjectUnshared`, `BrandKitShared`, `BrandKitUnshared`, `AgentCustomSkillCreated`, `AgentCustomSkillDeleted`, `AgentCustomSkillShared`, `AgentCustomSkillUnshared`, `AgentSessionShared`, `AgentSessionUnshared`, `AgentConnectorLinkTokenCreated`, `AgentConnectorConnected`, `AgentConnectorDisconnected`, `AgentConnectorAssetExported`, `AgentConnectorSessionEnabled`, `AgentConnectorSessionDisabled`, `GenerationCreated`, `StudioSessionOpened`, `AccountLinkCreated`, `AccountLinkDeleted`, `AdConnectionAuthorizationStarted`, `AdConnectionConnected`, `AdAccountSelectionUpdated`, `AdAccountSyncRequested`, `AdConnectionDisconnected`, `OrganizationSettingsUpdated`, `OrganizationDisabledModelsUpdated`, `OrganizationAgentSandboxUpdated`, `OrganizationApiAccountReleased`, `OrganizationApiAccountMemberInvited`, `OrganizationApiAccountMemberRoleChanged`, `OrganizationApiAccountMemberRemoved`, `WorkspaceCountryLockUpdated`, `WorkspaceTagCreated`, `WorkspaceTagUpdated`, `WorkspaceTagDeleted`, `WorkspaceTagAssigned`, `WorkspaceTagUnassigned`, `MeteredBillingConfigUpdated`, `MeteredBillingRefillTriggered`, `MeteredBillingRetryTriggered`, `EnterpriseSpendCapEnforcementUpdated`, `AwsMarketplaceEnterpriseSubscriptionLinked`."
           },
           {
             "name": "actorEmails",
@@ -18049,6 +19440,7 @@
                               "MemberRemoved",
                               "MemberRoleChanged",
                               "InviteAccepted",
+                              "MemberJoinedViaDomain",
                               "TeamSettingsUpdated",
                               "InviteLinkToggled",
                               "UserGroupCreated",
@@ -18058,6 +19450,7 @@
                               "UserGroupRestored",
                               "UserGroupMemberAdded",
                               "UserGroupMemberRemoved",
+                              "UserGroupCreditCapUpdated",
                               "SSOLogin",
                               "SSOUserProvisioned",
                               "SSOConfigCreated",
@@ -18104,10 +19497,17 @@
                               "AgentConnectorSessionEnabled",
                               "AgentConnectorSessionDisabled",
                               "GenerationCreated",
+                              "StudioSessionOpened",
                               "AccountLinkCreated",
                               "AccountLinkDeleted",
+                              "AdConnectionAuthorizationStarted",
+                              "AdConnectionConnected",
+                              "AdAccountSelectionUpdated",
+                              "AdAccountSyncRequested",
+                              "AdConnectionDisconnected",
                               "OrganizationSettingsUpdated",
                               "OrganizationDisabledModelsUpdated",
+                              "OrganizationAgentSandboxUpdated",
                               "OrganizationApiAccountReleased",
                               "OrganizationApiAccountMemberInvited",
                               "OrganizationApiAccountMemberRoleChanged",
@@ -18255,6 +19655,7 @@
                         "MemberRemoved",
                         "MemberRoleChanged",
                         "InviteAccepted",
+                        "MemberJoinedViaDomain",
                         "TeamSettingsUpdated",
                         "InviteLinkToggled",
                         "UserGroupCreated",
@@ -18264,6 +19665,7 @@
                         "UserGroupRestored",
                         "UserGroupMemberAdded",
                         "UserGroupMemberRemoved",
+                        "UserGroupCreditCapUpdated",
                         "SSOLogin",
                         "SSOUserProvisioned",
                         "SSOConfigCreated",
@@ -18310,10 +19712,17 @@
                         "AgentConnectorSessionEnabled",
                         "AgentConnectorSessionDisabled",
                         "GenerationCreated",
+                        "StudioSessionOpened",
                         "AccountLinkCreated",
                         "AccountLinkDeleted",
+                        "AdConnectionAuthorizationStarted",
+                        "AdConnectionConnected",
+                        "AdAccountSelectionUpdated",
+                        "AdAccountSyncRequested",
+                        "AdConnectionDisconnected",
                         "OrganizationSettingsUpdated",
                         "OrganizationDisabledModelsUpdated",
+                        "OrganizationAgentSandboxUpdated",
                         "OrganizationApiAccountReleased",
                         "OrganizationApiAccountMemberInvited",
                         "OrganizationApiAccountMemberRoleChanged",
@@ -18390,6 +19799,7 @@
                         "Tag name": {},
                         "Tag color": {},
                         "Workspace ID": {},
+                        "Email domain": {},
                         "Workspace name": {},
                         "Workspace picture": {},
                         "Workspace description": {},
@@ -18405,6 +19815,8 @@
                         "Hard spend cap": {},
                         "Spend cap": {},
                         "Spend cap change": {},
+                        "Previous project credit cap": {},
+                        "Project credit cap": {},
                         "API account": {},
                         "API project ID": {},
                         "Organization": {},
@@ -18413,7 +19825,15 @@
                         "Amount received": {},
                         "Root asset ID": {},
                         "Media included": {},
-                        "Via public API": {}
+                        "Via public API": {},
+                        "Provider": {},
+                        "Selected": {},
+                        "Ad account ID": {},
+                        "Ad sync run ID": {},
+                        "Ad sync start date": {},
+                        "Ad sync end date": {},
+                        "App Studio app": {},
+                        "App Studio session": {}
                       },
                       "additionalProperties": false
                     },
@@ -18560,6 +19980,7 @@
                               "eleven_multilingual_v2",
                               "seed_audio",
                               "eleven_v3",
+                              "eleven_v4",
                               "eleven_text_to_sound_v2",
                               "eleven_voice_isolation",
                               "eleven_voice_dubbing",
@@ -18578,6 +19999,7 @@
                               "wan3",
                               "wan3_prime",
                               "grok_imagine_1_5",
+                              "grok_imagine_1_5_lite",
                               "grok_imagine_image_2",
                               "muse_image",
                               "magnific_precision_upscaler_v2",
@@ -18681,6 +20103,7 @@
                               "eleven_multilingual_v2",
                               "seed_audio",
                               "eleven_v3",
+                              "eleven_v4",
                               "eleven_text_to_sound_v2",
                               "eleven_voice_isolation",
                               "eleven_voice_dubbing",
@@ -18699,6 +20122,7 @@
                               "wan3",
                               "wan3_prime",
                               "grok_imagine_1_5",
+                              "grok_imagine_1_5_lite",
                               "grok_imagine_image_2",
                               "muse_image",
                               "magnific_precision_upscaler_v2",
@@ -18857,6 +20281,7 @@
                                     "eleven_multilingual_v2",
                                     "seed_audio",
                                     "eleven_v3",
+                                    "eleven_v4",
                                     "eleven_text_to_sound_v2",
                                     "eleven_voice_isolation",
                                     "eleven_voice_dubbing",
@@ -18875,6 +20300,7 @@
                                     "wan3",
                                     "wan3_prime",
                                     "grok_imagine_1_5",
+                                    "grok_imagine_1_5_lite",
                                     "grok_imagine_image_2",
                                     "muse_image",
                                     "magnific_precision_upscaler_v2",
@@ -18946,6 +20372,7 @@
                           "eleven_multilingual_v2",
                           "seed_audio",
                           "eleven_v3",
+                          "eleven_v4",
                           "eleven_text_to_sound_v2",
                           "eleven_voice_isolation",
                           "eleven_voice_dubbing",
@@ -18964,6 +20391,7 @@
                           "wan3",
                           "wan3_prime",
                           "grok_imagine_1_5",
+                          "grok_imagine_1_5_lite",
                           "grok_imagine_image_2",
                           "muse_image",
                           "magnific_precision_upscaler_v2",
@@ -19317,6 +20745,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -19518,6 +21030,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -19786,6 +21382,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -19974,6 +21654,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -20264,6 +22028,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -20588,6 +22436,90 @@
                         "additionalProperties": {}
                       }
                     },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
                       "type": "string"
@@ -20836,6 +22768,90 @@
                         "required": ["code", "path", "message"],
                         "additionalProperties": {}
                       }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
                     },
                     "docUrl": {
                       "description": "A link to the public API documentation.",
@@ -23624,6 +25640,20 @@
                             "required": ["message"],
                             "additionalProperties": false
                           }
+                        },
+                        "cost": {
+                          "description": "Omitted until every descendant task is terminal, so a later GET cannot return a larger value.",
+                          "type": "object",
+                          "properties": {
+                            "credits": {
+                              "description": "Credits charged for this task.",
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            }
+                          },
+                          "required": ["credits"],
+                          "additionalProperties": false
                         }
                       },
                       "required": ["id", "createdAt", "status", "failure"],
@@ -23661,7 +25691,7 @@
                           }
                         },
                         "nodeErrors": {
-                          "description": "A record mapping workflow node IDs to their error details. A workflow invocation succeeds as long as every node reached a terminal state, so individual nodes may still have failed — for example a moderated prompt or an upstream provider outage — leaving their output missing from `output`. Check this field to detect a partial run. Only present when one or more nodes have errored.",
+                          "description": "A record mapping workflow node IDs to their error details. Only present when one or more nodes have errored.",
                           "type": "object",
                           "propertyNames": {
                             "type": "string",
@@ -23687,6 +25717,20 @@
                             "required": ["message"],
                             "additionalProperties": false
                           }
+                        },
+                        "cost": {
+                          "description": "Omitted until every descendant task is terminal, so a later GET cannot return a larger value.",
+                          "type": "object",
+                          "properties": {
+                            "credits": {
+                              "description": "Credits charged for this task.",
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            }
+                          },
+                          "required": ["credits"],
+                          "additionalProperties": false
                         }
                       },
                       "required": ["id", "createdAt", "status", "output"],
@@ -23734,7 +25778,8 @@
                         "b2c3d4e5-f6a7-8901-bcde-f12345678901": [
                           "https://example.com/output2.mp4"
                         ]
-                      }
+                      },
+                      "cost": { "credits": 45 }
                     }
                   },
                   "succeededWithNodeErrors": {
@@ -23755,7 +25800,8 @@
                           "message": "Image generation failed. Please try again later.",
                           "failureCode": "THIRD_PARTY.UNAVAILABLE"
                         }
-                      }
+                      },
+                      "cost": { "credits": 45 }
                     }
                   },
                   "failed": {
@@ -23766,7 +25812,8 @@
                       "status": "FAILED",
                       "createdAt": "2024-06-27T19:49:32.335Z",
                       "failure": "The provided image was flagged by content moderation.",
-                      "failureCode": "SAFETY.INPUT.IMAGE"
+                      "failureCode": "SAFETY.INPUT.IMAGE",
+                      "cost": { "credits": 12 }
                     }
                   }
                 }
