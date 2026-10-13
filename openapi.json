@@ -13948,6 +13948,226 @@
                     "additionalProperties": false
                   },
                   {
+                    "title": "ideogram_4_0",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "Describe the image to generate, or how to remix the reference image.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000
+                      },
+                      "quality": {
+                        "description": "How much rendering effort the model spends on each image. `low` costs 4 credits per image, `medium` 7 and `high` 11.",
+                        "type": "string",
+                        "enum": ["low", "medium", "high"]
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output image, expressed as `<width>:<height>`.",
+                        "type": "string",
+                        "enum": [
+                          "2048:2048",
+                          "2560:1440",
+                          "1440:2560",
+                          "2304:1728",
+                          "1728:2304",
+                          "2496:1664",
+                          "1664:2496",
+                          "3072:1280",
+                          "1280:3072"
+                        ]
+                      },
+                      "referenceImages": {
+                        "description": "An image to remix. The prompt describes how the output should differ from it.",
+                        "maxItems": 1,
+                        "type": "array",
+                        "items": {
+                          "title": "Ideogram40ReferenceImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "outputCount": {
+                        "description": "The number of images to generate. Increasing this number will affect the number of credits consumed by the generation.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "model": { "type": "string", "const": "ideogram_4_0" }
+                    },
+                    "required": ["promptText", "model"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "title": "ideogram_4_5",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "Describe the image to generate, or the changes to make to the reference images.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 10000
+                      },
+                      "quality": {
+                        "description": "How much rendering effort the model spends on each image. Defaults to `medium` (8 credits per image) when generating from reference images and `high` (25 credits) otherwise, including `preciseEdit`. `low` costs 4 credits and `very_low` 1; `very_low` requires reference images and is not available with `preciseEdit`.",
+                        "type": "string",
+                        "enum": ["very_low", "low", "medium", "high"]
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output image, expressed as `<width>:<height>`. Omit it or use `auto` to let the model choose. With reference images, widescreen 1K sizes are `1024:576`, `576:1024`, `1408:704`, `704:1408` instead of `1280:720`, `720:1280`, `1440:720`, `720:1440`. Not available with `maskUri` or `preciseEdit`, which keep the size of the first reference image.",
+                        "type": "string",
+                        "enum": [
+                          "1024:1024",
+                          "1280:720",
+                          "720:1280",
+                          "1152:864",
+                          "864:1152",
+                          "1248:832",
+                          "832:1248",
+                          "1120:896",
+                          "896:1120",
+                          "1440:720",
+                          "720:1440",
+                          "2048:2048",
+                          "2560:1440",
+                          "1440:2560",
+                          "2304:1728",
+                          "1728:2304",
+                          "2496:1664",
+                          "1664:2496",
+                          "2240:1792",
+                          "1792:2240",
+                          "2880:1440",
+                          "1440:2880",
+                          "1024:576",
+                          "576:1024",
+                          "1408:704",
+                          "704:1408",
+                          "auto"
+                        ]
+                      },
+                      "referenceImages": {
+                        "description": "Up to 5 images to guide the generation. With `maskUri` or `preciseEdit`, the first image is the one being edited and the rest are references.",
+                        "maxItems": 5,
+                        "type": "array",
+                        "items": {
+                          "title": "Ideogram45ReferenceImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "preciseEdit": {
+                        "description": "When true, edit the first reference image while preserving its composition and dimensions. Requires at least one reference image.",
+                        "type": "boolean"
+                      },
+                      "maskUri": {
+                        "description": "A black-and-white mask the same size as the first reference image. Black areas are edited and white areas are preserved. Supports up to 3 additional reference images.",
+                        "example": "https://example.com/image.jpg",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 2048,
+                            "pattern": "^https:\\/\\/.*"
+                          },
+                          {
+                            "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                            "example": "runway://<token>",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5000,
+                            "pattern": "^runway:\\/\\/.*"
+                          },
+                          {
+                            "description": "A data URI containing encoded media, up to 5MB.",
+                            "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5242880,
+                            "pattern": "^data:image\\/.*"
+                          }
+                        ]
+                      },
+                      "outputCount": {
+                        "description": "The number of images to generate. Increasing this number will affect the number of credits consumed by the generation.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 8
+                      },
+                      "model": { "type": "string", "const": "ideogram_4_5" }
+                    },
+                    "required": ["promptText", "model"],
+                    "additionalProperties": false
+                  },
+                  {
                     "title": "gemini_2.5_flash",
                     "type": "object",
                     "properties": {
@@ -19668,6 +19888,7 @@
                               "grok_imagine_1_5_lite",
                               "grok_imagine_image_2",
                               "muse_image",
+                              "ideogram_4_0",
                               "magnific_precision_upscaler_v2",
                               "magnific_video_upscaler_creative",
                               "ruby",
@@ -19791,6 +20012,7 @@
                               "grok_imagine_1_5_lite",
                               "grok_imagine_image_2",
                               "muse_image",
+                              "ideogram_4_0",
                               "magnific_precision_upscaler_v2",
                               "magnific_video_upscaler_creative",
                               "ruby",
@@ -19961,6 +20183,7 @@
                                     "grok_imagine_1_5_lite",
                                     "grok_imagine_image_2",
                                     "muse_image",
+                                    "ideogram_4_0",
                                     "magnific_precision_upscaler_v2",
                                     "magnific_video_upscaler_creative",
                                     "ruby",
@@ -20052,6 +20275,7 @@
                           "grok_imagine_1_5_lite",
                           "grok_imagine_image_2",
                           "muse_image",
+                          "ideogram_4_0",
                           "magnific_precision_upscaler_v2",
                           "magnific_video_upscaler_creative",
                           "ruby",
