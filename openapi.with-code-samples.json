@@ -10280,6 +10280,142 @@
                     },
                     "required": ["promptImage", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "kling_4",
+                    "type": "object",
+                    "properties": {
+                      "promptImage": {
+                        "description": "The first frame of the video, or an array with a first frame and optional middle and last frames. The video follows the first frame’s aspect ratio.",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                "example": "https://example.com/image.jpg",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media, up to 5MB.",
+                                "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "A first frame, up to 8 middle frames and an optional last frame.",
+                            "example": [
+                              {
+                                "uri": "https://example.com/first.jpg",
+                                "position": "first"
+                              },
+                              {
+                                "uri": "https://example.com/middle.jpg",
+                                "position": "middle"
+                              },
+                              {
+                                "uri": "https://example.com/last.jpg",
+                                "position": "last"
+                              }
+                            ],
+                            "minItems": 1,
+                            "maxItems": 10,
+                            "type": "array",
+                            "items": {}
+                          }
+                        ]
+                      },
+                      "resolution": {
+                        "description": "The resolution of the output video.",
+                        "default": "720p",
+                        "type": "string",
+                        "enum": ["720p", "1080p"]
+                      },
+                      "promptText": {
+                        "description": "A text prompt describing what should happen in the video.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 26000
+                      },
+                      "duration": {
+                        "description": "The duration of the output video in seconds.",
+                        "type": "integer",
+                        "minimum": 3,
+                        "maximum": 30
+                      },
+                      "references": {
+                        "description": "Images of characters, objects or styles to use in the video. Up to 10 images in total, frames included.",
+                        "minItems": 0,
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "title": "ReferenceImage",
+                          "x-stainless-variantName": "ReferenceImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "referenceVideos": {
+                        "description": "Up to 5 videos whose style, motion or camera work should guide the output, together at most 30 seconds long.",
+                        "minItems": 0,
+                        "maxItems": 5,
+                        "type": "array",
+                        "items": {}
+                      },
+                      "model": { "type": "string", "const": "kling_4" }
+                    },
+                    "required": ["promptImage", "model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -12856,6 +12992,90 @@
                     },
                     "required": ["promptText", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "kling_4",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A text prompt describing what should happen in the video.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 26000
+                      },
+                      "resolution": {
+                        "description": "The resolution of the output video.",
+                        "default": "720p",
+                        "type": "string",
+                        "enum": ["720p", "1080p"]
+                      },
+                      "ratio": {
+                        "description": "The aspect ratio of the output video. `adaptive` lets Kling pick one that suits the prompt and references.",
+                        "type": "string",
+                        "enum": ["21:9", "16:9", "9:16", "1:1", "adaptive"]
+                      },
+                      "duration": {
+                        "description": "The duration of the output video in seconds.",
+                        "type": "integer",
+                        "minimum": 3,
+                        "maximum": 30
+                      },
+                      "references": {
+                        "description": "Images of characters, objects or styles to use in the video. Up to 10 images in total, frames included.",
+                        "minItems": 0,
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "title": "ReferenceImage",
+                          "x-stainless-variantName": "ReferenceImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "referenceVideos": {
+                        "description": "Up to 5 videos whose style, motion or camera work should guide the output, together at most 30 seconds long.",
+                        "minItems": 0,
+                        "maxItems": 5,
+                        "type": "array",
+                        "items": {}
+                      },
+                      "model": { "type": "string", "const": "kling_4" }
+                    },
+                    "required": ["promptText", "model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -15166,6 +15386,102 @@
                       "model": { "type": "string", "const": "seedance2_5" }
                     },
                     "required": ["promptVideo", "model"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "title": "kling_4",
+                    "type": "object",
+                    "properties": {
+                      "videoUri": {
+                        "description": "The video to edit.",
+                        "example": "https://example.com/video.mp4",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "example": "https://example.com/video.mp4",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 2048,
+                            "pattern": "^https:\\/\\/.*"
+                          },
+                          {
+                            "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                            "example": "runway://<token>",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5000,
+                            "pattern": "^runway:\\/\\/.*"
+                          },
+                          {
+                            "description": "A data URI containing encoded media, up to 5MB.",
+                            "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5242880,
+                            "pattern": "^data:video\\/.*"
+                          }
+                        ]
+                      },
+                      "promptText": {
+                        "description": "A text prompt describing how to edit the video.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 26000
+                      },
+                      "resolution": {
+                        "description": "The resolution of the output video.",
+                        "default": "720p",
+                        "type": "string",
+                        "enum": ["720p", "1080p"]
+                      },
+                      "references": {
+                        "description": "Images of characters, objects or styles to use in the video. Up to 10 images in total, frames included.",
+                        "minItems": 0,
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "title": "ReferenceImage",
+                          "x-stainless-variantName": "ReferenceImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "model": { "type": "string", "const": "kling_4" }
+                    },
+                    "required": ["videoUri", "promptText", "model"],
                     "additionalProperties": false
                   }
                 ],
@@ -23760,6 +24076,7 @@
                               "ruby",
                               "enhance_frame_rate",
                               "kling2.5_turbo_pro",
+                              "kling_4",
                               "kling3.0_pro",
                               "kling3.0_4k",
                               "kling3.0_standard",
@@ -23893,6 +24210,7 @@
                               "ruby",
                               "enhance_frame_rate",
                               "kling2.5_turbo_pro",
+                              "kling_4",
                               "kling3.0_pro",
                               "kling3.0_4k",
                               "kling3.0_standard",
@@ -24081,6 +24399,7 @@
                                     "ruby",
                                     "enhance_frame_rate",
                                     "kling2.5_turbo_pro",
+                                    "kling_4",
                                     "kling3.0_pro",
                                     "kling3.0_4k",
                                     "kling3.0_standard",
@@ -24182,6 +24501,7 @@
                           "ruby",
                           "enhance_frame_rate",
                           "kling2.5_turbo_pro",
+                          "kling_4",
                           "kling3.0_pro",
                           "kling3.0_4k",
                           "kling3.0_standard",
