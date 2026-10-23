@@ -6049,7 +6049,7 @@
       "delete": {
         "tags": ["Task management"],
         "summary": "Cancel or delete a task",
-        "description": "Tasks that are running, pending, or throttled can be canceled by invoking this method. Invoking this method for other tasks will delete them.\n\nThe output data associated with a deleted task will be deleted from persistent storage in accordance with our data retention policy. Aborted and deleted tasks will not be able to be fetched again in the future.",
+        "description": "Tasks that are running, pending, or throttled can be canceled by invoking this method. Invoking this method for other tasks will delete them.\n\nRefund eligibility is based on the task status observed by the server during cancellation. If that check observes RUNNING, cancellation does not refund credits. Task execution can advance concurrently with cancellation, so neither a refund nor successful cancellation guarantees that generation stops. A prior GET response reporting PENDING or THROTTLED does not guarantee a refund. Deleting a completed task does not refund its charge.\n\nThe output data associated with a deleted task will be deleted from persistent storage in accordance with our data retention policy. Aborted and deleted tasks will not be able to be fetched again in the future.",
         "x-codeSamples": [
           {
             "lang": "TypeScript",
@@ -6997,52 +6997,7 @@
                             "minItems": 1,
                             "maxItems": 9,
                             "type": "array",
-                            "items": {
-                              "title": "PromptImage",
-                              "x-stainless-variantName": "PromptImage",
-                              "type": "object",
-                              "properties": {
-                                "uri": {
-                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                  "example": "https://example.com/image.jpg",
-                                  "anyOf": [
-                                    {
-                                      "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                      "example": "https://example.com/image.jpg",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 2048,
-                                      "pattern": "^https:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                      "example": "runway://<token>",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5000,
-                                      "pattern": "^runway:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A data URI containing encoded media, up to 5MB.",
-                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5242880,
-                                      "pattern": "^data:image\\/.*"
-                                    }
-                                  ]
-                                },
-                                "position": {
-                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame, \"last\" as the last frame. Omit for a reference image.",
-                                  "type": "string",
-                                  "enum": ["first", "last"]
-                                }
-                              },
-                              "required": ["uri"],
-                              "additionalProperties": false
-                            },
-                            "title": "PromptImages",
-                            "description": "An array of image objects. Use position \"first\"/\"last\" for keyframe mode, or omit position for reference images. The two modes cannot be mixed."
+                            "items": {}
                           }
                         ]
                       },
@@ -9250,52 +9205,7 @@
                             "minItems": 1,
                             "maxItems": 10,
                             "type": "array",
-                            "items": {
-                              "title": "PromptImage",
-                              "x-stainless-variantName": "PromptImage",
-                              "type": "object",
-                              "properties": {
-                                "uri": {
-                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                  "example": "https://example.com/image.jpg",
-                                  "anyOf": [
-                                    {
-                                      "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                      "example": "https://example.com/image.jpg",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 2048,
-                                      "pattern": "^https:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                      "example": "runway://<token>",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5000,
-                                      "pattern": "^runway:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A data URI containing encoded media, up to 5MB.",
-                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5242880,
-                                      "pattern": "^data:image\\/.*"
-                                    }
-                                  ]
-                                },
-                                "position": {
-                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame, \"last\" as the last frame. Omit for a reference image.",
-                                  "type": "string",
-                                  "enum": ["first", "last"]
-                                }
-                              },
-                              "required": ["uri"],
-                              "additionalProperties": false
-                            },
-                            "title": "PromptImages",
-                            "description": "An array of image objects. Use position \"first\"/\"last\" for keyframe mode, or omit position for reference images. The two modes cannot be mixed."
+                            "items": {}
                           }
                         ]
                       },
@@ -9610,52 +9520,7 @@
                             "minItems": 1,
                             "maxItems": 10,
                             "type": "array",
-                            "items": {
-                              "title": "PromptImage",
-                              "x-stainless-variantName": "PromptImage",
-                              "type": "object",
-                              "properties": {
-                                "uri": {
-                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                  "example": "https://example.com/image.jpg",
-                                  "anyOf": [
-                                    {
-                                      "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
-                                      "example": "https://example.com/image.jpg",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 2048,
-                                      "pattern": "^https:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
-                                      "example": "runway://<token>",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5000,
-                                      "pattern": "^runway:\\/\\/.*"
-                                    },
-                                    {
-                                      "description": "A data URI containing encoded media, up to 5MB.",
-                                      "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-                                      "type": "string",
-                                      "minLength": 13,
-                                      "maxLength": 5242880,
-                                      "pattern": "^data:image\\/.*"
-                                    }
-                                  ]
-                                },
-                                "position": {
-                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame, \"last\" as the last frame. Omit for a reference image.",
-                                  "type": "string",
-                                  "enum": ["first", "last"]
-                                }
-                              },
-                              "required": ["uri"],
-                              "additionalProperties": false
-                            },
-                            "title": "PromptImages",
-                            "description": "An array of image objects. Use position \"first\"/\"last\" for keyframe mode, or omit position for reference images. The two modes cannot be mixed."
+                            "items": {}
                           }
                         ]
                       },
@@ -13048,8 +12913,6 @@
                           "x-stainless-variantName": "Keyframe",
                           "anyOf": [
                             {
-                              "title": "KeyframeWithSeconds",
-                              "x-stainless-variantName": "KeyframeWithSeconds",
                               "type": "object",
                               "properties": {
                                 "uri": {
@@ -13114,8 +12977,6 @@
                               "additionalProperties": false
                             },
                             {
-                              "title": "KeyframeWithAt",
-                              "x-stainless-variantName": "KeyframeWithAt",
                               "type": "object",
                               "properties": {
                                 "uri": {
@@ -17260,6 +17121,118 @@
                     "additionalProperties": false
                   },
                   {
+                    "title": "recraft_v4_1_flash",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A description of the image you want to generate.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 10000
+                      },
+                      "ratio": {
+                        "description": "The output dimensions, expressed as `<width>:<height>`.",
+                        "type": "string",
+                        "enum": [
+                          "1024:1024",
+                          "1536:768",
+                          "768:1536",
+                          "1280:832",
+                          "832:1280",
+                          "1216:896",
+                          "896:1216",
+                          "1152:896",
+                          "896:1152",
+                          "832:1344",
+                          "1280:896",
+                          "896:1280",
+                          "1344:768",
+                          "768:1344"
+                        ]
+                      },
+                      "seed": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "outputFormat": {
+                        "description": "The output file format. Defaults to webp.",
+                        "type": "string",
+                        "enum": ["webp", "png"]
+                      },
+                      "colors": {
+                        "description": "Preferred colors as six-digit hex strings.",
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^#[0-9a-fA-F]{6}$"
+                        }
+                      },
+                      "backgroundColor": {
+                        "description": "A preferred background color as a six-digit hex string.",
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$"
+                      },
+                      "outputCount": {
+                        "description": "The number of images to generate. Each image is billed separately.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 6
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "recraft_v4_1_flash"
+                      }
+                    },
+                    "required": ["promptText", "ratio", "model"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "title": "recraft_v4_1_vector",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "Describe the vector illustration you want to generate.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 10000
+                      },
+                      "colors": {
+                        "description": "Preferred colors as six-digit hex values, such as #FF8800.",
+                        "default": [],
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^#[0-9a-fA-F]{6}$"
+                        }
+                      },
+                      "backgroundColor": {
+                        "description": "The preferred background color as a six-digit hex value. This is a generation hint, not an exact color constraint; the generated background may use a different shade.",
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}$"
+                      },
+                      "ratio": {
+                        "description": "The width and height declared by the output SVG. Vector artwork can be scaled after generation.",
+                        "type": "string",
+                        "enum": [
+                          "1024:1024",
+                          "1216:896",
+                          "896:1216",
+                          "1344:768",
+                          "768:1344"
+                        ]
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "recraft_v4_1_vector"
+                      }
+                    },
+                    "required": ["promptText", "model"],
+                    "additionalProperties": false
+                  },
+                  {
                     "title": "gemini_2.5_flash",
                     "type": "object",
                     "properties": {
@@ -18931,6 +18904,52 @@
                     "additionalProperties": false
                   },
                   {
+                    "title": "mirelo_sfx_2_0",
+                    "type": "object",
+                    "properties": {
+                      "duration": {
+                        "description": "The duration of the generated audio in seconds.",
+                        "type": "number",
+                        "minimum": 0.1,
+                        "maximum": 600
+                      },
+                      "negativePrompt": {
+                        "description": "Sounds to avoid in the generated audio.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                      },
+                      "numVariants": {
+                        "description": "The number of audio variations to generate.",
+                        "default": 1,
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "format": {
+                        "description": "The format of the generated audio.",
+                        "default": "mp3",
+                        "type": "string",
+                        "enum": ["mp3", "wav", "flac"]
+                      },
+                      "seed": {
+                        "description": "A seed for reproducible generation.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "promptText": {
+                        "description": "A description of the sound effects to generate.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "model": { "type": "string", "const": "mirelo_sfx_2_0" }
+                    },
+                    "required": ["duration", "promptText", "model"],
+                    "additionalProperties": false
+                  },
+                  {
                     "title": "eleven_text_to_sound_v2",
                     "type": "object",
                     "properties": {
@@ -18957,6 +18976,299 @@
                       }
                     },
                     "required": ["promptText", "model"]
+                  }
+                ],
+                "discriminator": { "propertyName": "model" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The task that was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The ID of the task that was created. Use this to retrieve the task later.",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                    },
+                    "estimatedCost": {
+                      "description": "The maximum credits this task may charge. The final amount may be lower after the task completes.",
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "description": "Estimated cost of the generation in credits.",
+                          "type": "number"
+                        }
+                      },
+                      "required": ["credits"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["id", "estimatedCost"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request was rejected. Inspect `error` or `issues` (when present) and retry with a corrected request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "A message describing why the request was rejected.",
+                      "type": "string"
+                    },
+                    "issues": {
+                      "description": "Field-level validation issues when the request failed Zod body/query validation. Omitted for other 400s.",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "description": "A machine-readable issue code from request validation.",
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "The path to the invalid field in the request body or query.",
+                            "type": "array",
+                            "items": {
+                              "anyOf": [
+                                { "type": "string" },
+                                { "type": "number" }
+                              ]
+                            }
+                          },
+                          "message": {
+                            "description": "A human-readable description of the issue.",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["code", "path", "message"],
+                        "additionalProperties": {}
+                      }
+                    },
+                    "reason": {
+                      "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.MULTIMODAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.INPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                        },
+                        {
+                          "type": "string",
+                          "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                        },
+                        { "type": "string", "const": "DEPRECATED_MODEL" },
+                        {
+                          "type": "string",
+                          "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.INTERNAL"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_PREPROCESSING.VALIDATION"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                        },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                        },
+                        { "type": "string", "const": "ASSET.MISSING" },
+                        { "type": "string", "const": "ASSET.INVALID" },
+                        {
+                          "type": "string",
+                          "const": "SANDBOX.WORKSPACE_LIMIT"
+                        },
+                        { "type": "string", "const": "SANDBOX.CONTAINER_LOST" },
+                        { "type": "string", "const": "SANDBOX.NOT_RESUMABLE" },
+                        { "type": "string", "const": "FORBIDDEN" },
+                        { "type": "string", "const": "QUOTA" },
+                        {
+                          "type": "string",
+                          "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                        },
+                        { "type": "string", "const": "INTERNAL.TIMEOUT" },
+                        { "type": "string", "const": "INTERNAL.HDR_COMPOSE" },
+                        { "type": "string", "const": "INTERNAL" },
+                        { "type": "string", "const": "UNKNOWN" }
+                      ]
+                    },
+                    "docUrl": {
+                      "description": "A link to the public API documentation.",
+                      "type": "string"
+                    }
+                  },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "You have exceeded the rate limit for this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } },
+                  "required": ["error"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/video_to_audio": {
+      "post": {
+        "tags": ["Start generating"],
+        "summary": "Generate audio from a video",
+        "description": "Generate synchronized sound effects for a video, optionally guided by a text description. Returns audio, not a video with a replacement soundtrack.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "Node.js",
+            "source": "const response = await fetch('https://api.dev.runwayml.com/v1/video_to_audio', {\n  method: 'POST',\n  headers: {\n    Authorization: 'Bearer ' + process.env.RUNWAYML_API_SECRET,\n    'Content-Type': 'application/json',\n    'X-Runway-Version': '2024-11-06',\n  },\n  body: JSON.stringify({\n    model: 'mirelo_sfx_2_0',\n    videoUri: 'https://example.com/video.mp4',\n    duration: 5,\n    preserveSpeech: false,\n  }),\n});\nconsole.log(await response.json());"
+          },
+          {
+            "lang": "Python",
+            "label": "Python",
+            "source": "import os\nimport httpx\n\nresponse = httpx.post(\n  'https://api.dev.runwayml.com/v1/video_to_audio',\n  headers={\n    'Authorization': 'Bearer ' + os.environ['RUNWAYML_API_SECRET'],\n    'X-Runway-Version': '2024-11-06',\n  },\n  json={\n    'model': 'mirelo_sfx_2_0',\n    'videoUri': 'https://example.com/video.mp4',\n    'duration': 5,\n    'preserveSpeech': False,\n  },\n)\nresponse.raise_for_status()\nprint(response.json())"
+          }
+        ],
+        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "oneOf": [
+                  {
+                    "title": "mirelo_sfx_2_0",
+                    "type": "object",
+                    "properties": {
+                      "duration": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 600
+                      },
+                      "negativePrompt": {
+                        "description": "Sounds to avoid in the generated audio.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                      },
+                      "numVariants": {
+                        "description": "The number of audio variations to generate.",
+                        "default": 1,
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "format": {
+                        "description": "The format of the generated audio.",
+                        "default": "mp3",
+                        "type": "string",
+                        "enum": ["mp3", "wav", "flac"]
+                      },
+                      "seed": {
+                        "description": "A seed for reproducible generation.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "promptText": {
+                        "description": "A description of the sound effects to generate.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "videoUri": {
+                        "description": "The video to generate synchronized sound effects for. The output is audio only.",
+                        "example": "https://example.com/video.mp4",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "example": "https://example.com/video.mp4",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 2048,
+                            "pattern": "^https:\\/\\/.*"
+                          },
+                          {
+                            "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                            "example": "runway://<token>",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5000,
+                            "pattern": "^runway:\\/\\/.*"
+                          },
+                          {
+                            "description": "A data URI containing encoded media, up to 5MB.",
+                            "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5242880,
+                            "pattern": "^data:video\\/.*"
+                          }
+                        ]
+                      },
+                      "preserveSpeech": {
+                        "description": "Whether to preserve dialogue from the input video. Disabling this does not guarantee speech-free output.",
+                        "type": "boolean"
+                      },
+                      "model": { "type": "string", "const": "mirelo_sfx_2_0" }
+                    },
+                    "required": ["duration", "videoUri", "model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -21530,15 +21842,19 @@
                                   "type": "string"
                                 },
                                 "aspectRatio": {
-                                  "description": "Aspect ratio the output will use. Omitted when `ratio` is `auto`.",
+                                  "description": "Aspect ratio resolved for routing display from the request or router default. When `ratio` is `auto`, the source image determines output framing.",
                                   "type": "string"
                                 },
                                 "resolution": {
-                                  "description": "Megapixel tier the output will use. Omitted when `ratio` is `auto`.",
+                                  "description": "Megapixel tier resolved for routing display from the request or model default. When `ratio` is `auto`, this does not specify output pixel dimensions.",
                                   "type": "string"
                                 }
                               },
-                              "required": ["ratio"],
+                              "required": [
+                                "ratio",
+                                "aspectRatio",
+                                "resolution"
+                              ],
                               "additionalProperties": false
                             },
                             "estimatedCost": {
@@ -22385,7 +22701,7 @@
             "in": "query",
             "required": false,
             "schema": { "type": "string" },
-            "description": "Restrict results to these audit log actions, as a comma-separated list of up to 50 actions. Allowed values: `UserLogin`, `PasswordChanged`, `EmailChangeRequested`, `EmailChanged`, `UserRegistered`, `UserAccountDeleted`, `WorkspaceCreated`, `WorkspaceDeleted`, `MemberInvited`, `MemberInviteReminderSent`, `MemberRemoved`, `MemberRoleChanged`, `InviteAccepted`, `MemberJoinedViaDomain`, `TeamSettingsUpdated`, `InviteLinkToggled`, `UserGroupCreated`, `UserGroupUpdated`, `UserGroupDeleted`, `UserGroupArchived`, `UserGroupRestored`, `UserGroupMemberAdded`, `UserGroupMemberRemoved`, `UserGroupCreditCapUpdated`, `UserGroupVisibilityUpdated`, `SSOLogin`, `SSOUserProvisioned`, `SSOConfigCreated`, `SSOUserAutoAddedToTeam`, `SSODomainRegistrationCloned`, `AssetCreated`, `AssetUpdated`, `AssetDeleted`, `AssetDownloaded`, `AssetShared`, `AssetUnshared`, `CommentCreated`, `CommentEdited`, `CommentDeleted`, `CommentAgentCallRun`, `CommentRemovedByModerator`, `CommentRestoredByModerator`, `CommentRemovalReasonChanged`, `PermissionGranted`, `PermissionUpdated`, `PermissionRevoked`, `PermissionAccepted`, `SubscriptionCancelled`, `SubscriptionReactivatedWithOffer`, `SubscriptionPlanSwitched`, `CreditsTransferred`, `SeatsTransferred`, `SessionShared`, `SessionUnshared`, `VideoProjectShared`, `VideoProjectUnshared`, `BrandKitShared`, `BrandKitUnshared`, `AgentCustomSkillCreated`, `AgentCustomSkillDeleted`, `AgentCustomSkillShared`, `AgentCustomSkillUnshared`, `AgentSessionShared`, `AgentSessionUnshared`, `AgentConnectorLinkTokenCreated`, `AgentConnectorConnected`, `AgentConnectorDisconnected`, `AgentConnectorAssetExported`, `AgentConnectorSessionEnabled`, `AgentConnectorSessionDisabled`, `GenerationCreated`, `StudioSessionOpened`, `AccountLinkCreated`, `AccountLinkDeleted`, `AdConnectionAuthorizationStarted`, `AdConnectionConnected`, `AdAccountSelectionUpdated`, `AdAccountSyncRequested`, `AdConnectionDisconnected`, `AdWorkspaceOnboardingUpdated`, `AdCreativeReviewSubmitted`, `AdCreativeReviewCancelled`, `AdCreativeReviewDecided`, `AdCreativeApprovalRevoked`, `AdCreativeArchived`, `AdCreativeUnarchived`, `OrganizationSettingsUpdated`, `OrganizationDisabledModelsUpdated`, `OrganizationAgentSandboxUpdated`, `OrganizationApiAccountReleased`, `OrganizationApiAccountMemberInvited`, `OrganizationApiAccountMemberRoleChanged`, `OrganizationApiAccountMemberRemoved`, `WorkspaceCountryLockUpdated`, `WorkspaceTagCreated`, `WorkspaceTagUpdated`, `WorkspaceTagDeleted`, `WorkspaceTagAssigned`, `WorkspaceTagUnassigned`, `MeteredBillingConfigUpdated`, `MeteredBillingRefillTriggered`, `MeteredBillingRetryTriggered`, `EnterpriseSpendCapEnforcementUpdated`, `OnboardingBonusGranted`, `AwsMarketplaceEnterpriseSubscriptionLinked`."
+            "description": "Restrict results to these audit log actions, as a comma-separated list of up to 50 actions. Allowed values: `UserLogin`, `PasswordChanged`, `EmailChangeRequested`, `EmailChanged`, `UserRegistered`, `UserAccountDeleted`, `WorkspaceCreated`, `WorkspaceDeleted`, `MemberInvited`, `MemberInviteReminderSent`, `MemberRemoved`, `MemberRoleChanged`, `InviteAccepted`, `MemberJoinedViaDomain`, `TeamSettingsUpdated`, `InviteLinkToggled`, `UserGroupCreated`, `UserGroupUpdated`, `UserGroupDeleted`, `UserGroupArchived`, `UserGroupRestored`, `UserGroupMemberAdded`, `UserGroupMemberRemoved`, `UserGroupCreditCapUpdated`, `UserGroupVisibilityUpdated`, `SSOLogin`, `SSOUserProvisioned`, `SSOConfigCreated`, `SSOUserAutoAddedToTeam`, `SSODomainRegistrationCloned`, `AssetCreated`, `AssetUpdated`, `AssetDeleted`, `AssetDownloaded`, `AssetShared`, `AssetUnshared`, `CommentCreated`, `CommentEdited`, `CommentDeleted`, `CommentAgentCallRun`, `CommentRemovedByModerator`, `CommentRestoredByModerator`, `CommentRemovalReasonChanged`, `PermissionGranted`, `PermissionUpdated`, `PermissionRevoked`, `PermissionAccepted`, `SubscriptionCancelled`, `SubscriptionReactivatedWithOffer`, `SubscriptionPlanSwitched`, `CreditsTransferred`, `SeatsTransferred`, `SessionShared`, `SessionUnshared`, `VideoProjectShared`, `VideoProjectUnshared`, `BrandKitShared`, `BrandKitUnshared`, `AgentCustomSkillCreated`, `AgentCustomSkillDeleted`, `AgentCustomSkillShared`, `AgentCustomSkillUnshared`, `AgentSessionShared`, `AgentSessionUnshared`, `AgentConnectorLinkTokenCreated`, `AgentConnectorConnected`, `AgentConnectorDisconnected`, `AgentConnectorAssetExported`, `AgentConnectorSessionEnabled`, `AgentConnectorSessionDisabled`, `GenerationCreated`, `StudioSessionOpened`, `AppStudioAiRunOpened`, `AccountLinkCreated`, `AccountLinkDeleted`, `AdConnectionAuthorizationStarted`, `AdConnectionConnected`, `AdAccountSelectionUpdated`, `AdAccountSyncRequested`, `AdConnectionDisconnected`, `AdWorkspaceOnboardingUpdated`, `AdCreativeReviewSubmitted`, `AdCreativeReviewCancelled`, `AdCreativeReviewDecided`, `AdCreativeApprovalRevoked`, `AdCreativeArchived`, `AdCreativeUnarchived`, `AdPublishBatchQueued`, `AdPublishBatchCancelled`, `AdPublishBatchRetried`, `OrganizationSettingsUpdated`, `OrganizationDisabledModelsUpdated`, `OrganizationAgentSandboxUpdated`, `OrganizationApiAccountReleased`, `OrganizationApiAccountMemberInvited`, `OrganizationApiAccountMemberRoleChanged`, `OrganizationApiAccountMemberRemoved`, `WorkspaceCountryLockUpdated`, `WorkspaceTagCreated`, `WorkspaceTagUpdated`, `WorkspaceTagDeleted`, `WorkspaceTagAssigned`, `WorkspaceTagUnassigned`, `MeteredBillingConfigUpdated`, `MeteredBillingRefillTriggered`, `MeteredBillingRetryTriggered`, `EnterpriseSpendCapEnforcementUpdated`, `OnboardingBonusGranted`, `AwsMarketplaceEnterpriseSubscriptionLinked`."
           },
           {
             "name": "actorEmails",
@@ -22520,6 +22836,7 @@
                               "AgentConnectorSessionDisabled",
                               "GenerationCreated",
                               "StudioSessionOpened",
+                              "AppStudioAiRunOpened",
                               "AccountLinkCreated",
                               "AccountLinkDeleted",
                               "AdConnectionAuthorizationStarted",
@@ -22534,6 +22851,9 @@
                               "AdCreativeApprovalRevoked",
                               "AdCreativeArchived",
                               "AdCreativeUnarchived",
+                              "AdPublishBatchQueued",
+                              "AdPublishBatchCancelled",
+                              "AdPublishBatchRetried",
                               "OrganizationSettingsUpdated",
                               "OrganizationDisabledModelsUpdated",
                               "OrganizationAgentSandboxUpdated",
@@ -22735,6 +23055,7 @@
                         "AgentConnectorSessionDisabled",
                         "GenerationCreated",
                         "StudioSessionOpened",
+                        "AppStudioAiRunOpened",
                         "AccountLinkCreated",
                         "AccountLinkDeleted",
                         "AdConnectionAuthorizationStarted",
@@ -22749,6 +23070,9 @@
                         "AdCreativeApprovalRevoked",
                         "AdCreativeArchived",
                         "AdCreativeUnarchived",
+                        "AdPublishBatchQueued",
+                        "AdPublishBatchCancelled",
+                        "AdPublishBatchRetried",
                         "OrganizationSettingsUpdated",
                         "OrganizationDisabledModelsUpdated",
                         "OrganizationAgentSandboxUpdated",
@@ -22921,6 +23245,12 @@
                         "Ad review batch ID": { "type": "string" },
                         "Submitted via": { "type": "string" },
                         "Review decision": { "type": "string" },
+                        "Ad publish batch ID": { "type": "string" },
+                        "Platform ad account ID": { "type": "string" },
+                        "Into a new test ad set": { "type": "boolean" },
+                        "Creatives queued": { "type": "number" },
+                        "Creatives cancelled": { "type": "number" },
+                        "Creatives retried": { "type": "number" },
                         "App Studio app": { "type": "string" },
                         "App Studio session": { "type": "string" }
                       },
@@ -23031,6 +23361,7 @@
                               "gen4.5",
                               "gen3a_turbo",
                               "gen4_turbo",
+                              "recraft_v4_1_vector",
                               "gen4_image",
                               "gen4_image_turbo",
                               "gpt_image_2",
@@ -23046,6 +23377,7 @@
                               "gemini_image3.1_flash",
                               "gemini_image3.1_flash_lite",
                               "nano_banana_2.1",
+                              "recraft_v4_1_flash",
                               "seedream5_pro",
                               "seedream5_flash",
                               "seedream5_lite",
@@ -23056,6 +23388,7 @@
                               "eleven_v3",
                               "eleven_v4",
                               "eleven_text_to_sound_v2",
+                              "mirelo_sfx_2_0",
                               "eleven_voice_isolation",
                               "eleven_voice_dubbing",
                               "eleven_multilingual_sts_v2",
@@ -23161,6 +23494,7 @@
                               "gen4.5",
                               "gen3a_turbo",
                               "gen4_turbo",
+                              "recraft_v4_1_vector",
                               "gen4_image",
                               "gen4_image_turbo",
                               "gpt_image_2",
@@ -23176,6 +23510,7 @@
                               "gemini_image3.1_flash",
                               "gemini_image3.1_flash_lite",
                               "nano_banana_2.1",
+                              "recraft_v4_1_flash",
                               "seedream5_pro",
                               "seedream5_flash",
                               "seedream5_lite",
@@ -23186,6 +23521,7 @@
                               "eleven_v3",
                               "eleven_v4",
                               "eleven_text_to_sound_v2",
+                              "mirelo_sfx_2_0",
                               "eleven_voice_isolation",
                               "eleven_voice_dubbing",
                               "eleven_multilingual_sts_v2",
@@ -23338,6 +23674,7 @@
                                     "gen4.5",
                                     "gen3a_turbo",
                                     "gen4_turbo",
+                                    "recraft_v4_1_vector",
                                     "gen4_image",
                                     "gen4_image_turbo",
                                     "gpt_image_2",
@@ -23353,6 +23690,7 @@
                                     "gemini_image3.1_flash",
                                     "gemini_image3.1_flash_lite",
                                     "nano_banana_2.1",
+                                    "recraft_v4_1_flash",
                                     "seedream5_pro",
                                     "seedream5_flash",
                                     "seedream5_lite",
@@ -23363,6 +23701,7 @@
                                     "eleven_v3",
                                     "eleven_v4",
                                     "eleven_text_to_sound_v2",
+                                    "mirelo_sfx_2_0",
                                     "eleven_voice_isolation",
                                     "eleven_voice_dubbing",
                                     "eleven_multilingual_sts_v2",
@@ -23436,6 +23775,7 @@
                           "gen4.5",
                           "gen3a_turbo",
                           "gen4_turbo",
+                          "recraft_v4_1_vector",
                           "gen4_image",
                           "gen4_image_turbo",
                           "gpt_image_2",
@@ -23451,6 +23791,7 @@
                           "gemini_image3.1_flash",
                           "gemini_image3.1_flash_lite",
                           "nano_banana_2.1",
+                          "recraft_v4_1_flash",
                           "seedream5_pro",
                           "seedream5_flash",
                           "seedream5_lite",
@@ -23461,6 +23802,7 @@
                           "eleven_v3",
                           "eleven_v4",
                           "eleven_text_to_sound_v2",
+                          "mirelo_sfx_2_0",
                           "eleven_voice_isolation",
                           "eleven_voice_dubbing",
                           "eleven_multilingual_sts_v2",
