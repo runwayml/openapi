@@ -6096,7 +6096,7 @@
                           "items": { "type": "string", "format": "uri" }
                         },
                         "layers": {
-                          "description": "Layer details for successful Seedream 5 Pro Layers tasks. Each URI matches the output URL at the same index.",
+                          "description": "Layer details for successful Seedream layer decomposition tasks. Each URI matches the output URL at the same index.",
                           "type": "array",
                           "items": {
                             "type": "object",
@@ -17154,9 +17154,75 @@
                         "maxLength": 26000
                       },
                       "ratio": {
-                        "description": "Output quality tier. The video keeps the input media framing.",
+                        "description": "The target output size. Use a pixel ratio such as `1280:720` or `auto_720p` / `auto_1080p` for adaptive framing.",
                         "type": "string",
-                        "enum": ["auto_720p", "auto_1080p"]
+                        "enum": [
+                          "1280:720",
+                          "720:1280",
+                          "940:940",
+                          "1460:624",
+                          "1920:1080",
+                          "1080:1920",
+                          "1440:1440",
+                          "2200:940",
+                          "auto_720p",
+                          "auto_1080p"
+                        ]
+                      },
+                      "duration": {
+                        "description": "The duration of the edited video in seconds.",
+                        "type": "integer",
+                        "minimum": 3,
+                        "maximum": 30
+                      },
+                      "promptImage": {
+                        "description": "Optional first, middle, and last frames guiding the edit. Middle or last frames can be provided without a first frame.",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                "example": "https://example.com/image.jpg",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media, up to 5MB.",
+                                "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "Optional first and last frames, with up to 8 middle frames.",
+                            "example": [
+                              {
+                                "uri": "https://example.com/last.jpg",
+                                "position": "last"
+                              }
+                            ],
+                            "minItems": 1,
+                            "maxItems": 10,
+                            "type": "array",
+                            "items": {}
+                          }
+                        ]
                       },
                       "references": {
                         "description": "Images of characters, objects or styles to use in the video. Up to 10 images in total, frames included.",
@@ -17202,6 +17268,13 @@
                           "required": ["uri"],
                           "additionalProperties": false
                         }
+                      },
+                      "referenceVideos": {
+                        "description": "Up to 4 videos whose style, motion or camera work should guide the output, together at most 30 seconds long.",
+                        "minItems": 0,
+                        "maxItems": 4,
+                        "type": "array",
+                        "items": {}
                       },
                       "model": { "type": "string", "const": "kling_4" }
                     },
@@ -23497,6 +23570,122 @@
                     "required": ["promptText", "voice", "model"]
                   },
                   {
+                    "title": "gemini_3.8_flash_tts",
+                    "type": "object",
+                    "properties": {
+                      "voiceIds": {
+                        "description": "The Google voice for each speaker, such as \"Kore\" or \"Puck\". Pass one voice for a single speaker, or two for a dialogue.",
+                        "minItems": 1,
+                        "maxItems": 2,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "turns": {
+                        "description": "The script, in the order it is spoken. Use one turn for a single speaker, or alternate speakers across turns for a dialogue.",
+                        "minItems": 1,
+                        "maxItems": 100,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "description": "The words to speak in this turn.",
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "style": {
+                              "description": "How this turn should be delivered, such as \"calm and reassuring\". It guides the delivery and is not read aloud.",
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 200
+                            },
+                            "speaker": {
+                              "description": "The position in `voiceIds` of the voice that speaks this turn. Defaults to the first voice.",
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1
+                            }
+                          },
+                          "required": ["text"]
+                        }
+                      },
+                      "languageCode": {
+                        "description": "The language of the script, such as \"en-US\". When omitted, the model detects it.",
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 16
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "gemini_3.8_flash_tts"
+                      }
+                    },
+                    "required": ["voiceIds", "turns", "model"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "title": "gemini_3.8_flash_lite_tts",
+                    "type": "object",
+                    "properties": {
+                      "voiceIds": {
+                        "description": "The Google voice for each speaker, such as \"Kore\" or \"Puck\". Pass one voice for a single speaker, or two for a dialogue.",
+                        "minItems": 1,
+                        "maxItems": 2,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "turns": {
+                        "description": "The script, in the order it is spoken. Use one turn for a single speaker, or alternate speakers across turns for a dialogue.",
+                        "minItems": 1,
+                        "maxItems": 100,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "description": "The words to speak in this turn.",
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "style": {
+                              "description": "How this turn should be delivered, such as \"calm and reassuring\". It guides the delivery and is not read aloud.",
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 200
+                            },
+                            "speaker": {
+                              "description": "The position in `voiceIds` of the voice that speaks this turn. Defaults to the first voice.",
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1
+                            }
+                          },
+                          "required": ["text"]
+                        }
+                      },
+                      "languageCode": {
+                        "description": "The language of the script, such as \"en-US\". When omitted, the model detects it.",
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 16
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "gemini_3.8_flash_lite_tts"
+                      }
+                    },
+                    "required": ["voiceIds", "turns", "model"],
+                    "additionalProperties": false
+                  },
+                  {
                     "title": "eleven_multilingual_v2",
                     "type": "object",
                     "properties": {
@@ -26330,6 +26519,56 @@
                             "description": "ID of the generation this row belongs to. A charge and its refunds share it. `null` for App Studio usage, which has no generation.",
                             "anyOf": [{ "type": "string" }, { "type": "null" }]
                           },
+                          "status": {
+                            "description": "Current status of the generation when you request it, so it can change between pulls (upsert on `transactionId`). A refund row doesn't mean the generation failed. `null` when `taskId` is null or the generation no longer exists.",
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "PENDING",
+                                  "THROTTLED",
+                                  "RUNNING",
+                                  "FAILED",
+                                  "SUCCEEDED",
+                                  "CANCELLED"
+                                ]
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "outputType": {
+                            "description": "Media type of the generation's output: one of the listed values, which won't be remapped. Agent sandbox sessions report `file`. `null` when `taskId` is null, the generation no longer exists, or the type wasn't recorded.",
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "image",
+                                  "video",
+                                  "text",
+                                  "file",
+                                  "audio",
+                                  "font",
+                                  "model",
+                                  "project",
+                                  "mesh",
+                                  "cloud",
+                                  "splat"
+                                ]
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "outputCount": {
+                            "description": "Number of output files the generation returned, including ones the user later deleted and excluding attachments such as playable proxies. Copying an output into a project can raise it. 0 when it returned no files, for example while it runs or after it failed. `null` when `taskId` is null or the generation no longer exists.",
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              { "type": "null" }
+                            ]
+                          },
                           "timestamp": {
                             "description": "When the generation was charged.",
                             "type": "string",
@@ -26378,6 +26617,9 @@
                         "required": [
                           "transactionId",
                           "taskId",
+                          "status",
+                          "outputType",
+                          "outputCount",
                           "timestamp",
                           "userId",
                           "email",
@@ -26685,6 +26927,7 @@
                               },
                               "Invited member": { "type": "string" },
                               "Removed member": { "type": "string" },
+                              "Added member": { "type": "string" },
                               "Target member": {
                                 "anyOf": [
                                   { "type": "string" },
@@ -26692,6 +26935,13 @@
                                 ]
                               },
                               "Member email": { "type": "string" },
+                              "Accepted by": { "type": "string" },
+                              "New email": { "type": "string" },
+                              "Previous email": { "type": "string" },
+                              "Requested via": {
+                                "type": "array",
+                                "items": { "type": "string" }
+                              },
                               "Previous role": {
                                 "anyOf": [
                                   { "type": "string" },
@@ -26701,18 +26951,32 @@
                               "New role": { "type": "string" },
                               "Role": { "type": "string" },
                               "Login method": { "type": "string" },
+                              "Method": { "type": "string" },
                               "Platform": { "type": "string" },
                               "Application": { "type": "string" },
                               "Plan": { "type": "string" },
                               "Amount": { "type": "number" },
                               "New User": { "type": "boolean" },
                               "Group name": { "type": "string" },
+                              "Project ID": { "type": "string" },
                               "Language model or provider": {
                                 "type": "string"
                               },
                               "Model": { "type": "string" },
                               "Operation": { "type": "string" },
                               "Asset name": { "type": "string" },
+                              "Asset type": { "type": "string" },
+                              "Filename": { "type": "string" },
+                              "Downloaded by owner": { "type": "boolean" },
+                              "Anonymous": { "type": "boolean" },
+                              "Watermarked": { "type": "boolean" },
+                              "Updated fields": {
+                                "type": "array",
+                                "items": { "type": "string" }
+                              },
+                              "Source application": { "type": "string" },
+                              "Source": { "type": "string" },
+                              "Task ID": { "type": "string" },
                               "Comment ID": { "type": "string" },
                               "Comment target type": { "type": "string" },
                               "Comment target ID": { "type": "string" },
@@ -26722,6 +26986,8 @@
                               "New text": { "type": "string" },
                               "Agent tagged": { "type": "boolean" },
                               "Agent session ID": { "type": "string" },
+                              "Connector": { "type": "string" },
+                              "Tool": { "type": "string" },
                               "Outcome": { "type": "string" },
                               "Error code": { "type": "string" },
                               "Reason": {
@@ -26733,7 +26999,13 @@
                               "Tag name": { "type": "string" },
                               "Tag color": { "type": "string" },
                               "Workspace ID": { "type": "number" },
+                              "From workspace ID": { "type": "number" },
+                              "To workspace ID": { "type": "number" },
                               "Email domain": { "type": "string" },
+                              "Automatic": { "type": "boolean" },
+                              "Join policy": { "type": "string" },
+                              "Enabled": { "type": "boolean" },
+                              "Link type": { "type": "string" },
                               "Workspace name": {
                                 "anyOf": [
                                   { "type": "string" },
@@ -26793,6 +27065,12 @@
                                 ]
                               },
                               "Shared with workspace": { "type": "boolean" },
+                              "Shared in project": {
+                                "anyOf": [
+                                  { "type": "string" },
+                                  { "type": "null" }
+                                ]
+                              },
                               "Shared with projects": {
                                 "type": "array",
                                 "items": { "type": "string" }
@@ -26815,6 +27093,13 @@
                                   { "type": "null" }
                                 ]
                               },
+                              "Credits used": { "type": "number" },
+                              "Spend cap (USD cents)": { "type": "number" },
+                              "Recharge amount (USD cents)": {
+                                "type": "number"
+                              },
+                              "Recharge below (credits)": { "type": "number" },
+                              "Cancels at period end": { "type": "boolean" },
                               "API account": { "type": "string" },
                               "API project ID": { "type": "string" },
                               "Organization": { "type": "string" },
@@ -26826,6 +27111,12 @@
                               "Via public API": { "type": "boolean" },
                               "Provider": { "type": "string" },
                               "Selected": { "type": "boolean" },
+                              "Result metric ID": {
+                                "anyOf": [
+                                  { "type": "string" },
+                                  { "type": "null" }
+                                ]
+                              },
                               "Ad account ID": { "type": "string" },
                               "Ad sync run ID": { "type": "string" },
                               "Ad sync start date": { "type": "string" },
@@ -27113,26 +27404,48 @@
                         },
                         "Invited member": { "type": "string" },
                         "Removed member": { "type": "string" },
+                        "Added member": { "type": "string" },
                         "Target member": {
                           "anyOf": [{ "type": "string" }, { "type": "null" }]
                         },
                         "Member email": { "type": "string" },
+                        "Accepted by": { "type": "string" },
+                        "New email": { "type": "string" },
+                        "Previous email": { "type": "string" },
+                        "Requested via": {
+                          "type": "array",
+                          "items": { "type": "string" }
+                        },
                         "Previous role": {
                           "anyOf": [{ "type": "string" }, { "type": "null" }]
                         },
                         "New role": { "type": "string" },
                         "Role": { "type": "string" },
                         "Login method": { "type": "string" },
+                        "Method": { "type": "string" },
                         "Platform": { "type": "string" },
                         "Application": { "type": "string" },
                         "Plan": { "type": "string" },
                         "Amount": { "type": "number" },
                         "New User": { "type": "boolean" },
                         "Group name": { "type": "string" },
+                        "Project ID": { "type": "string" },
                         "Language model or provider": { "type": "string" },
                         "Model": { "type": "string" },
                         "Operation": { "type": "string" },
                         "Asset name": { "type": "string" },
+                        "Asset type": { "type": "string" },
+                        "Filename": { "type": "string" },
+                        "Downloaded by owner": { "type": "boolean" },
+                        "Anonymous": { "type": "boolean" },
+                        "Watermarked": { "type": "boolean" },
+                        "Updated fields": {
+                          "type": "array",
+                          "items": { "type": "string" }
+                        },
+                        "Source application": { "type": "string" },
+                        "Source": { "type": "string" },
+                        "Task ID": { "type": "string" },
                         "Comment ID": { "type": "string" },
                         "Comment target type": { "type": "string" },
                         "Comment target ID": { "type": "string" },
@@ -27142,6 +27455,8 @@
                         "New text": { "type": "string" },
                         "Agent tagged": { "type": "boolean" },
                         "Agent session ID": { "type": "string" },
+                        "Connector": { "type": "string" },
+                        "Tool": { "type": "string" },
                         "Outcome": { "type": "string" },
                         "Error code": { "type": "string" },
                         "Reason": {
@@ -27150,7 +27465,13 @@
                         "Tag name": { "type": "string" },
                         "Tag color": { "type": "string" },
                         "Workspace ID": { "type": "number" },
+                        "From workspace ID": { "type": "number" },
+                        "To workspace ID": { "type": "number" },
                         "Email domain": { "type": "string" },
+                        "Automatic": { "type": "boolean" },
+                        "Join policy": { "type": "string" },
+                        "Enabled": { "type": "boolean" },
+                        "Link type": { "type": "string" },
                         "Workspace name": {
                           "anyOf": [{ "type": "string" }, { "type": "null" }]
                         },
@@ -27192,6 +27513,9 @@
                           ]
                         },
                         "Shared with workspace": { "type": "boolean" },
+                        "Shared in project": {
+                          "anyOf": [{ "type": "string" }, { "type": "null" }]
+                        },
                         "Shared with projects": {
                           "type": "array",
                           "items": { "type": "string" }
@@ -27208,6 +27532,11 @@
                         "Project credit cap": {
                           "anyOf": [{ "type": "number" }, { "type": "null" }]
                         },
+                        "Credits used": { "type": "number" },
+                        "Spend cap (USD cents)": { "type": "number" },
+                        "Recharge amount (USD cents)": { "type": "number" },
+                        "Recharge below (credits)": { "type": "number" },
+                        "Cancels at period end": { "type": "boolean" },
                         "API account": { "type": "string" },
                         "API project ID": { "type": "string" },
                         "Organization": { "type": "string" },
@@ -27219,6 +27548,9 @@
                         "Via public API": { "type": "boolean" },
                         "Provider": { "type": "string" },
                         "Selected": { "type": "boolean" },
+                        "Result metric ID": {
+                          "anyOf": [{ "type": "string" }, { "type": "null" }]
+                        },
                         "Ad account ID": { "type": "string" },
                         "Ad sync run ID": { "type": "string" },
                         "Ad sync start date": { "type": "string" },
@@ -27408,6 +27740,8 @@
                               "seed_audio",
                               "eleven_v3",
                               "eleven_v4",
+                              "gemini_3.8_flash_tts",
+                              "gemini_3.8_flash_lite_tts",
                               "eleven_text_to_sound_v2",
                               "mirelo_sfx_2_0",
                               "eleven_music_v2_5",
@@ -27551,6 +27885,8 @@
                               "seed_audio",
                               "eleven_v3",
                               "eleven_v4",
+                              "gemini_3.8_flash_tts",
+                              "gemini_3.8_flash_lite_tts",
                               "eleven_text_to_sound_v2",
                               "mirelo_sfx_2_0",
                               "eleven_music_v2_5",
@@ -27749,6 +28085,8 @@
                                     "seed_audio",
                                     "eleven_v3",
                                     "eleven_v4",
+                                    "gemini_3.8_flash_tts",
+                                    "gemini_3.8_flash_lite_tts",
                                     "eleven_text_to_sound_v2",
                                     "mirelo_sfx_2_0",
                                     "eleven_music_v2_5",
@@ -27860,6 +28198,8 @@
                           "seed_audio",
                           "eleven_v3",
                           "eleven_v4",
+                          "gemini_3.8_flash_tts",
+                          "gemini_3.8_flash_lite_tts",
                           "eleven_text_to_sound_v2",
                           "mirelo_sfx_2_0",
                           "eleven_music_v2_5",
