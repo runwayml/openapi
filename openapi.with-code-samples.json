@@ -14,11 +14,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const avatarListResponse of client.avatars.list({ limit: 1 })) {\n  console.log(avatarListResponse);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const avatarListResponse of client.avatars.list()) {\n  console.log(avatarListResponse);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.avatars.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.avatars.list()\npage = page.data[0]\nprint(page)"
           },
           {
             "lang": "TypeScript",
@@ -42,7 +42,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 50,
               "type": "integer",
@@ -1344,11 +1344,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const avatarConversationListResponse of client.avatarConversations.list({ limit: 1 })) {\n  console.log(avatarConversationListResponse.id);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const avatarConversationListResponse of client.avatarConversations.list()) {\n  console.log(avatarConversationListResponse.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.avatar_conversations.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.avatar_conversations.list()\npage = page.data[0]\nprint(page.id)"
           },
           {
             "lang": "TypeScript",
@@ -1372,7 +1372,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 20,
               "type": "integer",
@@ -4018,7 +4018,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.avatar_videos.create(\n    model='gwm1_avatars',\n    avatar={\n        'type': 'runway-preset',\n        'preset_id': 'influencer',\n    },\n    speech={\n        'type': 'text',\n        'text': 'Welcome to Runway! I can help you create amazing videos.',\n        'voice': {'type': 'preset', 'preset_id': 'clara'},\n    },\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4383,11 +4386,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const documentListResponse of client.documents.list({\n  limit: 1,\n  order: 'asc',\n  sort: 'createdAt',\n})) {\n  console.log(documentListResponse.id);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const documentListResponse of client.documents.list()) {\n  console.log(documentListResponse.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.documents.list(\n    limit=1,\n    order=\"asc\",\n    sort=\"createdAt\",\n)\npage = page.data[0]\nprint(page.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.documents.list()\npage = page.data[0]\nprint(page.id)"
           },
           {
             "lang": "TypeScript",
@@ -4411,7 +4414,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 50,
               "type": "integer",
@@ -4423,7 +4426,7 @@
           {
             "name": "sort",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": "createdAt",
               "type": "string",
@@ -4434,7 +4437,7 @@
           {
             "name": "order",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": "desc",
               "type": "string",
@@ -4798,7 +4801,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nsession = client.realtime_sessions.create(\n  model='gwm1_avatars',\n  avatar={\n    'type': 'custom',\n    'avatar_id': '550e8400-e29b-41d4-a716-446655440000',\n  },\n)\nprint(session.id)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6309,7 +6315,10 @@
             "source": "import os\nimport httpx\n\nresponse = httpx.post(\n    'https://api.dev.runwayml.com/v1/image_to_vector',\n    headers={\n        'Authorization': 'Bearer ' + os.environ['RUNWAYML_API_SECRET'],\n        'X-Runway-Version': '2024-11-06',\n    },\n    json={\n        'model': 'ideogram_vector',\n        'imageUri': 'https://example.com/illustration.png',\n        'vectorizationMode': 'default',\n    },\n    timeout=60,\n)\nresponse.raise_for_status()\n# Poll GET /v1/tasks/{id} until the SVG is ready.\nprint(response.json()['id'])"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6503,6 +6512,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -6576,7 +6589,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.image_to_video.create(\n  model='gen4_turbo',\n  prompt_image='https://example.com/bunny.jpg',\n  prompt_text='A cute bunny hopping in a meadow',\n  duration=10,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11556,6 +11572,201 @@
                     },
                     "required": ["promptText", "promptImage", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "seedance2_5_flash",
+                    "type": "object",
+                    "properties": {
+                      "promptImage": {
+                        "description": "An image or array of images. Use position `first`/`last` for keyframe mode, or omit position for reference images. The two modes cannot be mixed.",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                            "example": "https://example.com/image.jpg",
+                            "anyOf": [
+                              {
+                                "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                "example": "https://example.com/image.jpg",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 2048,
+                                "pattern": "^https:\\/\\/.*"
+                              },
+                              {
+                                "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                "example": "runway://<token>",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5000,
+                                "pattern": "^runway:\\/\\/.*"
+                              },
+                              {
+                                "description": "A data URI containing encoded media, up to 5MB.",
+                                "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                "type": "string",
+                                "minLength": 13,
+                                "maxLength": 5242880,
+                                "pattern": "^data:image\\/.*"
+                              }
+                            ]
+                          },
+                          {
+                            "title": "PromptImages",
+                            "description": "An array of image objects. Use position \"first\"/\"last\" for keyframe mode, or omit position for reference images. The two modes cannot be mixed.",
+                            "example": [
+                              {
+                                "uri": "https://example.com/firstFrame.jpg",
+                                "position": "first"
+                              },
+                              {
+                                "uri": "https://example.com/lastFrame.jpg",
+                                "position": "last"
+                              }
+                            ],
+                            "type": "array",
+                            "items": {
+                              "title": "PromptImage",
+                              "x-stainless-variantName": "PromptImage",
+                              "type": "object",
+                              "properties": {
+                                "uri": {
+                                  "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "anyOf": [
+                                    {
+                                      "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                      "example": "https://example.com/image.jpg",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 2048,
+                                      "pattern": "^https:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                      "example": "runway://<token>",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5000,
+                                      "pattern": "^runway:\\/\\/.*"
+                                    },
+                                    {
+                                      "description": "A data URI containing encoded media, up to 5MB.",
+                                      "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                      "type": "string",
+                                      "minLength": 13,
+                                      "maxLength": 5242880,
+                                      "pattern": "^data:image\\/.*"
+                                    }
+                                  ]
+                                },
+                                "position": {
+                                  "description": "The position of the image in the output video. \"first\" will use the image as the first frame, \"last\" as the last frame. Omit for a reference image.",
+                                  "type": "string",
+                                  "enum": ["first", "last"]
+                                }
+                              },
+                              "required": ["uri"]
+                            }
+                          }
+                        ]
+                      },
+                      "promptText": {
+                        "description": "An optional text prompt up to 15000 characters describing what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 15000
+                      },
+                      "audio": {
+                        "description": "Whether to generate audio for the video.",
+                        "default": true,
+                        "type": "boolean"
+                      },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "outputFormat": {
+                        "description": "Container for the output video. `mov` keeps high colour precision for grading and compositing. Defaults to `mp4`.",
+                        "type": "string",
+                        "enum": ["mp4", "mov"]
+                      },
+                      "duration": {
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 30 },
+                          { "type": "string", "const": "auto" }
+                        ]
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video. Seedance 2.5 Flash supports 480p and 720p.",
+                        "type": "string",
+                        "enum": [
+                          "992:432",
+                          "854:480",
+                          "752:560",
+                          "640:640",
+                          "560:752",
+                          "480:854",
+                          "1470:630",
+                          "1280:720",
+                          "1112:834",
+                          "960:960",
+                          "834:1112",
+                          "720:1280"
+                        ]
+                      },
+                      "referenceAudio": {
+                        "description": "An optional array of audio references. The total combined duration must be less than 30 seconds.",
+                        "maxItems": 5,
+                        "type": "array",
+                        "items": {
+                          "title": "AudioReference",
+                          "description": "An audio reference allows the model to use the audio as additional context for the output.",
+                          "type": "object",
+                          "properties": {
+                            "type": { "type": "string", "const": "audio" },
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                              "example": "https://example.com/audio.mp3",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "example": "https://example.com/audio.mp3",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:audio\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["type", "uri"]
+                        }
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "seedance2_5_flash"
+                      }
+                    },
+                    "required": ["promptImage", "model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -11700,6 +11911,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -11773,7 +11988,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.text_to_video.create(\n  model='veo3.1',\n  prompt_text='A cute bunny hopping in a meadow',\n  ratio='1280:720',\n  duration=8,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -14798,6 +15016,194 @@
                     },
                     "required": ["promptText", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "seedance2_5_flash",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "An optional text prompt up to 15000 characters describing what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 15000
+                      },
+                      "audio": {
+                        "description": "Whether to generate audio for the video. Defaults to `true`.",
+                        "type": "boolean"
+                      },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "outputFormat": {
+                        "description": "Container for the output video. `mov` keeps high colour precision for grading and compositing. Defaults to `mp4`.",
+                        "type": "string",
+                        "enum": ["mp4", "mov"]
+                      },
+                      "duration": {
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes. Defaults to 5.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 30 },
+                          { "type": "string", "const": "auto" }
+                        ]
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video. Seedance 2.5 Flash supports 480p and 720p. Defaults to `1280:720`.",
+                        "type": "string",
+                        "enum": [
+                          "992:432",
+                          "854:480",
+                          "752:560",
+                          "640:640",
+                          "560:752",
+                          "480:854",
+                          "1470:630",
+                          "1280:720",
+                          "1112:834",
+                          "960:960",
+                          "834:1112",
+                          "720:1280"
+                        ]
+                      },
+                      "references": {
+                        "description": "An optional array of image references (up to 10). See [our docs](/assets/inputs#images) on image inputs for more information.",
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "title": "PromptImage",
+                          "x-stainless-variantName": "PromptImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "referenceVideos": {
+                        "description": "An optional array of video references. The combined duration across all video references must not exceed 30 seconds. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                        "maxItems": 5,
+                        "type": "array",
+                        "items": {
+                          "title": "VideoReference",
+                          "description": "A video reference allows the model to use the video as additional context for the output.",
+                          "type": "object",
+                          "properties": {
+                            "type": { "type": "string", "const": "video" },
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                              "example": "https://example.com/video.mp4",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "example": "https://example.com/video.mp4",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:video\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["type", "uri"]
+                        }
+                      },
+                      "referenceAudio": {
+                        "description": "An optional array of audio references. The total combined duration must be less than 30 seconds.",
+                        "maxItems": 5,
+                        "type": "array",
+                        "items": {
+                          "title": "AudioReference",
+                          "description": "An audio reference allows the model to use the audio as additional context for the output.",
+                          "type": "object",
+                          "properties": {
+                            "type": { "type": "string", "const": "audio" },
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                              "example": "https://example.com/audio.mp3",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "example": "https://example.com/audio.mp3",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:audio\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["type", "uri"]
+                        }
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "seedance2_5_flash"
+                      }
+                    },
+                    "required": ["model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -14942,6 +15348,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -15015,7 +15425,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.video_to_video.create(\n  model='aleph2',\n  video_uri='https://example.com/bunny.mp4',\n  prompt_text='string',\n  keyframes=[\n    {\n      'uri': 'https://example.com/easter-scene.jpg',\n      'at': 0,\n    },\n  ],\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -17937,6 +18350,230 @@
                     },
                     "required": ["promptText", "promptVideo", "model"],
                     "additionalProperties": false
+                  },
+                  {
+                    "title": "seedance2_5_flash",
+                    "type": "object",
+                    "properties": {
+                      "promptVideo": {
+                        "description": "The input video to use as a reference for the output video. If additional video references are provided, the combined duration across all video references must not exceed 30 seconds.",
+                        "example": "https://example.com/video.mp4",
+                        "anyOf": [
+                          {
+                            "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                            "example": "https://example.com/video.mp4",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 2048,
+                            "pattern": "^https:\\/\\/.*"
+                          },
+                          {
+                            "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                            "example": "runway://<token>",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5000,
+                            "pattern": "^runway:\\/\\/.*"
+                          },
+                          {
+                            "description": "A data URI containing encoded media, up to 5MB.",
+                            "type": "string",
+                            "minLength": 13,
+                            "maxLength": 5242880,
+                            "pattern": "^data:video\\/.*"
+                          }
+                        ]
+                      },
+                      "promptText": {
+                        "description": "An optional text prompt up to 15000 characters describing what should appear in the output.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 15000
+                      },
+                      "audio": {
+                        "description": "Whether to generate audio for the video.",
+                        "default": true,
+                        "type": "boolean"
+                      },
+                      "seed": {
+                        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295
+                      },
+                      "outputFormat": {
+                        "description": "Container for the output video. `mov` keeps high colour precision for grading and compositing. Defaults to `mp4`.",
+                        "type": "string",
+                        "enum": ["mp4", "mov"]
+                      },
+                      "mode": {
+                        "description": "How the input video is used. `reference` (the default) generates a new video conditioned on the input video and accepts `duration` and `ratio`. `extend` continues the input video, requires `promptText`, and matches the input aspect ratio, so `ratio` may not be provided. `edit` modifies the input video in place, requires `promptText`, requires `duration: \"auto\"`, and does not accept `ratio`.",
+                        "default": "reference",
+                        "type": "string",
+                        "enum": ["reference", "extend", "edit"]
+                      },
+                      "duration": {
+                        "description": "Seconds of video to generate, or `auto` to let the model choose. `auto` is billed at the variant maximum up front; unused credits are refunded after the generation finishes. Defaults to 5.",
+                        "anyOf": [
+                          { "type": "integer", "minimum": 4, "maximum": 30 },
+                          { "type": "string", "const": "auto" }
+                        ]
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output video. Seedance 2.5 Flash supports 480p and 720p.",
+                        "type": "string",
+                        "enum": [
+                          "992:432",
+                          "854:480",
+                          "752:560",
+                          "640:640",
+                          "560:752",
+                          "480:854",
+                          "1470:630",
+                          "1280:720",
+                          "1112:834",
+                          "960:960",
+                          "834:1112",
+                          "720:1280"
+                        ]
+                      },
+                      "references": {
+                        "description": "An optional array of image references (up to 10). See [our docs](/assets/inputs#images) on image inputs for more information.",
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "title": "PromptImage",
+                          "x-stainless-variantName": "PromptImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "referenceVideos": {
+                        "description": "An optional array of video references. The combined duration across all video references must not exceed 30 seconds. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                        "maxItems": 4,
+                        "type": "array",
+                        "items": {
+                          "title": "VideoReference",
+                          "description": "A video reference allows the model to use the video as additional context for the output.",
+                          "type": "object",
+                          "properties": {
+                            "type": { "type": "string", "const": "video" },
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                              "example": "https://example.com/video.mp4",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:video/mp4;base64,...`, up to 5MB) containing an encoded video. See [our docs](/assets/inputs#videos) on video inputs for more information.",
+                                  "example": "https://example.com/video.mp4",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:video\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["type", "uri"]
+                        }
+                      },
+                      "referenceAudio": {
+                        "description": "An optional array of audio references. The total combined duration must be less than 30 seconds.",
+                        "maxItems": 5,
+                        "type": "array",
+                        "items": {
+                          "title": "AudioReference",
+                          "description": "An audio reference allows the model to use the audio as additional context for the output.",
+                          "type": "object",
+                          "properties": {
+                            "type": { "type": "string", "const": "audio" },
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                              "example": "https://example.com/audio.mp3",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:audio/mp3;base64,...`, up to 5MB) containing an encoded audio. See [our docs](/assets/inputs#audio) on audio inputs for more information.",
+                                  "example": "https://example.com/audio.mp3",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:audio\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["type", "uri"]
+                        }
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "seedance2_5_flash"
+                      }
+                    },
+                    "required": ["promptVideo", "model"],
+                    "additionalProperties": false
                   }
                 ],
                 "discriminator": { "propertyName": "model" }
@@ -18081,6 +18718,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -18154,7 +18795,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.text_to_image.create(\n  model='gpt_image_2_6_flare',\n  prompt_text='A serene landscape with mountains',\n  ratio='1920:1088',\n  reasoning_effort='high',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -20637,6 +21281,314 @@
                     "additionalProperties": false
                   },
                   {
+                    "title": "seedream5.5",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A description of the image you want to generate.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output image, expressed as `<width>:<height>`. Use `auto_1k`, `auto_1.5k` or `auto_2k` to let the model pick the aspect ratio at a fixed resolution tier.",
+                        "type": "string",
+                        "enum": [
+                          "1024:1024",
+                          "1152:864",
+                          "864:1152",
+                          "1424:800",
+                          "800:1424",
+                          "1248:832",
+                          "832:1248",
+                          "1568:672",
+                          "1536:1536",
+                          "1792:1344",
+                          "1344:1792",
+                          "2048:1152",
+                          "1152:2048",
+                          "1872:1248",
+                          "1248:1872",
+                          "2352:1008",
+                          "2048:2048",
+                          "2368:1776",
+                          "1776:2368",
+                          "2816:1584",
+                          "1584:2816",
+                          "2496:1664",
+                          "1664:2496",
+                          "3136:1344",
+                          "auto_1k",
+                          "auto_1.5k",
+                          "auto_2k"
+                        ]
+                      },
+                      "outputFormat": {
+                        "description": "The file format of the output image. Defaults to png.",
+                        "type": "string",
+                        "enum": ["png", "jpeg"]
+                      },
+                      "background": {
+                        "description": "Whether the image has a transparent or an opaque background. A transparent background needs the png output format. Omit to let the model decide from the prompt.",
+                        "type": "string",
+                        "enum": ["transparent", "opaque"]
+                      },
+                      "referenceImages": {
+                        "minItems": 0,
+                        "maxItems": 10,
+                        "type": "array",
+                        "items": {
+                          "title": "Seedream55ReferenceImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        },
+                        "description": "Images to edit or combine. Refer to them in the prompt by upload order (Figure 1, Figure 2, and so on)."
+                      },
+                      "outputCount": {
+                        "description": "The number of images to generate. Increasing this number will affect the number of credits consumed by the generation.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4
+                      },
+                      "model": { "type": "string", "const": "seedream5.5" }
+                    },
+                    "required": ["promptText", "ratio", "model"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "title": "seedream5.5_layers",
+                    "type": "object",
+                    "properties": {
+                      "referenceImages": {
+                        "minItems": 1,
+                        "maxItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        },
+                        "description": "The image to split into editable layers. Layer ordering and positioning are returned in the completed task’s layers field."
+                      },
+                      "resolution": {
+                        "description": "Output resolution tier. Defaults to auto, which adapts to the input image. The base image and layers preserve their respective aspect ratios.",
+                        "type": "string",
+                        "enum": ["auto", "1k", "1.5k", "2k"]
+                      },
+                      "outputFormat": {
+                        "description": "Base image format; defaults to png. Separated layers always use PNG with transparency.",
+                        "type": "string",
+                        "enum": ["png", "jpeg"]
+                      },
+                      "maxImages": {
+                        "description": "The most images the task may return, counting the base image. Each returned image is billed separately. Defaults to 30.",
+                        "type": "integer",
+                        "minimum": 2,
+                        "maximum": 100
+                      },
+                      "promptText": {
+                        "description": "Optional instructions describing which elements to separate. Omit to split the image automatically.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000
+                      },
+                      "model": {
+                        "type": "string",
+                        "const": "seedream5.5_layers"
+                      }
+                    },
+                    "required": ["referenceImages", "model"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "title": "minimax_h3_image",
+                    "type": "object",
+                    "properties": {
+                      "promptText": {
+                        "description": "A non-empty text prompt describing what should appear in the output image.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 32000
+                      },
+                      "ratio": {
+                        "description": "The resolution of the output image, expressed as `<width>:<height>`. 4K ratios cost more credits per image than 1K and 2K. Use `auto_1k`, `auto_2k` or `auto_4k` to pick a resolution tier and let the model choose the framing from the prompt.",
+                        "type": "string",
+                        "enum": [
+                          "1024:1024",
+                          "1152:928",
+                          "928:1152",
+                          "1184:896",
+                          "896:1184",
+                          "1248:832",
+                          "832:1248",
+                          "1376:768",
+                          "768:1376",
+                          "1440:736",
+                          "736:1440",
+                          "1568:672",
+                          "672:1568",
+                          "1760:576",
+                          "576:1760",
+                          "2048:2048",
+                          "2304:1824",
+                          "1824:2304",
+                          "2368:1760",
+                          "1760:2368",
+                          "2496:1664",
+                          "1664:2496",
+                          "2720:1536",
+                          "1536:2720",
+                          "2912:1440",
+                          "1440:2912",
+                          "3136:1344",
+                          "1344:3136",
+                          "3552:1184",
+                          "1184:3552",
+                          "4096:4096",
+                          "4576:3648",
+                          "3648:4576",
+                          "4736:3552",
+                          "3552:4736",
+                          "5024:3360",
+                          "3360:5024",
+                          "5472:3072",
+                          "3072:5472",
+                          "5792:2912",
+                          "2912:5792",
+                          "6272:2688",
+                          "2688:6272",
+                          "7104:2368",
+                          "2368:7104",
+                          "auto_1k",
+                          "auto_2k",
+                          "auto_4k"
+                        ]
+                      },
+                      "highspeed": {
+                        "description": "When true, generate with the faster MiniMax H3 Image Highspeed model, which costs more credits per image. Defaults to false.",
+                        "type": "boolean"
+                      },
+                      "referenceImages": {
+                        "minItems": 0,
+                        "maxItems": 16,
+                        "type": "array",
+                        "items": {
+                          "title": "MinimaxH3ImageReferenceImage",
+                          "type": "object",
+                          "properties": {
+                            "uri": {
+                              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                              "example": "https://example.com/image.jpg",
+                              "anyOf": [
+                                {
+                                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                                  "example": "https://example.com/image.jpg",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 2048,
+                                  "pattern": "^https:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                                  "example": "runway://<token>",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5000,
+                                  "pattern": "^runway:\\/\\/.*"
+                                },
+                                {
+                                  "description": "A data URI containing encoded media, up to 5MB.",
+                                  "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                                  "type": "string",
+                                  "minLength": 13,
+                                  "maxLength": 5242880,
+                                  "pattern": "^data:image\\/.*"
+                                }
+                              ]
+                            }
+                          },
+                          "required": ["uri"],
+                          "additionalProperties": false
+                        },
+                        "description": "Up to 16 images to edit or combine. Refer to them in the prompt by upload order (image 1, image 2, and so on). Each reference image adds to the credits per image."
+                      },
+                      "outputCount": {
+                        "description": "The number of images to generate. Increasing this number will affect the number of credits consumed by the generation.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10
+                      },
+                      "model": { "type": "string", "const": "minimax_h3_image" }
+                    },
+                    "required": ["promptText", "ratio", "model"],
+                    "additionalProperties": false
+                  },
+                  {
                     "title": "gemini_2.5_flash",
                     "type": "object",
                     "properties": {
@@ -20858,6 +21810,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -20931,7 +21887,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.image_upscale.create(\n    model='magnific_precision_upscaler_v2',\n    image_uri='https://example.com/photo.jpg',\n    scale_factor=2,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -21151,6 +22110,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -21224,7 +22187,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.video_upscale.create(\n    model='magnific_video_upscaler_creative',\n    video_uri='https://example.com/bunny.mp4',\n    resolution='2k',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -21504,6 +22470,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -21577,7 +22547,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.video_to_hdr.create(\n    model='ruby',\n    video_uri='https://example.com/bunny.mp4',\n    output_format='hdr10',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -21782,6 +22755,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -21855,7 +22832,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.character_performance.create(\n  model='act_two',\n  character={\n    'type': 'video',\n    'uri': 'https://example.com/posedCharacter.mp4',\n  },\n  reference={\n    'type': 'video',\n    'uri': 'https://example.com/actorPerformance.mp4',\n  },\n  ratio='1280:720',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22189,6 +23169,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -22262,7 +23246,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.sound_effect.create(\n  model='eleven_text_to_sound_v2',\n  prompt_text='A thunderstorm with heavy rain',\n  duration=10,\n  loop=True,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22563,6 +23550,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -22636,7 +23627,10 @@
             "source": "import os\nimport httpx\n\nresponse = httpx.post(\n  'https://api.dev.runwayml.com/v1/video_to_audio',\n  headers={\n    'Authorization': 'Bearer ' + os.environ['RUNWAYML_API_SECRET'],\n    'X-Runway-Version': '2024-11-06',\n  },\n  json={\n    'model': 'mirelo_sfx_2_0',\n    'videoUri': 'https://example.com/video.mp4',\n    'duration': 5,\n    'preserveSpeech': False,\n  },\n)\nresponse.raise_for_status()\nprint(response.json())"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -22864,6 +23858,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -22937,7 +23935,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\naudioTask = client.speech_to_speech.create(\n  model='eleven_multilingual_sts_v2',\n  media={\n    'type': 'audio',\n    'uri': 'https://example.com/audio.mp3',\n  },\n  voice={\n    'type': 'runway-preset',\n    'presetId': 'Maggie',\n  },\n).wait_for_task_output()\n\nprint(audioTask)\n\nvideoTask = client.speech_to_speech.create(\n  model='eleven_multilingual_sts_v2',\n  media={\n    'type': 'video',\n    'uri': 'https://example.com/video.mp4',\n  },\n  voice={\n    'type': 'runway-preset',\n    'presetId': 'Noah',\n  },\n).wait_for_task_output()\n\nprint(videoTask)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -23256,6 +24257,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -23329,7 +24334,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.text_to_speech.create(\n  model='eleven_v3',\n  prompt_text='[laughs] The quick brown fox jumps over the lazy dog',\n  voice={\n    'type': 'runway-preset',\n    'presetId': 'Leslie',\n  },\n  stability=0.5,\n  language_code='en',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24080,6 +25088,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -24153,7 +25165,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.text_to_music.create(\n  model='eleven_music_v2_5',\n  prompt_text='An upbeat synthwave track with driving drums and a soaring lead synth',\n  duration=60,\n  instrumental=True,\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24332,6 +25347,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -24405,7 +25424,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.voice_dubbing.create(\n  model='eleven_voice_dubbing',\n  audio_uri='https://example.com/audio.mp3',\n  target_lang='es',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24644,6 +25666,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -24717,7 +25743,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask = client.voice_isolation.create(\n  model='eleven_voice_isolation',\n  audio_url='https://example.com/audio.mp3',\n).wait_for_task_output()\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -24907,6 +25936,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -24960,7 +25993,10 @@
         "tags": ["Model Router"],
         "summary": "Routed video generation",
         "description": "Start a video generation task using a saved Model Router config instead of naming a model.",
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -25560,7 +26596,10 @@
         "tags": ["Model Router"],
         "summary": "Routed image generation",
         "description": "Start an image generation task using a saved Model Router config instead of naming a model.",
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -25947,7 +26986,10 @@
         "tags": ["Model Router"],
         "summary": "Routed audio generation",
         "description": "Start an audio generation task using a saved Model Router config instead of naming a model. Set input.type to speech to speak promptText verbatim, audio to generate audio described by promptText, or music to generate a song or instrumental track described by promptText.",
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -26428,7 +27470,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 50,
               "type": "integer",
@@ -26486,7 +27528,7 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
-            "description": "Organization to report on. Optional when this API project is linked to a single organization; required when it is linked to more than one."
+            "description": "Organization to report on. Optional when this API project is linked to a single organization; required when it is linked to more than one. If it is missing then, the 400 response lists the IDs and names of the linked organizations in `details.organizations`."
           },
           {
             "name": "workspaceIds",
@@ -26595,6 +27637,21 @@
                             "description": "Name of the owning workspace.",
                             "type": "string"
                           },
+                          "projectId": {
+                            "description": "ID of the Runway web app project the generation was made in (not this API project). `null` when no project is recorded for it, which includes generations made outside a project, generations made before project tracking was rolled out (late May to mid-August 2026), and rows with a null `taskId`.",
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid",
+                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "projectName": {
+                            "description": "Current name of that project, so it changes when the project is renamed (group by `projectId`). Still returned after the project is archived or deleted. `null` when `projectId` is null.",
+                            "anyOf": [{ "type": "string" }, { "type": "null" }]
+                          },
                           "tool": {
                             "description": "Model/task display name for the generation.",
                             "type": "string"
@@ -26625,6 +27682,8 @@
                           "email",
                           "workspaceId",
                           "workspaceName",
+                          "projectId",
+                          "projectName",
                           "tool",
                           "credits",
                           "unit",
@@ -26652,11 +27711,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const webappListUsageResponse of client.organization.webapp.listUsage({\n  from: '2019-12-27T18:11:19.117Z',\n  limit: 1,\n  to: '2019-12-27T18:11:19.117Z',\n})) {\n  console.log(webappListUsageResponse.credits);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const webappListUsageResponse of client.organization.webapp.listUsage({\n  from: '2019-12-27T18:11:19.117Z',\n  to: '2019-12-27T18:11:19.117Z',\n})) {\n  console.log(webappListUsageResponse.credits);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom datetime import datetime\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.organization.webapp.list_usage(\n    from_=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n    limit=1,\n    to=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n)\npage = page.data[0]\nprint(page.credits)"
+            "source": "import os\nfrom datetime import datetime\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.organization.webapp.list_usage(\n    from_=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n    to=datetime.fromisoformat(\"2019-12-27T18:11:19.117\"),\n)\npage = page.data[0]\nprint(page.credits)"
           }
         ]
       }
@@ -26677,7 +27736,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 50,
               "type": "integer",
@@ -26695,7 +27754,7 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
-            "description": "Organization to report on. Optional when this API project is linked to a single organization; required when it is linked to more than one."
+            "description": "Organization to report on. Optional when this API project is linked to a single organization; required when it is linked to more than one. If it is missing then, the 400 response lists the IDs and names of the linked organizations in `details.organizations`."
           },
           {
             "name": "workspaceIds",
@@ -26709,7 +27768,7 @@
             "in": "query",
             "required": false,
             "schema": { "type": "string" },
-            "description": "Restrict results to these audit log actions, as a comma-separated list of up to 50 actions. Allowed values: `UserLogin`, `PasswordChanged`, `EmailChangeRequested`, `EmailChanged`, `UserRegistered`, `UserAccountDeleted`, `WorkspaceCreated`, `WorkspaceDeleted`, `MemberInvited`, `MemberInviteReminderSent`, `MemberRemoved`, `MemberRoleChanged`, `InviteAccepted`, `MemberJoinedViaDomain`, `TeamSettingsUpdated`, `InviteLinkToggled`, `UserGroupCreated`, `UserGroupUpdated`, `UserGroupDeleted`, `UserGroupArchived`, `UserGroupRestored`, `UserGroupMemberAdded`, `UserGroupMemberRemoved`, `UserGroupCreditCapUpdated`, `UserGroupVisibilityUpdated`, `SSOLogin`, `SSOUserProvisioned`, `SSOConfigCreated`, `SSOUserAutoAddedToTeam`, `SSODomainRegistrationCloned`, `AssetCreated`, `AssetUpdated`, `AssetDeleted`, `AssetDownloaded`, `AssetShared`, `AssetUnshared`, `CommentCreated`, `CommentEdited`, `CommentDeleted`, `CommentAgentCallRun`, `CommentRemovedByModerator`, `CommentRestoredByModerator`, `CommentRemovalReasonChanged`, `PermissionGranted`, `PermissionUpdated`, `PermissionRevoked`, `PermissionAccepted`, `SubscriptionCancelled`, `SubscriptionReactivatedWithOffer`, `SubscriptionPlanSwitched`, `CreditsTransferred`, `SeatsTransferred`, `SessionShared`, `SessionUnshared`, `VideoProjectShared`, `VideoProjectUnshared`, `BrandKitShared`, `BrandKitUnshared`, `AgentCustomSkillCreated`, `AgentCustomSkillDeleted`, `AgentCustomSkillShared`, `AgentCustomSkillUnshared`, `AgentSessionShared`, `AgentSessionUnshared`, `AgentConnectorLinkTokenCreated`, `AgentConnectorConnected`, `AgentConnectorDisconnected`, `AgentConnectorAssetExported`, `AgentConnectorSessionEnabled`, `AgentConnectorSessionDisabled`, `GenerationCreated`, `StudioSessionOpened`, `AppStudioAiRunOpened`, `AppStudioAppCreated`, `AppStudioAppPublished`, `AppStudioAppVisibilityChanged`, `AppStudioAppRenamed`, `AppStudioAppDeleted`, `AppStudioAppCoOwnerChanged`, `AppStudioAppSecretChanged`, `AppStudioAppRunwayAccessGranted`, `AppStudioAppRunwayAccessRevoked`, `AccountLinkCreated`, `AccountLinkDeleted`, `AdConnectionAuthorizationStarted`, `AdConnectionConnected`, `AdAccountSelectionUpdated`, `AdAccountSyncRequested`, `AdConnectionDisconnected`, `AdWorkspaceOnboardingUpdated`, `AdCreativeReviewSubmitted`, `AdCreativeReviewCancelled`, `AdCreativeReviewDecided`, `AdCreativeApprovalRevoked`, `AdCreativeArchived`, `AdCreativeUnarchived`, `AdPublishBatchQueued`, `AdPublishBatchCancelled`, `AdPublishBatchRetried`, `AdStatusChanged`, `OrganizationSettingsUpdated`, `OrganizationDisabledModelsUpdated`, `OrganizationAgentSandboxUpdated`, `OrganizationApiAccountReleased`, `OrganizationApiAccountMemberInvited`, `OrganizationApiAccountMemberRoleChanged`, `OrganizationApiAccountMemberRemoved`, `WorkspaceCountryLockUpdated`, `WorkspaceTagCreated`, `WorkspaceTagUpdated`, `WorkspaceTagDeleted`, `WorkspaceTagAssigned`, `WorkspaceTagUnassigned`, `MeteredBillingConfigUpdated`, `MeteredBillingRefillTriggered`, `MeteredBillingRetryTriggered`, `EnterpriseSpendCapEnforcementUpdated`, `OnboardingBonusGranted`, `AwsMarketplaceEnterpriseSubscriptionLinked`."
+            "description": "Restrict results to these audit log actions, as a comma-separated list of up to 50 actions. Allowed values: `AgentArtifactCommentCreated`, `AgentArtifactCreated`, `AgentArtifactVersionSaved`, `AgentArtifactSessionAttached`, `AgentArtifactSessionDetached`, `UserLogin`, `PasswordChanged`, `EmailChangeRequested`, `EmailChanged`, `UserRegistered`, `UserAccountDeleted`, `WorkspaceCreated`, `WorkspaceDeleted`, `MemberInvited`, `MemberInviteReminderSent`, `MemberRemoved`, `MemberRoleChanged`, `InviteAccepted`, `MemberJoinedViaDomain`, `TeamSettingsUpdated`, `InviteLinkToggled`, `UserGroupCreated`, `UserGroupUpdated`, `UserGroupDeleted`, `UserGroupArchived`, `UserGroupRestored`, `UserGroupMemberAdded`, `UserGroupMemberRemoved`, `UserGroupCreditCapUpdated`, `UserGroupVisibilityUpdated`, `SSOLogin`, `SSOUserProvisioned`, `SSOConfigCreated`, `SSOUserAutoAddedToTeam`, `SSODomainRegistrationCloned`, `AssetCreated`, `AssetUpdated`, `AssetDeleted`, `AssetDownloaded`, `AssetShared`, `AssetUnshared`, `CommentCreated`, `CommentEdited`, `CommentDeleted`, `CommentAgentCallRun`, `CommentRemovedByModerator`, `CommentRestoredByModerator`, `CommentRemovalReasonChanged`, `PermissionGranted`, `PermissionUpdated`, `PermissionRevoked`, `PermissionAccepted`, `SubscriptionCancelled`, `SubscriptionReactivatedWithOffer`, `SubscriptionPlanSwitched`, `CreditsTransferred`, `SeatsTransferred`, `SessionShared`, `SessionUnshared`, `SessionMadePrivateByAdmin`, `VideoProjectShared`, `VideoProjectUnshared`, `BrandKitShared`, `BrandKitUnshared`, `AgentCustomSkillCreated`, `AgentCustomSkillDeleted`, `AgentCustomSkillShared`, `AgentCustomSkillUnshared`, `AgentSessionShared`, `AgentSessionUnshared`, `AgentConnectorLinkTokenCreated`, `AgentConnectorConnected`, `AgentConnectorDisconnected`, `AgentConnectorAssetExported`, `AgentConnectorSessionEnabled`, `AgentConnectorSessionDisabled`, `GenerationCreated`, `StudioSessionOpened`, `AppStudioAiRunOpened`, `AppStudioAppCreated`, `AppStudioAppPublished`, `AppStudioAppVisibilityChanged`, `AppStudioAppRenamed`, `AppStudioAppDeleted`, `AppStudioAppCoOwnerChanged`, `AppStudioAppSecretChanged`, `AppStudioAppRunwayAccessGranted`, `AppStudioAppRunwayAccessRevoked`, `AppStudioConnectorConnected`, `AppStudioConnectorDisconnected`, `AppStudioConnectorAppGranted`, `AppStudioConnectorAppRevoked`, `AppStudioConnectorPolicyChanged`, `AppStudioConnectorToolCalled`, `AccountLinkCreated`, `AccountLinkDeleted`, `AdConnectionAuthorizationStarted`, `AdConnectionConnected`, `AdAccountSelectionUpdated`, `AdAccountSyncRequested`, `AdConnectionDisconnected`, `AdWorkspaceOnboardingUpdated`, `AdCreativeReviewSubmitted`, `AdCreativeReviewCancelled`, `AdCreativeReviewDecided`, `AdCreativeApprovalRevoked`, `AdCreativeArchived`, `AdCreativeUnarchived`, `AdPublishBatchQueued`, `AdPublishBatchCancelled`, `AdPublishBatchRetried`, `AdStatusChanged`, `AdCampaignSetupDrafted`, `AdCampaignSetupDiscarded`, `AdCampaignSetupConfirmed`, `AdCampaignSetupCancelled`, `AdCampaignSetupRetried`, `OrganizationSettingsUpdated`, `OrganizationDisabledModelsUpdated`, `OrganizationAgentSandboxUpdated`, `OrganizationApiAccountReleased`, `OrganizationApiAccountMemberInvited`, `OrganizationApiAccountMemberRoleChanged`, `OrganizationApiAccountMemberRemoved`, `WorkspaceCountryLockUpdated`, `WorkspaceTagCreated`, `WorkspaceTagUpdated`, `WorkspaceTagDeleted`, `WorkspaceTagAssigned`, `WorkspaceTagUnassigned`, `MeteredBillingConfigUpdated`, `MeteredBillingRefillTriggered`, `MeteredBillingRetryTriggered`, `EnterpriseSpendCapEnforcementUpdated`, `OnboardingBonusGranted`, `PromotionCreditsGranted`, `AwsMarketplaceEnterpriseSubscriptionLinked`."
           },
           {
             "name": "actorEmails",
@@ -26772,6 +27831,11 @@
                             "description": "The action performed.",
                             "type": "string",
                             "enum": [
+                              "AgentArtifactCommentCreated",
+                              "AgentArtifactCreated",
+                              "AgentArtifactVersionSaved",
+                              "AgentArtifactSessionAttached",
+                              "AgentArtifactSessionDetached",
                               "UserLogin",
                               "PasswordChanged",
                               "EmailChangeRequested",
@@ -26826,6 +27890,7 @@
                               "SeatsTransferred",
                               "SessionShared",
                               "SessionUnshared",
+                              "SessionMadePrivateByAdmin",
                               "VideoProjectShared",
                               "VideoProjectUnshared",
                               "BrandKitShared",
@@ -26854,6 +27919,12 @@
                               "AppStudioAppSecretChanged",
                               "AppStudioAppRunwayAccessGranted",
                               "AppStudioAppRunwayAccessRevoked",
+                              "AppStudioConnectorConnected",
+                              "AppStudioConnectorDisconnected",
+                              "AppStudioConnectorAppGranted",
+                              "AppStudioConnectorAppRevoked",
+                              "AppStudioConnectorPolicyChanged",
+                              "AppStudioConnectorToolCalled",
                               "AccountLinkCreated",
                               "AccountLinkDeleted",
                               "AdConnectionAuthorizationStarted",
@@ -26872,6 +27943,11 @@
                               "AdPublishBatchCancelled",
                               "AdPublishBatchRetried",
                               "AdStatusChanged",
+                              "AdCampaignSetupDrafted",
+                              "AdCampaignSetupDiscarded",
+                              "AdCampaignSetupConfirmed",
+                              "AdCampaignSetupCancelled",
+                              "AdCampaignSetupRetried",
                               "OrganizationSettingsUpdated",
                               "OrganizationDisabledModelsUpdated",
                               "OrganizationAgentSandboxUpdated",
@@ -26890,6 +27966,7 @@
                               "MeteredBillingRetryTriggered",
                               "EnterpriseSpendCapEnforcementUpdated",
                               "OnboardingBonusGranted",
+                              "PromotionCreditsGranted",
                               "AwsMarketplaceEnterpriseSubscriptionLinked"
                             ]
                           },
@@ -26956,6 +28033,7 @@
                               "Application": { "type": "string" },
                               "Plan": { "type": "string" },
                               "Amount": { "type": "number" },
+                              "Promotion": { "type": "string" },
                               "New User": { "type": "boolean" },
                               "Group name": { "type": "string" },
                               "Project ID": { "type": "string" },
@@ -26988,6 +28066,8 @@
                               "Agent session ID": { "type": "string" },
                               "Connector": { "type": "string" },
                               "Tool": { "type": "string" },
+                              "Read or write": { "type": "string" },
+                              "Result": { "type": "string" },
                               "Outcome": { "type": "string" },
                               "Error code": { "type": "string" },
                               "Reason": {
@@ -27106,6 +28186,8 @@
                               "AWS license": { "type": "string" },
                               "Direction": { "type": "string" },
                               "Amount received": { "type": "number" },
+                              "Asset ID": { "type": "string" },
+                              "Source version asset ID": { "type": "string" },
                               "Root asset ID": { "type": "string" },
                               "Media included": { "type": "boolean" },
                               "Via public API": { "type": "boolean" },
@@ -27142,6 +28224,9 @@
                               "Status before": { "type": "string" },
                               "Status after": { "type": "string" },
                               "Platform object ID": { "type": "string" },
+                              "Campaign setup ID": { "type": "string" },
+                              "Campaign setup type": { "type": "string" },
+                              "Campaign setup version": { "type": "number" },
                               "App Studio app": {
                                 "anyOf": [
                                   { "type": "string" },
@@ -27151,7 +28236,14 @@
                               "App Studio session": { "type": "string" },
                               "App Studio app ID": { "type": "string" },
                               "Secret name": { "type": "string" },
-                              "App Studio deploy": { "type": "string" }
+                              "App Studio deploy": { "type": "string" },
+                              "Files moved": { "type": "number" },
+                              "Previously shared in project": {
+                                "anyOf": [
+                                  { "type": "string" },
+                                  { "type": "null" }
+                                ]
+                              }
                             },
                             "additionalProperties": false
                           }
@@ -27189,11 +28281,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const auditLogListResponse of client.organization.webapp.auditLogs.list({ limit: 1 })) {\n  console.log(auditLogListResponse.action);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const auditLogListResponse of client.organization.webapp.auditLogs.list()) {\n  console.log(auditLogListResponse.action);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.organization.webapp.audit_logs.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page.action)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.organization.webapp.audit_logs.list()\npage = page.data[0]\nprint(page.action)"
           }
         ]
       }
@@ -27224,7 +28316,7 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
-            "description": "Organization to report on. Optional when this API project is linked to a single organization; required when it is linked to more than one."
+            "description": "Organization to report on. Optional when this API project is linked to a single organization; required when it is linked to more than one. If it is missing then, the 400 response lists the IDs and names of the linked organizations in `details.organizations`."
           },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
@@ -27252,6 +28344,11 @@
                       "description": "The action performed.",
                       "type": "string",
                       "enum": [
+                        "AgentArtifactCommentCreated",
+                        "AgentArtifactCreated",
+                        "AgentArtifactVersionSaved",
+                        "AgentArtifactSessionAttached",
+                        "AgentArtifactSessionDetached",
                         "UserLogin",
                         "PasswordChanged",
                         "EmailChangeRequested",
@@ -27306,6 +28403,7 @@
                         "SeatsTransferred",
                         "SessionShared",
                         "SessionUnshared",
+                        "SessionMadePrivateByAdmin",
                         "VideoProjectShared",
                         "VideoProjectUnshared",
                         "BrandKitShared",
@@ -27334,6 +28432,12 @@
                         "AppStudioAppSecretChanged",
                         "AppStudioAppRunwayAccessGranted",
                         "AppStudioAppRunwayAccessRevoked",
+                        "AppStudioConnectorConnected",
+                        "AppStudioConnectorDisconnected",
+                        "AppStudioConnectorAppGranted",
+                        "AppStudioConnectorAppRevoked",
+                        "AppStudioConnectorPolicyChanged",
+                        "AppStudioConnectorToolCalled",
                         "AccountLinkCreated",
                         "AccountLinkDeleted",
                         "AdConnectionAuthorizationStarted",
@@ -27352,6 +28456,11 @@
                         "AdPublishBatchCancelled",
                         "AdPublishBatchRetried",
                         "AdStatusChanged",
+                        "AdCampaignSetupDrafted",
+                        "AdCampaignSetupDiscarded",
+                        "AdCampaignSetupConfirmed",
+                        "AdCampaignSetupCancelled",
+                        "AdCampaignSetupRetried",
                         "OrganizationSettingsUpdated",
                         "OrganizationDisabledModelsUpdated",
                         "OrganizationAgentSandboxUpdated",
@@ -27370,6 +28479,7 @@
                         "MeteredBillingRetryTriggered",
                         "EnterpriseSpendCapEnforcementUpdated",
                         "OnboardingBonusGranted",
+                        "PromotionCreditsGranted",
                         "AwsMarketplaceEnterpriseSubscriptionLinked"
                       ]
                     },
@@ -27427,6 +28537,7 @@
                         "Application": { "type": "string" },
                         "Plan": { "type": "string" },
                         "Amount": { "type": "number" },
+                        "Promotion": { "type": "string" },
                         "New User": { "type": "boolean" },
                         "Group name": { "type": "string" },
                         "Project ID": { "type": "string" },
@@ -27457,6 +28568,8 @@
                         "Agent session ID": { "type": "string" },
                         "Connector": { "type": "string" },
                         "Tool": { "type": "string" },
+                        "Read or write": { "type": "string" },
+                        "Result": { "type": "string" },
                         "Outcome": { "type": "string" },
                         "Error code": { "type": "string" },
                         "Reason": {
@@ -27543,6 +28656,8 @@
                         "AWS license": { "type": "string" },
                         "Direction": { "type": "string" },
                         "Amount received": { "type": "number" },
+                        "Asset ID": { "type": "string" },
+                        "Source version asset ID": { "type": "string" },
                         "Root asset ID": { "type": "string" },
                         "Media included": { "type": "boolean" },
                         "Via public API": { "type": "boolean" },
@@ -27576,13 +28691,20 @@
                         "Status before": { "type": "string" },
                         "Status after": { "type": "string" },
                         "Platform object ID": { "type": "string" },
+                        "Campaign setup ID": { "type": "string" },
+                        "Campaign setup type": { "type": "string" },
+                        "Campaign setup version": { "type": "number" },
                         "App Studio app": {
                           "anyOf": [{ "type": "string" }, { "type": "null" }]
                         },
                         "App Studio session": { "type": "string" },
                         "App Studio app ID": { "type": "string" },
                         "Secret name": { "type": "string" },
-                        "App Studio deploy": { "type": "string" }
+                        "App Studio deploy": { "type": "string" },
+                        "Files moved": { "type": "number" },
+                        "Previously shared in project": {
+                          "anyOf": [{ "type": "string" }, { "type": "null" }]
+                        }
                       },
                       "additionalProperties": false
                     },
@@ -27650,6 +28772,194 @@
           {
             "lang": "Python",
             "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\naudit_log = client.organization.webapp.audit_logs.retrieve(\n    event_id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\nprint(audit_log.action)"
+          }
+        ]
+      }
+    },
+    "/v1/organization/webapp/members": {
+      "get": {
+        "tags": ["Organization"],
+        "summary": "List linked workspace members",
+        "description": "List the members of the linked Runway workspaces you administer, one row per member per workspace, including pending invites and members who were removed. Ordered by `membershipId`. Authorized via the account link between this API project and the workspace.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 1000 },
+            "description": "Cursor from a previous response for fetching the next page of results."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "The maximum number of items to return per page."
+          },
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Organization to report on. Optional when this API project is linked to a single organization; required when it is linked to more than one. If it is missing then, the 400 response lists the IDs and names of the linked organizations in `details.organizations`."
+          },
+          {
+            "name": "workspaceIds",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Restrict results to these workspace IDs, as a comma-separated list of up to 50 IDs. Defaults to every workspace you administer in the organization."
+          },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "description": "The list of items for the current page.",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "membershipId": {
+                            "description": "Unique ID of the membership. Stable across requests, so use it to update a member's row between pulls.",
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          "userId": {
+                            "description": "ID of the member's Runway user. It doesn't change when their email does. `null` for an invite to an email with no Runway account yet.",
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "email": {
+                            "description": "Email of the member, or the email the invite was sent to.",
+                            "type": "string"
+                          },
+                          "role": {
+                            "description": "Role in the workspace. `non-generating-admin` is a Billing Admin.",
+                            "type": "string",
+                            "enum": [
+                              "viewer",
+                              "editor",
+                              "admin",
+                              "non-generating-admin"
+                            ]
+                          },
+                          "status": {
+                            "description": "`active`: a member of the workspace. `invited`: invited, and the invite is not accepted yet. `deactivated`: no longer a member; `deactivationReason` says why.",
+                            "type": "string",
+                            "enum": ["active", "invited", "deactivated"]
+                          },
+                          "deactivationReason": {
+                            "description": "Why the membership is `deactivated`. `removed`: the member was removed from the workspace. `invite_ended`: the invite was declined or revoked, which are recorded the same way. `suspended`: the user is suspended. `null` unless `status` is `deactivated`.",
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": ["removed", "invite_ended", "suspended"]
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "provisionedAt": {
+                            "description": "When the member was added, or when the invite was sent.",
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                          },
+                          "deprovisionedAt": {
+                            "description": "Approximately when the member was removed, or the invite was declined or revoked: the membership's last change. `null` when the membership was not ended, including for a suspended user.",
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "lastActiveDate": {
+                            "description": "Last UTC date the member used Runway, on the web or mobile app and in any workspace. `null` when they never accepted the invite or have no recorded activity.",
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "workspaceId": {
+                            "description": "ID of the workspace.",
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          "workspaceName": {
+                            "description": "Name of the workspace.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "membershipId",
+                          "userId",
+                          "email",
+                          "role",
+                          "status",
+                          "deactivationReason",
+                          "provisionedAt",
+                          "deprovisionedAt",
+                          "lastActiveDate",
+                          "workspaceId",
+                          "workspaceName"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "hasMore": {
+                      "description": "Whether there are more items available after this page.",
+                      "type": "boolean"
+                    },
+                    "nextCursor": {
+                      "description": "Cursor to use for fetching the next page, or null if there are no more pages.",
+                      "anyOf": [{ "type": "string" }, { "type": "null" }]
+                    }
+                  },
+                  "required": ["data", "hasMore", "nextCursor"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const webappListMembersResponse of client.organization.webapp.listMembers()) {\n  console.log(webappListMembersResponse.deactivationReason);\n}"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.organization.webapp.list_members()\npage = page.data[0]\nprint(page.deactivation_reason)"
           }
         ]
       }
@@ -27732,6 +29042,8 @@
                               "seedream5_pro_layers",
                               "seedream5_pro",
                               "seedream5_flash",
+                              "seedream5.5",
+                              "seedream5.5_layers",
                               "seedream5_lite",
                               "gemini_omni_flash",
                               "gemini_omni_flash_1.2",
@@ -27755,6 +29067,7 @@
                               "voice_processing",
                               "seedance2",
                               "seedance2_5",
+                              "seedance2_5_flash",
                               "seedance2_fast",
                               "seedance2_mini",
                               "hailuo3",
@@ -27767,6 +29080,7 @@
                               "grok_imagine_1_5_lite",
                               "grok_imagine_image_2",
                               "muse_image",
+                              "minimax_h3_image",
                               "bria_fibo_1_5",
                               "bria_fibo_edit_1_5",
                               "ideogram_4_0",
@@ -27877,6 +29191,8 @@
                               "seedream5_pro_layers",
                               "seedream5_pro",
                               "seedream5_flash",
+                              "seedream5.5",
+                              "seedream5.5_layers",
                               "seedream5_lite",
                               "gemini_omni_flash",
                               "gemini_omni_flash_1.2",
@@ -27900,6 +29216,7 @@
                               "voice_processing",
                               "seedance2",
                               "seedance2_5",
+                              "seedance2_5_flash",
                               "seedance2_fast",
                               "seedance2_mini",
                               "hailuo3",
@@ -27912,6 +29229,7 @@
                               "grok_imagine_1_5_lite",
                               "grok_imagine_image_2",
                               "muse_image",
+                              "minimax_h3_image",
                               "bria_fibo_1_5",
                               "bria_fibo_edit_1_5",
                               "ideogram_4_0",
@@ -27974,7 +29292,7 @@
       "post": {
         "tags": ["Organization"],
         "summary": "Query credit usage",
-        "description": "Fetch credit usage data broken down by model and day for the organization associated with the API key used to make the request. Up to 90 days of data can be queried at a time.",
+        "description": "Fetch credit usage data broken down by model and day for the organization associated with the API key used to make the request. Up to 90 days of data can be queried at a time. Usage updates hourly; recent activity may not appear yet.",
         "x-codeSamples": [
           {
             "lang": "JavaScript",
@@ -28014,6 +29332,22 @@
                     "type": "string",
                     "format": "date",
                     "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                  },
+                  "tags": {
+                    "description": "Only count generations that were created with every one of these tags in the `X-Runway-Tags` header. Tags are case-insensitive. Up to 10 tags.",
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64,
+                      "pattern": "^[a-zA-Z0-9_./-]+(?::[a-zA-Z0-9_./:-]+)?$"
+                    }
+                  },
+                  "groupBy": {
+                    "description": "Also break usage down by tag in `resultsByTag`. `\"tag\"` gives one bucket per tag; a generation with several tags counts toward each of them. `\"tag:<key>\"` (for example `\"tag:team\"`) gives one bucket per value of that key, so each generation counts once. Generations without a matching tag fall under a `null` tag.",
+                    "type": "string",
+                    "pattern": "^[tT][aA][gG](?::[a-zA-Z0-9_./-]+)?$"
                   }
                 }
               }
@@ -28077,6 +29411,8 @@
                                     "seedream5_pro_layers",
                                     "seedream5_pro",
                                     "seedream5_flash",
+                                    "seedream5.5",
+                                    "seedream5.5_layers",
                                     "seedream5_lite",
                                     "gemini_omni_flash",
                                     "gemini_omni_flash_1.2",
@@ -28100,6 +29436,7 @@
                                     "voice_processing",
                                     "seedance2",
                                     "seedance2_5",
+                                    "seedance2_5_flash",
                                     "seedance2_fast",
                                     "seedance2_mini",
                                     "hailuo3",
@@ -28112,6 +29449,7 @@
                                     "grok_imagine_1_5_lite",
                                     "grok_imagine_image_2",
                                     "muse_image",
+                                    "minimax_h3_image",
                                     "bria_fibo_1_5",
                                     "bria_fibo_edit_1_5",
                                     "ideogram_4_0",
@@ -28190,6 +29528,8 @@
                           "seedream5_pro_layers",
                           "seedream5_pro",
                           "seedream5_flash",
+                          "seedream5.5",
+                          "seedream5.5_layers",
                           "seedream5_lite",
                           "gemini_omni_flash",
                           "gemini_omni_flash_1.2",
@@ -28213,6 +29553,7 @@
                           "voice_processing",
                           "seedance2",
                           "seedance2_5",
+                          "seedance2_5_flash",
                           "seedance2_fast",
                           "seedance2_mini",
                           "hailuo3",
@@ -28225,6 +29566,7 @@
                           "grok_imagine_1_5_lite",
                           "grok_imagine_image_2",
                           "muse_image",
+                          "minimax_h3_image",
                           "bria_fibo_1_5",
                           "bria_fibo_edit_1_5",
                           "ideogram_4_0",
@@ -28298,6 +29640,54 @@
                         "required": ["date", "usedCredits"],
                         "additionalProperties": false
                       }
+                    },
+                    "resultsByTag": {
+                      "description": "Credit usage broken down by tag, present when `groupBy` is set. With `groupBy: \"tag\"`, a generation with several tags counts toward each of them, so the buckets can add up to more than the total. With `groupBy: \"tag:<key>\"`, each generation counts once, under its `<key>:<value>` tag.",
+                      "type": "array",
+                      "items": {
+                        "title": "CreditUsageByTagForDate",
+                        "type": "object",
+                        "properties": {
+                          "date": {
+                            "description": "The date of the usage data in ISO-8601 format (YYYY-MM-DD). All dates are in UTC.",
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                          },
+                          "usedCredits": {
+                            "description": "The credits used per tag for the date.",
+                            "type": "array",
+                            "items": {
+                              "title": "CreditUsageForTagForDate",
+                              "type": "object",
+                              "properties": {
+                                "tag": {
+                                  "description": "The tag that credits were spent under, or null for usage without a matching tag.",
+                                  "anyOf": [
+                                    { "type": "string" },
+                                    { "type": "null" }
+                                  ]
+                                },
+                                "amount": {
+                                  "description": "The net number of credits spent under the tag. May be negative if refunds exceeded charges on this day.",
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                }
+                              },
+                              "required": ["tag", "amount"],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": ["date", "usedCredits"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "tags": {
+                      "description": "The tags on usage in the queried time range, sorted alphabetically, present when `tags` or `groupBy` is set. Lists at most the 1,000 tags with the most credits.",
+                      "type": "array",
+                      "items": { "type": "string" }
                     }
                   },
                   "required": ["results", "models"],
@@ -28423,7 +29813,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\nclient = RunwayML()\n\ntask = client.recipes.ad_localization(\n    version='2026-06',\n    reference_image={'uri': 'https://example.com/source-ad.jpg'},\n    target_language='ja',\n)\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28646,6 +30039,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -28719,7 +30116,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\nclient = RunwayML()\n\ntask = client.recipes.marketing_stock_image(\n    version='2026-06',\n    prompt='Premium lifestyle photo for a sustainable travel backpack campaign, urban morning commute, natural copy space on the left',\n    reference_image={'uri': 'https://example.com/brand-logo.png'},\n)\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -28933,6 +30333,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -29006,7 +30410,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\nclient = RunwayML()\n\ntask = client.recipes.product_ad(\n    version='2026-07',\n    product_images=[\n        {'uri': 'https://example.com/product-front.jpg'},\n        {'uri': 'https://example.com/product-side.jpg'},\n    ],\n    product_info='Organic cold-pressed juice, 12oz glass bottle',\n    user_concept='Bright, refreshing summer campaign with slow dolly moves',\n    duration=10,\n)\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -29285,6 +30692,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -29358,7 +30769,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\nclient = RunwayML()\n\ntask = client.recipes.product_campaign_image(\n    version='2026-06',\n    image={'uri': 'https://example.com/product.jpg'},\n    prompt='High-key fashion editorial, gorpcore-meets-blokecore-meets-Y2K',\n)\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -29559,6 +30973,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -29632,7 +31050,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\nclient = RunwayML()\n\ntask = client.recipes.product_swap(\n    version='2026-06',\n    reference_video={'uri': 'https://example.com/reference-ad.mp4'},\n    original_product_image={'uri': 'https://example.com/original-product.jpg'},\n    new_product_images=[\n        {'uri': 'https://example.com/new-product-front.jpg', 'view': 'front'},\n        {'uri': 'https://example.com/new-product-side.jpg', 'view': 'side'},\n    ],\n    duration=10,\n)\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -29933,6 +31354,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -30006,7 +31431,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\nclient = RunwayML()\n\ntask = client.recipes.multi_shot_video(\n    version='2026-06',\n    prompt='A lone astronaut discovers a glowing forest on a distant planet',\n    duration=10,\n    ratio='1280:720',\n)\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -30341,6 +31769,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -30414,7 +31846,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\nclient = RunwayML()\n\ntask = client.recipes.product_ugc(\n    version='2026-06',\n    character_image={'uri': 'https://example.com/creator.jpg'},\n    product_image={'uri': 'https://example.com/product.jpg'},\n    product_info='Wireless game controller with haptic feedback triggers',\n    user_concept='Enthusiastic creator tone, demonstrate the product in hand',\n    duration=15,\n)\n\nprint(task)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -30675,6 +32110,10 @@
                           "type": "string",
                           "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
                         },
+                        {
+                          "type": "string",
+                          "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_CODEC"
+                        },
                         { "type": "string", "const": "ASSET.MISSING" },
                         { "type": "string", "const": "ASSET.INVALID" },
                         {
@@ -30731,11 +32170,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const routerListResponse of client.routers.list({ limit: 1 })) {\n  console.log(routerListResponse.id);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const routerListResponse of client.routers.list()) {\n  console.log(routerListResponse.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.routers.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.routers.list()\npage = page.data[0]\nprint(page.id)"
           },
           {
             "lang": "TypeScript",
@@ -30754,7 +32193,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 50,
               "type": "integer",
@@ -30818,7 +32257,7 @@
                                 "const": 1
                               },
                               "models": {
-                                "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video or image model name (unknown ids are rejected on create/update).",
+                                "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video, image, audio, or mesh model name (unknown ids are rejected on create/update).",
                                 "type": "object",
                                 "properties": {
                                   "mode": {
@@ -30851,6 +32290,11 @@
                                     "maximum": 9007199254740991
                                   },
                                   "audio": {
+                                    "type": "integer",
+                                    "exclusiveMinimum": 0,
+                                    "maximum": 9007199254740991
+                                  },
+                                  "mesh": {
                                     "type": "integer",
                                     "exclusiveMinimum": 0,
                                     "maximum": 9007199254740991
@@ -30976,7 +32420,7 @@
                         "const": 1
                       },
                       "models": {
-                        "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video or image model name (unknown ids are rejected on create/update).",
+                        "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video, image, audio, or mesh model name (unknown ids are rejected on create/update).",
                         "type": "object",
                         "properties": {
                           "mode": {
@@ -31006,6 +32450,11 @@
                             "maximum": 9007199254740991
                           },
                           "audio": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "mesh": {
                             "type": "integer",
                             "exclusiveMinimum": 0,
                             "maximum": 9007199254740991
@@ -31084,7 +32533,7 @@
                           "const": 1
                         },
                         "models": {
-                          "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video or image model name (unknown ids are rejected on create/update).",
+                          "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video, image, audio, or mesh model name (unknown ids are rejected on create/update).",
                           "type": "object",
                           "properties": {
                             "mode": {
@@ -31114,6 +32563,11 @@
                               "maximum": 9007199254740991
                             },
                             "audio": {
+                              "type": "integer",
+                              "exclusiveMinimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "mesh": {
                               "type": "integer",
                               "exclusiveMinimum": 0,
                               "maximum": 9007199254740991
@@ -31236,7 +32690,7 @@
                           "const": 1
                         },
                         "models": {
-                          "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video or image model name (unknown ids are rejected on create/update).",
+                          "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video, image, audio, or mesh model name (unknown ids are rejected on create/update).",
                           "type": "object",
                           "properties": {
                             "mode": {
@@ -31266,6 +32720,11 @@
                               "maximum": 9007199254740991
                             },
                             "audio": {
+                              "type": "integer",
+                              "exclusiveMinimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "mesh": {
                               "type": "integer",
                               "exclusiveMinimum": 0,
                               "maximum": 9007199254740991
@@ -31382,7 +32841,7 @@
                         "const": 1
                       },
                       "models": {
-                        "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video or image model name (unknown ids are rejected on create/update).",
+                        "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video, image, audio, or mesh model name (unknown ids are rejected on create/update).",
                         "type": "object",
                         "properties": {
                           "mode": {
@@ -31425,6 +32884,16 @@
                                 ]
                               },
                               "audio": {
+                                "anyOf": [
+                                  {
+                                    "type": "integer",
+                                    "exclusiveMinimum": 0,
+                                    "maximum": 9007199254740991
+                                  },
+                                  { "type": "null" }
+                                ]
+                              },
+                              "mesh": {
                                 "anyOf": [
                                   {
                                     "type": "integer",
@@ -31510,7 +32979,7 @@
                           "const": 1
                         },
                         "models": {
-                          "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video or image model name (unknown ids are rejected on create/update).",
+                          "description": "When mode is allow_new_except, ids are excluded; when allowlist_only, ids are the only allowed values. Each id must be a known public video, image, audio, or mesh model name (unknown ids are rejected on create/update).",
                           "type": "object",
                           "properties": {
                             "mode": {
@@ -31540,6 +33009,11 @@
                               "maximum": 9007199254740991
                             },
                             "audio": {
+                              "type": "integer",
+                              "exclusiveMinimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "mesh": {
                               "type": "integer",
                               "exclusiveMinimum": 0,
                               "maximum": 9007199254740991
@@ -31665,7 +33139,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 50,
               "type": "integer",
@@ -31886,11 +33360,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const routerListRequestsResponse of client.routers.listRequests(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { limit: 1 },\n)) {\n  console.log(routerListRequestsResponse.id);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const routerListRequestsResponse of client.routers.listRequests(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n)) {\n  console.log(routerListRequestsResponse.id);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.routers.list_requests(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n    limit=1,\n)\npage = page.data[0]\nprint(page.id)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.routers.list_requests(\n    id=\"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e\",\n)\npage = page.data[0]\nprint(page.id)"
           }
         ]
       }
@@ -31903,11 +33377,11 @@
         "x-codeSamples": [
           {
             "lang": "JavaScript",
-            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const voiceListResponse of client.voices.list({ limit: 1 })) {\n  console.log(voiceListResponse);\n}"
+            "source": "import RunwayML from '@runwayml/sdk';\n\nconst client = new RunwayML({\n  apiKey: process.env['RUNWAYML_API_SECRET'], // This is the default and can be omitted\n});\n\n// Automatically fetches more pages as needed.\nfor await (const voiceListResponse of client.voices.list()) {\n  console.log(voiceListResponse);\n}"
           },
           {
             "lang": "Python",
-            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.voices.list(\n    limit=1,\n)\npage = page.data[0]\nprint(page)"
+            "source": "import os\nfrom runwayml import RunwayML\n\nclient = RunwayML(\n    api_key=os.environ.get(\"RUNWAYML_API_SECRET\"),  # This is the default and can be omitted\n)\npage = client.voices.list()\npage = page.data[0]\nprint(page)"
           },
           {
             "lang": "TypeScript",
@@ -31931,7 +33405,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "default": 50,
               "type": "integer",
@@ -32133,7 +33607,10 @@
             "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nvoice = client.voices.create(\n  name='My Custom Voice',\n  from_={\n    'type': 'text',\n    'prompt': 'A warm, friendly voice with a slight British accent',\n    'model': 'eleven_ttv_v3',\n  },\n)\nprint(voice.id)"
           }
         ],
-        "parameters": [{ "$ref": "#/components/parameters/X-Runway-Version" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
+          { "$ref": "#/components/parameters/X-Runway-Version" }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -32778,6 +34255,7 @@
             },
             "description": "The ID of the published workflow to run. You can copy this value from the developer portal."
           },
+          { "$ref": "#/components/parameters/X-Runway-Tags" },
           { "$ref": "#/components/parameters/X-Runway-Version" }
         ],
         "requestBody": {
@@ -33711,6 +35189,18 @@
           "type": "string",
           "const": "2024-11-06",
           "default": "2024-11-06"
+        }
+      },
+      "X-Runway-Tags": {
+        "name": "X-Runway-Tags",
+        "in": "header",
+        "required": false,
+        "description": "Comma-separated tags to attribute this generation's credit usage to, so you can filter and break down usage with `POST /v1/organization/usage`. Each tag is a plain label (`campaign-q4`) or a `key:value` pair (`team:growth`), split at the first colon. Tags are case-insensitive and stored lowercase. Up to 10 tags, each up to 64 characters of letters, numbers, and `_ - . / :`. An invalid tag rejects the request with a 400. Workflow runs pass their tags on to every generation they start.\n\n**Tags appear in usage reports. Do not put end-user PII (like names or emails) in them.**",
+        "schema": {
+          "type": "string",
+          "maxLength": 1024,
+          "example": "team:growth,env:prod,campaign-q4",
+          "x-stainless-skip": ["python", "typescript"]
         }
       }
     },
